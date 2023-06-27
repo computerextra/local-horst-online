@@ -1,0 +1,20 @@
+<?php
+
+// Test DB -> Später dann richtig!
+define("DB_HOST", "");
+define("DB_USER", "");
+define("DB_PASS", "");
+define("DB", "");
+
+// Archive DB zum suchen
+define("ARCHIVE_DB_HOST", "");
+define("ARCHIVE_DB_USER", "");
+define("ARCHIVE_DB_PASS", "");
+define("ARCHIVE_DB", "");
+
+
+// Mail Versand
+define("SMTP_HOST", "");
+define("SMTP_PORT", "");
+define("SMTP_USER", "");
+define("SMTP_PASS", "");
