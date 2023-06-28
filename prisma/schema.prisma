@@ -1,0 +1,125 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Ansprechpartner {
+  id            String       @id
+  Name          String
+  Telefon       String?
+  Mobil         String?
+  Mail          String?
+  lieferantenId String?
+  Lieferanten   Lieferanten? @relation(fields: [lieferantenId], references: [id])
+}
+
+model Fach {
+  id    String  @id
+  Name  String
+  Kabel Kabel[]
+}
+
+model Farbe {
+  id    String  @id
+  Name  String
+  Kabel Kabel[]
+}
+
+model Input {
+  id    String  @id
+  Name  String
+  Kabel Kabel[]
+}
+
+model Kabel {
+  id            String @id
+  Name          String
+  Artikelnummer String
+  inputId       String
+  outputId      String
+  laengeId      String
+  farbeId       String
+  fachId        String
+  reiheId       String
+  regalId       String
+  Regal         Regal  @relation(fields: [regalId], references: [id])
+  Reihe         Reihe  @relation(fields: [reiheId], references: [id])
+  Fach          Fach   @relation(fields: [fachId], references: [id])
+  Farbe         Farbe  @relation(fields: [farbeId], references: [id])
+  Laenge        Laenge @relation(fields: [laengeId], references: [id])
+  Output        Output @relation(fields: [outputId], references: [id])
+  Input         Input  @relation(fields: [inputId], references: [id])
+}
+
+model Laenge {
+  id    String  @id
+  Name  String
+  Kabel Kabel[]
+}
+
+model Lieferanten {
+  id              String            @id
+  Firma           String
+  Kundennummer    String
+  Ansprechpartner Ansprechpartner[]
+}
+
+model Mitarbeiter {
+  id         String    @id
+  Name       String    @unique
+  Mail       String?
+  Durchwahl  String?
+  Telefon1   String?
+  Telefon2   String?
+  Mobil      String?
+  Einkauf    String?
+  Geld       String?
+  Pfand      String?
+  Bild1      String?
+  Bild2      String?
+  Bild3      String?
+  Bild1Type  String?
+  Bild2Type  String?
+  Bild3Type  String?
+  Kurz       String?
+  Azubi      Boolean
+  HomeOffice String?
+  Datum      DateTime?
+  Abonniert  Boolean?
+  Geburtstag String?
+}
+
+model Output {
+  id    String  @id
+  Name  String
+  Kabel Kabel[]
+}
+
+model Regal {
+  id    String  @id
+  Name  String
+  Kabel Kabel[]
+}
+
+model Reihe {
+  id    String  @id
+  Name  String
+  Kabel Kabel[]
+}
+
+model Warenlieferung {
+  id            Int       @id @default(autoincrement())
+  Artikelnummer String?
+  Artikelname   String?
+  Importiert    DateTime?
+  Geliefert     DateTime?
+  Neu           DateTime?
+  AlterPreis    String?
+  NeuerPreis    String?
+  Modifiziert   DateTime?
+}
