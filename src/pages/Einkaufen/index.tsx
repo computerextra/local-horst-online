@@ -1,4 +1,3 @@
-import type { Mitarbeiter } from "@prisma/client";
 import Image from "next/image";
 import { useState } from "react";
 import {
@@ -11,25 +10,24 @@ import {
   FormSelect,
   Row,
 } from "react-bootstrap";
-import sendMail from "~/server/api/sendMail";
+import EinkaufEingabe from "~/Components/EinkaufEingabe";
 import { api } from "~/utils/api";
 
 export default function Einkaufen() {
   // Aktuelle Einkaufsliste
   const EinkaufslisteRes = api.Mitarbeiter.getDailyShoppingList.useQuery();
-  // Alle Mitarbeiter
-  const MitarbeiterRes = api.Mitarbeiter.getAll.useQuery();
-
   const Einkaufsliste = EinkaufslisteRes.data;
-  const Mitarbeiter = MitarbeiterRes.data;
-
+  const Mailer = api.Mail.sendPaypalMail.useMutation();
   // Paypal Abrechnung
   const [showAbrechnung, setShowAbrechnung] = useState(false);
   const [userName, setUserName] = useState("");
   const [Schuldner, setSchuldner] = useState("");
   const [Schulden, setSchulden] = useState("");
-  const [Versendet, setVersendet] = useState<Mitarbeiter[]>([]);
+  const [Versendet, setVersendet] = useState<string[]>([]);
   const [Fehler, setFehler] = useState("");
+
+  // Eingabe neuer Einkauf
+  const [showModal, setShowModal] = useState(false);
 
   const Print = () => {
     const area = document.querySelector("[data-druck=true]");
@@ -63,37 +61,20 @@ export default function Einkaufen() {
       setFehler("Kein Geld angegeben.");
       return;
     }
-    const ma = Mitarbeiter?.find((x) => x.id === Schuldner);
-    if (ma == null) {
-      setFehler("Kein Mitarbeiter gefunden.");
-      return;
-    }
-    if (ma.Mail == null) {
-      setFehler("Mitarbeiter hat keine Mailadresse hinterlegt.");
-      return;
-    }
-    const PaypalLink = `https://paypal.me/${userName}/${Schulden}`;
-    const QRCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${PaypalLink}`;
-    const body = `<h1>Hallo ${ma.Name}</h1><p>Bitte bezahle ${Schulden}€ über Paypal.</p><p>Link: ${PaypalLink}</p><p>Oder ganz Einfach mit dem Smartphone. Dafür einfach den QR-Code scannen</p><p><img src="${QRCode}"></p>`;
-    const res = await sendMail(
-      "service@computer-extra.de",
-      ma.Mail,
-      "Abrechnung Paypal",
-      body
-    );
-    if (res === "Gesendet") {
-      setSchulden("");
-      setFehler("ERFOLG");
-      setVersendet((prev) => [...prev, ma]);
-    } else {
-      setFehler(res);
-    }
+
+    await Mailer.mutateAsync({
+      id: Schuldner,
+      Schulden,
+      username: userName,
+    });
     setTimeout(() => {
+      setVersendet((prev) => [...prev, Schuldner]);
+      setSchulden("");
       setFehler("");
     }, 5000);
   };
 
-  if (!Einkaufsliste || !Mitarbeiter) return <>Loading...</>;
+  if (!Einkaufsliste) return <>Loading...</>;
 
   return (
     <Container
@@ -103,7 +84,7 @@ export default function Einkaufen() {
       <Row>
         <Col className="ms-2 me-2">
           <Row>
-            <Button>Eingabe</Button>
+            <Button onClick={() => setShowModal(true)}>Eingabe</Button>
           </Row>
         </Col>
         <Col className="ms-2 me-2">
@@ -150,7 +131,7 @@ export default function Einkaufen() {
               {Einkaufsliste.map((ma) => {
                 if (
                   ma.Geld?.toLowerCase().trim() === "paypal" &&
-                  !Versendet.includes(ma)
+                  !Versendet.includes(ma.id)
                 ) {
                   return (
                     <option
@@ -184,9 +165,11 @@ export default function Einkaufen() {
                 {Fehler}
               </span>
             ) : (
-              <span className="text-danger ms-3 p-1 fs-5 fw-bold">
-                {Fehler} - Eingaben prüfen
-              </span>
+              Fehler !== "" && (
+                <span className="text-danger ms-3 p-1 fs-5 fw-bold">
+                  {Fehler} - Eingaben prüfen
+                </span>
+              )
             )}
           </Form>
         </div>
@@ -249,6 +232,12 @@ export default function Einkaufen() {
       </div>
 
       {/* Modal Neueingabe */}
+      {showModal && (
+        <EinkaufEingabe
+          show={showModal}
+          setShow={setShowModal}
+        />
+      )}
     </Container>
   );
 }

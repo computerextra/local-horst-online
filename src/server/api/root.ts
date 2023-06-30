@@ -1,4 +1,5 @@
 import { createTRPCRouter } from "~/server/api/trpc";
+import { MailRouter } from "./routers/mail";
 import { MitarbeiterRouter } from "./routers/mitarbeiter";
 
 /**
@@ -8,6 +9,7 @@ import { MitarbeiterRouter } from "./routers/mitarbeiter";
  */
 export const appRouter = createTRPCRouter({
   Mitarbeiter: MitarbeiterRouter,
+  Mail: MailRouter,
 });
 
 // export type definition of API
