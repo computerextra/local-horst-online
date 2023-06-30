@@ -48,9 +48,11 @@ type EinkaufProps = {
 export default function EinkaufEingabe({
   show,
   setShow,
+  refreshData,
 }: {
   show: boolean;
   setShow: (i: boolean) => void;
+  refreshData: () => void;
 }) {
   const Mitarbeiter = api.Mitarbeiter.getAll.useQuery();
   const UpdateEinkauf = api.Mitarbeiter.updateEinkauf.useMutation();
@@ -157,6 +159,7 @@ export default function EinkaufEingabe({
       pond2 = null;
       pond3 = null;
       setShow(false);
+      refreshData();
     }
   };
 

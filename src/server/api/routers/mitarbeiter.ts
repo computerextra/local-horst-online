@@ -3,19 +3,34 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const MitarbeiterRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.mitarbeiter.findMany();
+    return await ctx.prisma.mitarbeiter.findMany({
+      orderBy: { Name: "asc" },
+    });
   }),
   getDailyShoppingList: publicProcedure.query(async ({ ctx }) => {
+    const x = new Date().toDateString();
+    const today = new Date(x);
+    const d = today.getDate() + 1;
+    const m = today.getMonth() + 1;
+    const y = today.getFullYear();
+    const tomorrow = new Date(y, m, d);
     return await ctx.prisma.mitarbeiter.findMany({
       where: {
         OR: [
           {
-            Datum: new Date(),
+            Datum: {
+              lte: tomorrow,
+              gte: today,
+            },
           },
+
           {
             Abonniert: true,
           },
         ],
+      },
+      orderBy: {
+        Datum: "asc",
       },
     });
   }),

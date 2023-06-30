@@ -1,3 +1,5 @@
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import { InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import { useState } from "react";
 import {
@@ -10,13 +12,18 @@ import {
   FormSelect,
   Row,
 } from "react-bootstrap";
+import superjson from "superjson";
 import EinkaufEingabe from "~/Components/EinkaufEingabe";
+import { MitarbeiterRouter } from "~/server/api/routers/mitarbeiter";
+import { prisma } from "~/server/db";
 import { api } from "~/utils/api";
 
-export default function Einkaufen() {
+export default function Einkaufen(
+  _props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
   // Aktuelle Einkaufsliste
-  const EinkaufslisteRes = api.Mitarbeiter.getDailyShoppingList.useQuery();
-  const Einkaufsliste = EinkaufslisteRes.data;
+  const postQuery = api.Mitarbeiter.getDailyShoppingList.useQuery();
+
   const Mailer = api.Mail.sendPaypalMail.useMutation();
   // Paypal Abrechnung
   const [showAbrechnung, setShowAbrechnung] = useState(false);
@@ -74,7 +81,13 @@ export default function Einkaufen() {
     }, 5000);
   };
 
-  if (!Einkaufsliste) return <>Loading...</>;
+  const refreshData = () => {
+    location.reload();
+  };
+
+  if (postQuery.status !== "success") return <>Loading...</>;
+
+  const Einkaufsliste = postQuery.data;
 
   return (
     <Container
@@ -236,8 +249,23 @@ export default function Einkaufen() {
         <EinkaufEingabe
           show={showModal}
           setShow={setShowModal}
+          refreshData={refreshData}
         />
       )}
     </Container>
   );
 }
+
+export const getServerSideProps = async () => {
+  const helpers = createServerSideHelpers({
+    router: MitarbeiterRouter,
+    ctx: { prisma },
+    transformer: superjson,
+  });
+  await helpers.getDailyShoppingList.prefetch();
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+    },
+  };
+};

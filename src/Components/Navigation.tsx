@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
 export default function Navigation() {
   const [expanded, setExpanded] = useState(false);
-
+  const router = useRouter();
   const expand = () => {
     setExpanded(false);
   };
@@ -28,10 +29,20 @@ export default function Navigation() {
             variant="tabs">
             {/* Einkaufen */}
             <Link
-              className="nav-link"
+              className={`nav-link ${
+                router.pathname === "/Einkaufen" ? "active" : ""
+              }`}
               href="/Einkaufen"
               onClick={expand}>
               Einkaufen
+            </Link>
+            <Link
+              className={`nav-link ${
+                router.pathname === "/Geburtstage" ? "active" : ""
+              }`}
+              href="/Geburtstage"
+              onClick={expand}>
+              Geburtstage
             </Link>
           </Nav>
         </Navbar.Collapse>
