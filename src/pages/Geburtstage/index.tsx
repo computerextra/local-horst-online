@@ -1,4 +1,5 @@
 import type { Mitarbeiter } from "@prisma/client";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { api } from "~/utils/api";
@@ -96,35 +97,40 @@ export default function Geburtstage() {
   if (!Mitarbeiter) return <>Loading...</>;
 
   return (
-    <Container
-      fluid="sm"
-      className="mt-5">
-      <h2 className="text-center">Geburtstage</h2>
-      <section className="mb-4 mt-4">
-        Heute ist <span className="fw-bold">{Datum}</span>
-      </section>
-      {Vergangen.length >= 1 &&
-        Vergangen.map((ma) => (
-          <p key={ma.id}>
-            {ma.Name} hatte am <span className="fw-bold">{ma.Geburtstag}</span>{" "}
-            Geburtstag
-          </p>
-        ))}
-      {Heute.length >= 1 &&
-        Heute.map((ma) => (
-          <p key={ma.id}>
-            {ma.Name} hat{" "}
-            <span className="text-success fw-bold text-uppercase">heute</span>{" "}
-            Geburtstag.
-          </p>
-        ))}
-      {Zukunft.length >= 1 &&
-        Zukunft.map((ma) => (
-          <p key={ma.id}>
-            {ma.Name} hat am <span className="fw bold">{ma.Geburtstag}</span>{" "}
-            Geburtstag.
-          </p>
-        ))}
-    </Container>
+    <>
+      <Head>
+        <title>Geburtstage | LocalHorst v7</title>
+      </Head>
+      <Container
+        fluid="sm"
+        className="mt-5">
+        <h2 className="text-center">Geburtstage</h2>
+        <section className="mb-4 mt-4">
+          Heute ist <span className="fw-bold">{Datum}</span>
+        </section>
+        {Vergangen.length >= 1 &&
+          Vergangen.map((ma) => (
+            <p key={ma.id}>
+              {ma.Name} hatte am{" "}
+              <span className="fw-bold">{ma.Geburtstag}</span> Geburtstag
+            </p>
+          ))}
+        {Heute.length >= 1 &&
+          Heute.map((ma) => (
+            <p key={ma.id}>
+              {ma.Name} hat{" "}
+              <span className="text-success fw-bold text-uppercase">heute</span>{" "}
+              Geburtstag.
+            </p>
+          ))}
+        {Zukunft.length >= 1 &&
+          Zukunft.map((ma) => (
+            <p key={ma.id}>
+              {ma.Name} hat am <span className="fw bold">{ma.Geburtstag}</span>{" "}
+              Geburtstag.
+            </p>
+          ))}
+      </Container>
+    </>
   );
 }

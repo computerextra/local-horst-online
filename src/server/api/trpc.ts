@@ -10,7 +10,7 @@ import { initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { prisma } from "~/server/db";
+import { archive, prisma, sage } from "~/server/db";
 
 /**
  * 1. CONTEXT
@@ -35,6 +35,8 @@ type CreateContextOptions = Record<string, never>;
 const createInnerTRPCContext = (_opts: CreateContextOptions) => {
   return {
     prisma,
+    sage,
+    archive,
   };
 };
 

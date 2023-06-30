@@ -44,6 +44,14 @@ export default function Navigation() {
               onClick={expand}>
               Geburtstage
             </Link>
+            <Link
+              className={`nav-link ${
+                router.pathname === "/Archive" ? "active" : ""
+              }`}
+              href="/Archive"
+              onClick={expand}>
+              CE Archiv
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

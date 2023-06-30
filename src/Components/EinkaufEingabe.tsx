@@ -24,6 +24,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond/dist/filepond.min.css";
 import { FilePond, registerPlugin } from "react-filepond";
+import LoadingSpinner from "./LoadingSpinner";
 registerPlugin(
   FilePondPluginImageExifOrientation,
   FilePondPluginFileValidateSize,
@@ -88,7 +89,7 @@ export default function EinkaufEingabe({
     else setAbonniert(ma.Abonniert);
   }, [userId]);
 
-  if (!Mitarbeiter || Mitarbeiter.data == null) return <>Loading...</>;
+  if (!Mitarbeiter || Mitarbeiter.data == null) return <LoadingSpinner />;
 
   const handleSubmit = async () => {
     if (userId == null) return;
