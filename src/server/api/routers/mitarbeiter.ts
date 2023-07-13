@@ -148,6 +148,44 @@ export const MitarbeiterRouter = createTRPCRouter({
         },
       });
     }),
+  neuerMitarbeiter: publicProcedure
+    .input(
+      z.object({
+        Name: z.string(),
+        Short: z.string(),
+        Durchwahl: z.string(),
+        Telefon1: z.string(),
+        Telefon2: z.string(),
+        HomeOffice: z.string(),
+        Mobil: z.string(),
+        Mail: z.string(),
+        Azubi: z.boolean(),
+        Geburtstag: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      let Birthday = "";
+      if (input.Geburtstag.length > 0) {
+        const split = input.Geburtstag.split("-");
+        if (split && split[0] && split[1] && split[2]) {
+          Birthday = split[2] + "." + split[1] + ".";
+        }
+      }
+      return await ctx.prisma.mitarbeiter.create({
+        data: {
+          Name: input.Name,
+          Mail: input.Mail,
+          Durchwahl: input.Durchwahl,
+          Telefon1: input.Telefon1,
+          Telefon2: input.Telefon2,
+          Mobil: input.Mobil,
+          Kurz: input.Short,
+          Azubi: input.Azubi,
+          HomeOffice: input.HomeOffice,
+          Geburtstag: Birthday,
+        },
+      });
+    }),
 });
 
 function getLine(short: string) {

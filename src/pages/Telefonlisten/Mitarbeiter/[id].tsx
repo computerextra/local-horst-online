@@ -193,6 +193,7 @@ export default function MitarbeiterEdit() {
               </Button>
             </Col>
             <Col className="d-flex justify-content-center">
+              {/* TODO: Löschen Funktion! */}
               <Button variant="danger">Löschen</Button>
             </Col>
             <Col className="d-flex justify-content-center">

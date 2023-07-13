@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Ansprechpartner {
-  id            String       @id
+  id            String       @id @default(uuid())
   Name          String
   Telefon       String?
   Mobil         String?
@@ -19,25 +19,25 @@ model Ansprechpartner {
 }
 
 model Fach {
-  id    String  @id
+  id    String  @id @default(uuid())
   Name  String
   Kabel Kabel[]
 }
 
 model Farbe {
-  id    String  @id
+  id    String  @id @default(uuid())
   Name  String
   Kabel Kabel[]
 }
 
 model Input {
-  id    String  @id
+  id    String  @id @default(uuid())
   Name  String
   Kabel Kabel[]
 }
 
 model Kabel {
-  id            String @id
+  id            String @id @default(uuid())
   Name          String
   Artikelnummer String
   inputId       String
@@ -57,20 +57,20 @@ model Kabel {
 }
 
 model Laenge {
-  id    String  @id
+  id    String  @id @default(uuid())
   Name  String
   Kabel Kabel[]
 }
 
 model Lieferanten {
-  id              String            @id
+  id              String            @id @default(uuid())
   Firma           String
   Kundennummer    String
   Ansprechpartner Ansprechpartner[]
 }
 
 model Mitarbeiter {
-  id         String    @id
+  id         String    @id @default(uuid())
   Name       String    @unique
   Mail       String?
   Durchwahl  String?
@@ -95,19 +95,19 @@ model Mitarbeiter {
 }
 
 model Output {
-  id    String  @id
+  id    String  @id @default(uuid())
   Name  String
   Kabel Kabel[]
 }
 
 model Regal {
-  id    String  @id
+  id    String  @id @default(uuid())
   Name  String
   Kabel Kabel[]
 }
 
 model Reihe {
-  id    String  @id
+  id    String  @id @default(uuid())
   Name  String
   Kabel Kabel[]
 }
