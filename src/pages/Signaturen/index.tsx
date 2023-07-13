@@ -45,7 +45,7 @@ export default function Signaturen(
     a.download = "install.bat";
     a.click();
     setShowForm(false);
-    setSubmitted((prev) => !prev);
+    setSubmitted(false);
   };
 
   return (
