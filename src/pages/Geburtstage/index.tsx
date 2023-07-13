@@ -2,6 +2,7 @@ import type { Mitarbeiter } from "@prisma/client";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
 const Tage = [
@@ -94,7 +95,7 @@ export default function Geburtstage() {
     setZukunft(zukunft);
   }, [Mitarbeiter]);
 
-  if (!Mitarbeiter) return <>Loading...</>;
+  if (!Mitarbeiter) return <LoadingSpinner />;
 
   return (
     <>

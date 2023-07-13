@@ -60,6 +60,14 @@ export default function Navigation() {
               onClick={expand}>
               Fritz Box
             </Link>
+            <Link
+              className={`nav-link ${
+                router.pathname === "/Signaturen" ? "active" : ""
+              }`}
+              href="/Signaturen"
+              onClick={expand}>
+              Signaturen
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
