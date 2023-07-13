@@ -52,6 +52,14 @@ export default function Navigation() {
               onClick={expand}>
               CE Archiv
             </Link>
+            <Link
+              className={`nav-link ${
+                router.pathname === "/Fritz" ? "active" : ""
+              }`}
+              href="/Fritz"
+              onClick={expand}>
+              Fritz Box
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
