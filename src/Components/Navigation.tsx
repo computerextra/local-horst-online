@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 
 export default function Navigation() {
   const [expanded, setExpanded] = useState(false);
@@ -68,6 +68,39 @@ export default function Navigation() {
               onClick={expand}>
               Signaturen
             </Link>
+            <NavDropdown title="Telefonlisten">
+              <NavDropdown.Item
+                as={Link}
+                className={`${
+                  router.pathname === "/Telefonlisten/Sage" ? "active" : ""
+                }`}
+                href="/Telefonlisten/Sage"
+                onClick={expand}>
+                Kunden / Lieferanten Sage
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                className={`${
+                  router.pathname === "/Telefonlisten/Mitarbeiter"
+                    ? "active"
+                    : ""
+                }`}
+                href="/Telefonlisten/Mitarbeiter"
+                onClick={expand}>
+                Mitarbeiter
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                className={`${
+                  router.pathname === "/Telefonlisten/Lieferanten"
+                    ? "active"
+                    : ""
+                }`}
+                href="/Telefonlisten/Lieferanten"
+                onClick={expand}>
+                Lieferanten
+              </NavDropdown.Item>
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -9,6 +9,13 @@ export const MitarbeiterRouter = createTRPCRouter({
       orderBy: { Name: "asc" },
     });
   }),
+  getOne: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.mitarbeiter.findUnique({
+        where: { id: input.id },
+      });
+    }),
   getDailyShoppingList: publicProcedure.query(async ({ ctx }) => {
     const x = new Date().toDateString();
     const today = new Date(x);
@@ -100,6 +107,46 @@ export const MitarbeiterRouter = createTRPCRouter({
       const data = fs.readFileSync(file);
       const dataString = data.toString("base64");
       return dataString;
+    }),
+  updateMitarbeiter: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        Name: z.string(),
+        Short: z.string(),
+        Durchwahl: z.string(),
+        Telefon1: z.string(),
+        Telefon2: z.string(),
+        HomeOffice: z.string(),
+        Mobil: z.string(),
+        Mail: z.string(),
+        Azubi: z.boolean(),
+        Geburtstag: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      let Birthday = "";
+      if (input.Geburtstag.length > 0) {
+        const split = input.Geburtstag.split("-");
+        if (split && split[0] && split[1] && split[2]) {
+          Birthday = split[2] + "." + split[1] + ".";
+        }
+      }
+      return await ctx.prisma.mitarbeiter.update({
+        where: { id: input.id },
+        data: {
+          Name: input.Name,
+          Mail: input.Mail,
+          Durchwahl: input.Durchwahl,
+          Telefon1: input.Telefon1,
+          Telefon2: input.Telefon2,
+          Mobil: input.Mobil,
+          Kurz: input.Short,
+          Azubi: input.Azubi,
+          HomeOffice: input.HomeOffice,
+          Geburtstag: Birthday,
+        },
+      });
     }),
 });
 

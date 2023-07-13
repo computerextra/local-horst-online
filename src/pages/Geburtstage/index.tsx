@@ -107,30 +107,46 @@ export default function Geburtstage() {
         className="mt-5">
         <h2 className="text-center">Geburtstage</h2>
         <section className="mb-4 mt-4">
-          Heute ist <span className="fw-bold">{Datum}</span>
+          Heute ist <strong>{Datum}</strong>
         </section>
-        {Vergangen.length >= 1 &&
-          Vergangen.map((ma) => (
-            <p key={ma.id}>
-              {ma.Name} hatte am{" "}
-              <span className="fw-bold">{ma.Geburtstag}</span> Geburtstag
+        {Vergangen && Vergangen.length > 0 && (
+          <section>
+            <h2 className="pb-3">Vergangene Geburtstage</h2>
+            {Vergangen.map((ma) => (
+              <p key={ma.id}>
+                {ma.Name} hatte am{" "}
+                <span className="fw-bold">{ma.Geburtstag}</span> Geburtstag
+              </p>
+            ))}
+          </section>
+        )}
+        {Heute && Heute.length > 0 && (
+          <section>
+            <h2 className="pb-3">Heute Geburtstag:</h2>
+            <h3>
+              {Heute.length} {Heute.length === 1 ? "Person!" : "Personen!"}
+            </h3>
+            <p className="border border-4 border-danger">
+              {Heute.map((ma) => (
+                <p
+                  key={ma.id}
+                  className="fs-4">
+                  <strong>{ma.Name}</strong> hat Heute Geburtstag
+                </p>
+              ))}
             </p>
-          ))}
-        {Heute.length >= 1 &&
-          Heute.map((ma) => (
-            <p key={ma.id}>
-              {ma.Name} hat{" "}
-              <span className="text-success fw-bold text-uppercase">heute</span>{" "}
-              Geburtstag.
-            </p>
-          ))}
-        {Zukunft.length >= 1 &&
-          Zukunft.map((ma) => (
-            <p key={ma.id}>
-              {ma.Name} hat am <span className="fw bold">{ma.Geburtstag}</span>{" "}
-              Geburtstag.
-            </p>
-          ))}
+          </section>
+        )}
+        {Zukunft && Zukunft.length > 0 && (
+          <section>
+            <h2 className="pb-3">Zukünftige Geburtstage</h2>
+            {Zukunft.map((ma) => (
+              <p key={ma.id}>
+                {ma.Name} hat am <strong>{ma.Geburtstag}</strong> Geburtstag
+              </p>
+            ))}
+          </section>
+        )}
       </Container>
     </>
   );
