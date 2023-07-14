@@ -17,6 +17,7 @@ import {
 import { api } from "~/utils/api";
 
 // Filepond
+import type { Mitarbeiter } from "@prisma/client";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
@@ -76,7 +77,7 @@ export default function EinkaufEingabe({
   useEffect(() => {
     if (userId == null) return;
     if (Mitarbeiter == null || Mitarbeiter.data == null) return;
-    const ma = Mitarbeiter.data.find((x) => x.id === userId);
+    const ma = Mitarbeiter.data.find((x: Mitarbeiter) => x.id === userId); // eslint-disable-line
     if (ma == null) return;
 
     if (ma.Einkauf == null) setEinkauf("");
