@@ -7,7 +7,6 @@ import {
   FormControl,
   InputGroup,
 } from "react-bootstrap";
-// TODO: Alles
 export default function Zeit() {
   const [start, setStart] = useState("");
   const [ende, setEnde] = useState("");

@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
-// TODO: Alles
 
 export default function RSS() {
   const SecRes = api.RSS.getHeiseSecurity.useQuery();

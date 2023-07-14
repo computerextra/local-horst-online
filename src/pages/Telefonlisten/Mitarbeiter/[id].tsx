@@ -20,6 +20,7 @@ export default function MitarbeiterEdit() {
   const { push } = useRouter();
   const MitarbeiterRes = api.Mitarbeiter.getOne.useQuery({ id });
   const Update = api.Mitarbeiter.updateMitarbeiter.useMutation();
+  const Löscher = api.Mitarbeiter.delete.useMutation();
   // States of Mitarbeiter
   const [Name, setName] = useState("");
   const [Short, setShort] = useState("");
@@ -83,6 +84,11 @@ export default function MitarbeiterEdit() {
       Azubi: Azubi == undefined ? false : Azubi,
       Geburtstag,
     });
+    await push("/Telefonlisten/Mitarbeiter");
+  };
+
+  const handleDelete = async () => {
+    await Löscher.mutateAsync(id);
     await push("/Telefonlisten/Mitarbeiter");
   };
 
@@ -189,8 +195,11 @@ export default function MitarbeiterEdit() {
               </Button>
             </Col>
             <Col className="d-flex justify-content-center">
-              {/* TODO: Löschen Funktion! */}
-              <Button variant="danger">Löschen</Button>
+              <Button
+                variant="danger"
+                onClick={() => void handleDelete()}>
+                Löschen
+              </Button>
             </Col>
             <Col className="d-flex justify-content-center">
               <Button onClick={() => void push("/Telefonlisten/Mitarbeiter")}>

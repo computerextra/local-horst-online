@@ -186,6 +186,13 @@ export const MitarbeiterRouter = createTRPCRouter({
         },
       });
     }),
+  delete: publicProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
+    return await ctx.prisma.mitarbeiter.delete({
+      where: {
+        id: input,
+      },
+    });
+  }),
 });
 
 function getLine(short: string) {
