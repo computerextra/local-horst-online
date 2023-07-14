@@ -1,18 +1,11 @@
-import { createServerSideHelpers } from "@trpc/react-query/server";
-import type { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import { Button, Container, Form, FormSelect } from "react-bootstrap";
-import superjson from "superjson";
 import LoadingSpinner from "~/Components/LoadingSpinner";
-import { MitarbeiterRouter } from "~/server/api/routers/mitarbeiter";
-import { archive, prisma, sage } from "~/server/db";
 import { api } from "~/utils/api";
 
-export default function Signaturen(
-  _props: InferGetServerSidePropsType<typeof getServerSideProps>
-) {
+export default function Signaturen() {
   const postQuery = api.Mitarbeiter.getAll.useQuery();
   const Downloader = api.Mitarbeiter.getSignatureDownload.useMutation();
   const [showForm, setShowForm] = useState(false);
@@ -129,17 +122,3 @@ export default function Signaturen(
     </>
   );
 }
-
-export const getServerSideProps = async () => {
-  const helpers = createServerSideHelpers({
-    router: MitarbeiterRouter,
-    ctx: { prisma, sage, archive },
-    transformer: superjson,
-  });
-  await helpers.getDailyShoppingList.prefetch();
-  return {
-    props: {
-      trpcState: helpers.dehydrate(),
-    },
-  };
-};
