@@ -24,4 +24,13 @@ export const SageRouter = createTRPCRouter({
       const query = `SELECT * FROM sg_adressen WHERE REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Telefon1, ' ',''),'/',''),'-',''),'+49','0'),'(',''),')',''),',','') LIKE '%${search}%' OR REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Telefon2, ' ',''),'/',''),'-',''),'+49','0'),'(',''),')',''),',','') LIKE '%${search}%' OR REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Mobiltelefon1, ' ',''),'/',''),'-',''),'+49','0'),'(',''),')',''),',','') LIKE '%${search}%' OR REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(Mobiltelefon2, ' ',''),'/',''),'-',''),'+49','0'),'(',''),')',''),',','') LIKE '%${search}%'`;
       return await ctx.sage.$queryRaw<sg_adressen[] | null>(Prisma.raw(query));
     }),
+  getName: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.sage.sg_auf_artikel.findFirst({
+        where: {
+          ARTNR: input,
+        },
+      });
+    }),
 });
