@@ -18,6 +18,15 @@ const config = {
     locales: ["de"],
     defaultLocale: "de",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.heise.de",
+        port: "",
+      },
+    ],
+  },
 };
 
 export default config;
