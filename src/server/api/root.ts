@@ -1,6 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { AnsprechpartnerRouter } from "./routers/Ansprechpartner";
 import { ArchiveRouter } from "./routers/Archiv";
+import { FileRouter } from "./routers/Files";
 import { LieferantenRouter } from "./routers/Lieferanten";
 import { SageRouter } from "./routers/Sage";
 import { MailRouter } from "./routers/mail";
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   Sage: SageRouter,
   Lieferanten: LieferantenRouter,
   Ansprechpartner: AnsprechpartnerRouter,
+  File: FileRouter,
 });
 
 // export type definition of API
