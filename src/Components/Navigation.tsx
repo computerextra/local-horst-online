@@ -101,6 +101,73 @@ export default function Navigation() {
                 Lieferanten
               </NavDropdown.Item>
             </NavDropdown>
+            <NavDropdown title="Service Stuff">
+              <NavDropdown.Item
+                as={Link}
+                className={`${
+                  router.pathname === "/ServiceStuff/Seriennummern"
+                    ? "active"
+                    : ""
+                }`}
+                href="/ServiceStuff/Seriennummern"
+                onClick={expand}>
+                CE SN
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                className={`${
+                  router.pathname === "/ServiceStuff/InfoAnKunde"
+                    ? "active"
+                    : ""
+                }`}
+                href="/ServiceStuff/InfoAnKunde"
+                onClick={expand}>
+                Info an Kunde
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                className={`${
+                  router.pathname === "/ServiceStuff/Warenlieferung"
+                    ? "active"
+                    : ""
+                }`}
+                href="/ServiceStuff/Warenlieferung"
+                onClick={expand}>
+                Warenlieferung
+              </NavDropdown.Item>
+            </NavDropdown>
+            <Link
+              className={`nav-link ${
+                router.pathname === "/Cashback" ? "active" : ""
+              }`}
+              href="/Cashback"
+              onClick={expand}>
+              CB
+            </Link>
+            <Link
+              className={`nav-link ${
+                router.pathname === "/Kabelwand" ? "active" : ""
+              }`}
+              href="/Kabelwand"
+              onClick={expand}>
+              Kabelwand
+            </Link>
+            <Link
+              className={`nav-link ${
+                router.pathname === "/Zeit" ? "active" : ""
+              }`}
+              href="/Zeit"
+              onClick={expand}>
+              Zeit
+            </Link>
+            <Link
+              className={`nav-link ${
+                router.pathname === "/RSS" ? "active" : ""
+              }`}
+              href="/RSS"
+              onClick={expand}>
+              RSS
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
