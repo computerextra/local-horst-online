@@ -53,18 +53,14 @@ export default function MitarbeiterEdit() {
       return;
     }
     const Birthday = Mitarbeiter.Geburtstag.split(".");
-    let month = Birthday[0];
-    let day = Birthday[1];
+    const month = Birthday[1];
+    const day = Birthday[0];
+
     if (month == null || day == null) {
       setGeburtstag("");
       return;
     }
-    if (parseInt(month) <= 9) {
-      month = "0" + month;
-    }
-    if (parseInt(day) <= 9) {
-      day = "0" + day;
-    }
+
     setGeburtstag(year + "-" + month + "-" + day);
   }, [Mitarbeiter]);
 
