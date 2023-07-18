@@ -27,6 +27,13 @@ export default function Navigation() {
           <Nav
             className="me-aut"
             variant="tabs">
+            {/* Startseite */}
+            <Link
+              href="/"
+              className={`nav-link ${router.pathname === "/" ? "active" : ""}`}
+              onClick={expand}>
+              Feedback
+            </Link>
             {/* Einkaufen */}
             <Link
               className={`nav-link ${

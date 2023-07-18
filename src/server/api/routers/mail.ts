@@ -183,4 +183,26 @@ export const MailRouter = createTRPCRouter({
       return "Error:" + Res.response;
     }
   }),
+  sendFeedback: publicProcedure
+    .input(
+      z.object({
+        Sender: z.string(),
+        Nachricht: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const Transporter = nodemailer.createTransport(Config);
+      const Message = {
+        from: "info@computer-extra.de",
+        to: "jk@computer-extra.de",
+        subject: `Neues Feedback`,
+        html: `<h1>Feedback von ${input.Sender}</h1><h3>Nachricht:</h3><p style="white-space: pre-line">${input.Nachricht}</p>`,
+      };
+      const Res = await Transporter.sendMail(Message);
+      if (Res.response.includes("Ok")) {
+        return "Sent";
+      } else {
+        return "Error:" + Res.response;
+      }
+    }),
 });
