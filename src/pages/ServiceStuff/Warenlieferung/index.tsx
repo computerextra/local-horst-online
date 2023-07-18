@@ -4,8 +4,6 @@ import { Button, Container } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
-// TODO: Send Mail
-
 export default function Warenlieferung() {
   const [loading, setLoading] = useState(false);
   const WarenlieferungRes = api.Warenlieferung.getWarenlieferung.useQuery();
