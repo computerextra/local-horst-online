@@ -71,16 +71,21 @@ export default function Einkaufen(
       return;
     }
 
-    await Mailer.mutateAsync({
+    const res = await Mailer.mutateAsync({
       id: Schuldner,
       Schulden,
       username: userName,
     });
-    setTimeout(() => {
-      setVersendet((prev) => [...prev, Schuldner]);
-      setSchulden("");
-      setFehler("");
-    }, 5000);
+    if (res === "Sent") {
+      setFehler("ERFOLG");
+      setTimeout(() => {
+        setVersendet((prev) => [...prev, Schuldner]);
+        setSchulden("");
+        setFehler("");
+      }, 5000);
+    } else {
+      setFehler("Konnte nicht gesendet werden");
+    }
   };
 
   const refreshData = () => {
