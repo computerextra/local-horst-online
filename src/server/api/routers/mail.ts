@@ -81,4 +81,106 @@ export const MailRouter = createTRPCRouter({
         return "Error:" + Res.response;
       }
     }),
+  sendWarenlieferung: publicProcedure.mutation(async ({ ctx }) => {
+    const heute = new Date().toDateString();
+    const morgen = new Date(
+      new Date().setDate(new Date().getDate() + 1)
+    ).toDateString();
+    const Warenlieferung = await ctx.prisma.warenlieferung.findMany({
+      where: {
+        OR: [
+          {
+            Geliefert: {
+              gte: new Date(heute),
+              lt: new Date(morgen),
+            },
+          },
+          {
+            Neu: {
+              gte: new Date(heute),
+              lt: new Date(morgen),
+            },
+          },
+          {
+            Modifiziert: {
+              gte: new Date(heute),
+              lt: new Date(morgen),
+            },
+          },
+        ],
+      },
+    });
+    if (Warenlieferung == null) return "No Data";
+
+    const Neu: typeof Warenlieferung = [];
+    const Alt: typeof Warenlieferung = [];
+    const Preis: typeof Warenlieferung = [];
+    Warenlieferung.forEach((Ware) => {
+      if (Ware.Neu && new Date(Ware.Neu).toDateString() === heute) {
+        Neu.push(Ware);
+      }
+      if (
+        Ware.Geliefert &&
+        new Date(Ware.Geliefert).toDateString() === heute &&
+        Ware.Neu &&
+        new Date(Ware.Neu).toDateString() !== heute
+      ) {
+        Alt.push(Ware);
+      }
+      if (
+        Ware.Modifiziert &&
+        new Date(Ware.Modifiziert).toDateString() === heute &&
+        Ware.Neu &&
+        new Date(Ware.Neu).toDateString() !== heute
+      ) {
+        Preis.push(Ware);
+      }
+    });
+    let HTML_HEUTE = "";
+    let HTML_GELIEFERT = "";
+    let HTML_PREISE = "";
+    if (Neu.length > 0) {
+      HTML_HEUTE = "<h2>Neue Artikel</h2>";
+      Neu.map((item) => {
+        if (item.Artikelnummer != null && item.Artikelname != null) {
+          HTML_HEUTE += `<b>${item.Artikelnummer}</b>: ${item.Artikelname} <br />`;
+        }
+      });
+    }
+    if (Alt.length > 0) {
+      HTML_GELIEFERT = "<hr /><h2>Heute geliefert</h2>";
+      Alt.map((item) => {
+        if (item.Artikelnummer != null && item.Artikelname != null) {
+          HTML_GELIEFERT += `<b>${item.Artikelnummer}</b>: ${item.Artikelname} <br />`;
+        }
+      });
+    }
+    if (Preis.length > 0) {
+      HTML_PREISE = "<hr /><h2>Preisänderungen</h2>";
+      Preis.map((item) => {
+        if (
+          item.Artikelnummer != null &&
+          item.Artikelname != null &&
+          item.AlterPreis != null &&
+          item.NeuerPreis != null
+        ) {
+          HTML_PREISE += `<b>${item.Artikelnummer}</b>: ${item.Artikelname} - Alt: ${item.AlterPreis}€ => Neu: ${item.NeuerPreis}€ <br />`;
+        }
+      });
+    }
+    // Mailer
+    const Transporter = nodemailer.createTransport(Config);
+    const Message = {
+      from: "info@computer-extra.de",
+      to: "compexkg@computer-extra.de",
+      subject: "Warenlieferung vom " + new Date().toLocaleDateString(),
+      html: `<h1>Warenlieferung</h1>${HTML_HEUTE} ${HTML_GELIEFERT} ${HTML_PREISE}`,
+    };
+    const Res = await Transporter.sendMail(Message);
+    if (Res.response.includes("Ok")) {
+      return "Sent";
+    } else {
+      return "Error:" + Res.response;
+    }
+  }),
 });
