@@ -11,8 +11,6 @@ import {
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
-// TODO: Formular für Feedback
-
 export default function Home() {
   const Mailer = api.Mail.sendFeedback.useMutation();
   const MitarbeiterRes = api.Mitarbeiter.getAll.useQuery();
