@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import type { sg_adressen } from "../../../../prisma/generated/Sage";
+import type {
+  sg_adressen,
+  sg_auf_artikel,
+} from "../../../../prisma/generated/Sage";
 import { Prisma } from "../../../../prisma/generated/Sage";
 
 export const SageRouter = createTRPCRouter({
@@ -32,5 +35,13 @@ export const SageRouter = createTRPCRouter({
           ARTNR: input,
         },
       });
+    }),
+  getBestand: publicProcedure
+    .input(z.array(z.string()))
+    .query(async ({ ctx, input }) => {
+      const sql = `SELECT * FROM sg_auf_artikel WHERE Artnr IN (${input
+        .map((v) => `'${v}'`)
+        .join(",")})`;
+      return await ctx.sage.$queryRaw<sg_auf_artikel[] | null>(Prisma.raw(sql));
     }),
 });

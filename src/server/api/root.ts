@@ -8,6 +8,7 @@ import { SageRouter } from "./routers/Sage";
 import { WarenlieferungRouter } from "./routers/Warenlieferung";
 import { MailRouter } from "./routers/mail";
 import { MitarbeiterRouter } from "./routers/mitarbeiter";
+import { KabelwandRouter } from "./routers/Kabelwand";
 
 /**
  * This is the primary router for your server.
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   File: FileRouter,
   RSS: RSSRouter,
   Warenlieferung: WarenlieferungRouter,
+  Kabelwand: KabelwandRouter,
 });
 
 // export type definition of API
