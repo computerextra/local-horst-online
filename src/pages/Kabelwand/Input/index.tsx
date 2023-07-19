@@ -28,6 +28,11 @@ export default function Inputs() {
           Zurück
         </Link>
         <h1 className="text center">Alle Inputs</h1>
+        <Link
+          className="btn btn-primary mt-2"
+          href="/Kabelwand/Input/new">
+          Neu
+        </Link>
         <Table
           striped
           className="mt-5">

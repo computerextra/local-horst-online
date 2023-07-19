@@ -16,7 +16,7 @@ import CableTable from "~/Components/CableTable";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
-// TODO: Alles
+// TODO: Filter gehen nicht!
 
 export type Kabelwand = Kabel & {
   Fach: Fach;
@@ -55,7 +55,7 @@ export default function Kabelwand() {
       Kabel.forEach((x) => {
         Artikelnummern.push(x.Artikelnummer);
       });
-      if (Artikelnummern.length > 1) {
+      if (Artikelnummern.length >= 1) {
         const SageInfos = await SageInfosGetter.mutateAsync(Artikelnummern);
         const RichtigeKabel: Kabelwand[] = [];
         const KabelwandKabel: Kabelwand[] = [];

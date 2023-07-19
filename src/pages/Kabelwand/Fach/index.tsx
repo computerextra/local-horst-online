@@ -28,6 +28,11 @@ export default function Faecher() {
           Zurück
         </Link>
         <h1 className="text center">Alle Fächer</h1>
+        <Link
+          className="btn btn-primary mt-2"
+          href="/Kabelwand/Fach/new">
+          Neu
+        </Link>
         <Table
           striped
           className="mt-5">

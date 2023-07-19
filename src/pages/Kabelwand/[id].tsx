@@ -20,6 +20,7 @@ export default function KabelBearbeiten() {
   const { push } = useRouter();
   const KabelUpdater = api.Kabelwand.updateKabel.useMutation();
   const Namenfinder = api.Sage.getName.useMutation();
+  const Löscher = api.Kabelwand.deleteKabel.useMutation();
 
   const KabelRes = api.Kabelwand.getOneKabel.useQuery(id);
   const Kabel = KabelRes.data;
@@ -91,6 +92,11 @@ export default function KabelBearbeiten() {
       reiheId: Reihe,
       regalId: Regal,
     });
+    await push("/Kabelwand");
+  };
+
+  const Delete = async () => {
+    await Löscher.mutateAsync(id);
     await push("/Kabelwand");
   };
 
@@ -253,6 +259,12 @@ export default function KabelBearbeiten() {
             type="submit"
             onClick={() => void UpdateCable()}>
             Speichern
+          </Button>
+          <Button
+            variant="danger"
+            className="ms-5"
+            onClick={() => void Delete()}>
+            Löschen
           </Button>
         </Form>
       </Container>

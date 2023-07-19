@@ -28,6 +28,11 @@ export default function Laengen() {
           Zurück
         </Link>
         <h1 className="text center">Alle Längen</h1>
+        <Link
+          className="btn btn-primary mt-2"
+          href="/Kabelwand/Laenge/new">
+          Neu
+        </Link>
         <Table
           striped
           className="mt-5">

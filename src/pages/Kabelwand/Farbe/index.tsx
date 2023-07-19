@@ -28,6 +28,11 @@ export default function Farben() {
           Zurück
         </Link>
         <h1 className="text center">Alle Farben</h1>
+        <Link
+          className="btn btn-primary mt-2"
+          href="/Kabelwand/Farbe/new">
+          Neu
+        </Link>
         <Table
           striped
           className="mt-5">

@@ -28,6 +28,11 @@ export default function Reihen() {
           Zurück
         </Link>
         <h1 className="text center">Alle Reihen</h1>
+        <Link
+          className="btn btn-primary mt-2"
+          href="/Kabelwand/Reihe/new">
+          Neu
+        </Link>
         <Table
           striped
           className="mt-5">

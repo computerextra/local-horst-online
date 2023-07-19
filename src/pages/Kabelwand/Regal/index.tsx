@@ -28,6 +28,11 @@ export default function Regale() {
           Zurück
         </Link>
         <h1 className="text center">Alle Regale</h1>
+        <Link
+          className="btn btn-primary mt-2"
+          href="/Kabelwand/Regal/new">
+          Neu
+        </Link>
         <Table
           striped
           className="mt-5">
