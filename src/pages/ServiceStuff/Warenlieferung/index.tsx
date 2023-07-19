@@ -12,6 +12,7 @@ export default function Warenlieferung() {
   const Warenlieferung = WarenlieferungRes.data;
   const Generator = api.Warenlieferung.generate.useMutation();
   const Mailer = api.Mail.sendWarenlieferung.useMutation();
+  const ArtikelSucher = api.Sage.getBestand.useMutation();
 
   const [notAllowed, setNotAllowed] = useState(true);
 
@@ -37,43 +38,66 @@ export default function Warenlieferung() {
   };
 
   useEffect(() => {
-    if (Warenlieferung == null) return;
-    const Heute = new Date().toDateString();
-    const Neu: typeof Warenlieferung = [];
-    const Alt: typeof Warenlieferung = [];
-    const Preis: typeof Warenlieferung = [];
+    async function x() {
+      if (Warenlieferung == null) return;
+      const Heute = new Date().toDateString();
+      const Neu: typeof Warenlieferung = [];
+      const Alt: typeof Warenlieferung = [];
+      const Preis: typeof Warenlieferung = [];
 
-    if (Warenlieferung.length < 1) {
-      setNotAllowed(true);
-    } else {
-      setNotAllowed(false);
+      if (Warenlieferung.length < 1) {
+        setNotAllowed(true);
+      } else {
+        setNotAllowed(false);
+      }
+
+      Warenlieferung.forEach((Ware) => {
+        if (Ware.Neu && new Date(Ware.Neu).toDateString() === Heute) {
+          Neu.push(Ware);
+        }
+        if (
+          Ware.Geliefert &&
+          new Date(Ware.Geliefert).toDateString() === Heute &&
+          Ware.Neu &&
+          new Date(Ware.Neu).toDateString() !== Heute
+        ) {
+          Alt.push(Ware);
+        }
+        if (
+          Ware.Modifiziert &&
+          new Date(Ware.Modifiziert).toDateString() === Heute &&
+          Ware.Neu &&
+          new Date(Ware.Neu).toDateString() !== Heute &&
+          Ware.AlterPreis != Ware.NeuerPreis
+        ) {
+          Preis.push(Ware);
+        }
+      });
+      // DONE: Nimm "Alt" und zieh alle Bestände / Verfügbar aus Sage anhand von Artikelnummer. Wenn Verfügbar < 1, dann aus Array löschen
+      // TODO: Testen!
+      const Artikelnummern: string[] = [];
+      Alt.forEach((x) => {
+        if (x.Artikelnummer != null) {
+          Artikelnummern.push(x.Artikelnummer);
+        }
+      });
+      const SageArtikel = await ArtikelSucher.mutateAsync(Artikelnummern);
+      if (SageArtikel != null) {
+        SageArtikel.forEach((SA) => {
+          const idx = Alt.findIndex((x) => x.Artikelnummer === SA.ARTNR);
+          if (idx > 0) {
+            if (SA.VERFUEGBAR && SA.VERFUEGBAR < 1) {
+              Alt.splice(idx, 1);
+            }
+          }
+        });
+      }
+
+      setNeueArtikel(Neu);
+      setGelieferteArtikel(Alt);
+      setNeuePreise(Preis);
     }
-
-    Warenlieferung.forEach((Ware) => {
-      if (Ware.Neu && new Date(Ware.Neu).toDateString() === Heute) {
-        Neu.push(Ware);
-      }
-      if (
-        Ware.Geliefert &&
-        new Date(Ware.Geliefert).toDateString() === Heute &&
-        Ware.Neu &&
-        new Date(Ware.Neu).toDateString() !== Heute
-      ) {
-        Alt.push(Ware);
-      }
-      if (
-        Ware.Modifiziert &&
-        new Date(Ware.Modifiziert).toDateString() === Heute &&
-        Ware.Neu &&
-        new Date(Ware.Neu).toDateString() !== Heute &&
-        Ware.AlterPreis != Ware.NeuerPreis
-      ) {
-        Preis.push(Ware);
-      }
-    });
-    setNeueArtikel(Neu);
-    setGelieferteArtikel(Alt);
-    setNeuePreise(Preis);
+    void x();
   }, [Warenlieferung]);
 
   if (WarenlieferungRes.status !== "success") return <LoadingSpinner />;
