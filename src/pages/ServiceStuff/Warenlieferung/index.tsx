@@ -4,6 +4,8 @@ import { Button, Container } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
+// TODO: Neue Artikel sind bugy
+
 export default function Warenlieferung() {
   const [loading, setLoading] = useState(false);
   const WarenlieferungRes = api.Warenlieferung.getWarenlieferung.useQuery();
@@ -63,7 +65,8 @@ export default function Warenlieferung() {
         Ware.Modifiziert &&
         new Date(Ware.Modifiziert).toDateString() === Heute &&
         Ware.Neu &&
-        new Date(Ware.Neu).toDateString() !== Heute
+        new Date(Ware.Neu).toDateString() !== Heute &&
+        Ware.AlterPreis != Ware.NeuerPreis
       ) {
         Preis.push(Ware);
       }
