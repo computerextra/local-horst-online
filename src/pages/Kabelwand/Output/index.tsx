@@ -66,7 +66,6 @@ export default function Outputs() {
           </tbody>
         </Table>
       </Container>
-      ;
     </>
   );
 }

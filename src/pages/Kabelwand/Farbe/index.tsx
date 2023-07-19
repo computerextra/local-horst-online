@@ -66,7 +66,6 @@ export default function Farben() {
           </tbody>
         </Table>
       </Container>
-      ;
     </>
   );
 }

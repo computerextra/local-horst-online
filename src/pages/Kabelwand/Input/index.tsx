@@ -66,7 +66,6 @@ export default function Inputs() {
           </tbody>
         </Table>
       </Container>
-      ;
     </>
   );
 }

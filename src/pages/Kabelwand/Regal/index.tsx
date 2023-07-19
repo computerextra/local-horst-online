@@ -66,7 +66,6 @@ export default function Regale() {
           </tbody>
         </Table>
       </Container>
-      ;
     </>
   );
 }

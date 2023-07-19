@@ -66,7 +66,6 @@ export default function Faecher() {
           </tbody>
         </Table>
       </Container>
-      ;
     </>
   );
 }
