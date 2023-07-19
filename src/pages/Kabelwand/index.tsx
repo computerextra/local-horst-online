@@ -16,7 +16,7 @@ import CableTable from "~/Components/CableTable";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
-// TODO: Filter gehen nicht!
+// TODO: Filter gehen nicht! Geht erst mit ein paar Kabeln
 
 export type Kabelwand = Kabel & {
   Fach: Fach;

@@ -12,8 +12,6 @@ import {
 import CableNav from "~/Components/CableNavs";
 import { api } from "~/utils/api";
 
-// TODO: ALLES
-
 export default function NeuesRegal() {
   const Anleger = api.Kabelwand.createShelf.useMutation();
   const { push } = useRouter();

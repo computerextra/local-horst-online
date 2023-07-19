@@ -12,8 +12,6 @@ import {
 import CableNav from "~/Components/CableNavs";
 import { api } from "~/utils/api";
 
-// TODO: ALLES
-
 export default function NeueLaenge() {
   const Anleger = api.Kabelwand.createLength.useMutation();
   const { push } = useRouter();

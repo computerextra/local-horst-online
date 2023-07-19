@@ -12,8 +12,6 @@ import {
 import CableNav from "~/Components/CableNavs";
 import { api } from "~/utils/api";
 
-// TODO: ALLES
-
 export default function NeuerOutput() {
   const Anleger = api.Kabelwand.createOutput.useMutation();
   const { push } = useRouter();

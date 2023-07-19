@@ -12,8 +12,6 @@ import {
 import CableNav from "~/Components/CableNavs";
 import { api } from "~/utils/api";
 
-// TODO: ALLES
-
 export default function NeueFarbe() {
   const Anleger = api.Kabelwand.createColor.useMutation();
   const { push } = useRouter();

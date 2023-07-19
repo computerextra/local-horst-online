@@ -13,8 +13,6 @@ import CableNav from "~/Components/CableNavs";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
-// TODO: ALLES
-
 export default function ReiheBearbeiten() {
   const Updater = api.Kabelwand.updateRow.useMutation();
   const id = useRouter().query.id as string;

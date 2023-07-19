@@ -13,8 +13,6 @@ import CableNav from "~/Components/CableNavs";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
-// TODO: ALLES
-
 export default function OutputBearbeiten() {
   const Updater = api.Kabelwand.updateOutput.useMutation();
   const id = useRouter().query.id as string;

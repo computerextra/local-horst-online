@@ -12,8 +12,6 @@ import {
 import CableNav from "~/Components/CableNavs";
 import { api } from "~/utils/api";
 
-// TODO: ALLES
-
 export default function NeueReihe() {
   const Anleger = api.Kabelwand.createRow.useMutation();
   const { push } = useRouter();
