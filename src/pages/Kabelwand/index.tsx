@@ -9,14 +9,16 @@ import type {
   Reihe,
 } from "@prisma/client";
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button, Col, Container, FormCheck, Row } from "react-bootstrap";
+import CableTable from "~/Components/CableTable";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
 // TODO: Alles
 
-type Kabelwand = Kabel & {
+export type Kabelwand = Kabel & {
   Fach: Fach;
   Farbe: Farbe;
   Input: Input;
@@ -31,6 +33,7 @@ type Kabelwand = Kabel & {
 
 export default function Kabelwand() {
   const KabelRes = api.Kabelwand.getKabelwand.useQuery();
+  const SageInfosGetter = api.Sage.getBestand.useMutation();
   const Kabel = KabelRes.data;
 
   const [Auswahl, setAuswahl] = useState<"all" | "Kabel" | "Kiste" | "Telefon">(
@@ -44,71 +47,75 @@ export default function Kabelwand() {
   const [Admin, setAdmin] = useState(false);
 
   useEffect(() => {
-    if (Kabel == null) return;
+    async function x() {
+      if (Kabel == null) return;
 
-    // Ziehe Bestände aus Sage:
-    const Artikelnummern: string[] = [];
-    Kabel.forEach((x) => {
-      Artikelnummern.push(x.Artikelnummer);
-    });
-    const SageInfosRes = api.Sage.getBestand.useQuery(Artikelnummern);
-    const SageInfos = SageInfosRes.data;
-    const RichtigeKabel: Kabelwand[] = [];
-    const KabelwandKabel: Kabelwand[] = [];
-    const KistenKabel: Kabelwand[] = [];
-    const TelefonKabel: Kabelwand[] = [];
-    if (SageInfos != null) {
-      if (SageInfos.length >= 1) {
-        Kabel.forEach((Kab) => {
-          const art = SageInfos.find((x) => x.ARTNR === Kab.Artikelnummer);
-          if (art != undefined) {
-            RichtigeKabel.push({
-              ...Kab,
-              Bestand: art.BESTAND,
-              Verfügbar: art.VERFUEGBAR,
+      // Ziehe Bestände aus Sage:
+      const Artikelnummern: string[] = [];
+      Kabel.forEach((x) => {
+        Artikelnummern.push(x.Artikelnummer);
+      });
+      if (Artikelnummern.length > 1) {
+        const SageInfos = await SageInfosGetter.mutateAsync(Artikelnummern);
+        const RichtigeKabel: Kabelwand[] = [];
+        const KabelwandKabel: Kabelwand[] = [];
+        const KistenKabel: Kabelwand[] = [];
+        const TelefonKabel: Kabelwand[] = [];
+        if (SageInfos != null) {
+          if (SageInfos.length >= 1) {
+            Kabel.forEach((Kab) => {
+              const art = SageInfos.find((x) => x.ARTNR === Kab.Artikelnummer);
+              if (art != undefined) {
+                RichtigeKabel.push({
+                  ...Kab,
+                  Bestand: art.BESTAND,
+                  Verfügbar: art.VERFUEGBAR,
+                });
+
+                if (
+                  Kab.Regal.Name.startsWith("Regal") &&
+                  !Kab.Regal.Name.startsWith("Regal T")
+                ) {
+                  KabelwandKabel.push({
+                    ...Kab,
+                    Bestand: art.BESTAND,
+                    Verfügbar: art.VERFUEGBAR,
+                  });
+                }
+                if (Kab.Regal.Name.startsWith("Kiste"))
+                  KistenKabel.push({
+                    ...Kab,
+                    Bestand: art.BESTAND,
+                    Verfügbar: art.VERFUEGBAR,
+                  });
+                if (Kab.Regal.Name.startsWith("Regal T"))
+                  TelefonKabel.push({
+                    ...Kab,
+                    Bestand: art.BESTAND,
+                    Verfügbar: art.VERFUEGBAR,
+                  });
+              } else {
+                RichtigeKabel.push({ ...Kab });
+                if (
+                  Kab.Regal.Name.startsWith("Regal") &&
+                  !Kab.Regal.Name.startsWith("Regal T")
+                )
+                  KabelwandKabel.push({ ...Kab });
+                if (Kab.Regal.Name.startsWith("Kiste"))
+                  KistenKabel.push({ ...Kab });
+                if (Kab.Regal.Name.startsWith("Regal T"))
+                  TelefonKabel.push({ ...Kab });
+              }
             });
-
-            if (
-              Kab.Regal.Name.startsWith("Regal") &&
-              !Kab.Regal.Name.startsWith("Regal T")
-            ) {
-              KabelwandKabel.push({
-                ...Kab,
-                Bestand: art.BESTAND,
-                Verfügbar: art.VERFUEGBAR,
-              });
-            }
-            if (Kab.Regal.Name.startsWith("Kiste"))
-              KistenKabel.push({
-                ...Kab,
-                Bestand: art.BESTAND,
-                Verfügbar: art.VERFUEGBAR,
-              });
-            if (Kab.Regal.Name.startsWith("Regal T"))
-              TelefonKabel.push({
-                ...Kab,
-                Bestand: art.BESTAND,
-                Verfügbar: art.VERFUEGBAR,
-              });
-          } else {
-            RichtigeKabel.push({ ...Kab });
-            if (
-              Kab.Regal.Name.startsWith("Regal") &&
-              !Kab.Regal.Name.startsWith("Regal T")
-            )
-              KabelwandKabel.push({ ...Kab });
-            if (Kab.Regal.Name.startsWith("Kiste"))
-              KistenKabel.push({ ...Kab });
-            if (Kab.Regal.Name.startsWith("Regal T"))
-              TelefonKabel.push({ ...Kab });
           }
-        });
+        }
+        setAlleKabel(RichtigeKabel);
+        setKabelwandKabel(KabelwandKabel);
+        setKistenKabel(KistenKabel);
+        setTelefonKabel(TelefonKabel);
       }
     }
-    setAlleKabel(RichtigeKabel);
-    setKabelwandKabel(KabelwandKabel);
-    setKistenKabel(KistenKabel);
-    setTelefonKabel(TelefonKabel);
+    void x();
   }, [Kabel]);
 
   if (KabelRes.isLoading) return <LoadingSpinner />;
@@ -214,37 +221,36 @@ export default function Kabelwand() {
             <Col>
               <Row className="mb-3">
                 <Col>
-                  {/* <Link
-                  to={Urls.Kabelwand.NeuesKabel}
-                  className="btn btn-primary"
-                >
-                  Neues Kabel
-                </Link> */}
+                  <Link
+                    href="/Kabelwand/new"
+                    className="btn btn-primary">
+                    Neues Kabel
+                  </Link>
                 </Col>
               </Row>
             </Col>
           )}
         </Row>
         {Auswahl === "all" && (
-          <KabelTable
+          <CableTable
             Kabel={AlleKabel}
             Admin={Admin}
           />
         )}
         {Auswahl === "Kabel" && (
-          <KabelTable
+          <CableTable
             Kabel={KabelwandKabel}
             Admin={Admin}
           />
         )}
         {Auswahl === "Kiste" && (
-          <KabelTable
+          <CableTable
             Kabel={KistenKabel}
             Admin={Admin}
           />
         )}
         {Auswahl === "Telefon" && (
-          <KabelTable
+          <CableTable
             Kabel={TelefonKabel}
             Admin={Admin}
           />

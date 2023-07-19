@@ -38,7 +38,7 @@ export const SageRouter = createTRPCRouter({
     }),
   getBestand: publicProcedure
     .input(z.array(z.string()))
-    .query(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const sql = `SELECT * FROM sg_auf_artikel WHERE Artnr IN (${input
         .map((v) => `'${v}'`)
         .join(",")})`;
