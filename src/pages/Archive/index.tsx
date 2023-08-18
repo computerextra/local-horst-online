@@ -68,7 +68,8 @@ export default function Archiv() {
             <Button
               type="submit"
               variant="outline-success"
-              onClick={() => void handleSearch()}>
+              onClick={() => void handleSearch()}
+            >
               Suchen
             </Button>
           </InputGroup>
@@ -83,7 +84,8 @@ export default function Archiv() {
               <li key={res.id}>
                 <span
                   onClick={() => void handleDownload(res.id)}
-                  className="text-decoration-underline">
+                  className="text-decoration-underline"
+                >
                   {res.title}
                 </span>
               </li>
