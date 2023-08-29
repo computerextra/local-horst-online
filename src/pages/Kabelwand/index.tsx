@@ -266,6 +266,9 @@ export default function Kabelwand() {
                     }
                   }}
                 />
+                <FormCheck.Label htmlFor="Restposten">
+                  Restpostenkisten im Lager
+                </FormCheck.Label>
               </FormCheck>
             </fieldset>
           </Col>
