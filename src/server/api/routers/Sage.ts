@@ -5,8 +5,23 @@ import type {
   sg_auf_artikel,
 } from "../../../../prisma/generated/Sage";
 import { Prisma } from "../../../../prisma/generated/Sage";
+import { RestpostenKiste1, RestpostenKiste2 } from "~/server/data/Restposten";
 
 export const SageRouter = createTRPCRouter({
+  getRestpostenKiste1: publicProcedure.query(async ({ ctx }) => {
+    const Artikelnummern = RestpostenKiste1;
+    const sql = `SELECT * FROM sg_auf_artikel WHERE Artnr IN (${Artikelnummern.map(
+      (v) => `'${v}'`
+    ).join(",")})`;
+    return await ctx.sage.$queryRaw<sg_auf_artikel[] | null>(Prisma.raw(sql));
+  }),
+  getRestpostenKiste2: publicProcedure.query(async ({ ctx }) => {
+    const Artikelnummern = RestpostenKiste2;
+    const sql = `SELECT * FROM sg_auf_artikel WHERE Artnr IN (${Artikelnummern.map(
+      (v) => `'${v}'`
+    ).join(",")})`;
+    return await ctx.sage.$queryRaw<sg_auf_artikel[] | null>(Prisma.raw(sql));
+  }),
   search: publicProcedure
     .input(z.object({ searchTerm: z.string() }))
     .mutation(async ({ ctx, input }) => {

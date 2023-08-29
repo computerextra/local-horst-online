@@ -11,7 +11,7 @@ import type {
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button, Col, Container, FormCheck, Row } from "react-bootstrap";
+import { Button, Col, Container, FormCheck, Row, Table } from "react-bootstrap";
 import CableTable from "~/Components/CableTable";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
@@ -34,15 +34,27 @@ export type Kabelwand = Kabel & {
 export default function Kabelwand() {
   const KabelRes = api.Kabelwand.getKabelwand.useQuery();
   const SageInfosGetter = api.Sage.getBestand.useMutation();
+  const RestpostenKiste1Res = api.Sage.getRestpostenKiste1.useQuery();
+  const RestpostenKiste2Res = api.Sage.getRestpostenKiste2.useQuery();
   const Kabel = KabelRes.data;
+  const RestpostenKiste1 = RestpostenKiste1Res.data;
+  const RestpostenKiste2 = RestpostenKiste2Res.data;
 
-  const [Auswahl, setAuswahl] = useState<"all" | "Kabel" | "Kiste" | "Telefon">(
-    "all"
-  );
+  const [Auswahl, setAuswahl] = useState<
+    "all" | "Kabel" | "Kiste" | "Telefon" | "Restposten"
+  >("all");
   const [AlleKabel, setAlleKabel] = useState<Kabelwand[]>([]);
   const [KabelwandKabel, setKabelwandKabel] = useState<Kabelwand[]>([]);
   const [KistenKabel, setKistenKabel] = useState<Kabelwand[]>([]);
   const [TelefonKabel, setTelefonKabel] = useState<Kabelwand[]>([]);
+  const [Restposten, setRestposten] = useState<
+    {
+      Artikelnummer: string;
+      Name: string;
+      Bestand: number | null;
+      Verfügbar: number | null;
+    }[]
+  >([]);
 
   const [Admin, setAdmin] = useState(false);
 
@@ -114,6 +126,41 @@ export default function Kabelwand() {
         setKistenKabel(KistenKabel);
         setTelefonKabel(TelefonKabel);
       }
+
+      if (RestpostenKiste1 != null) {
+        const tmp: {
+          Artikelnummer: string;
+          Name: string;
+          Bestand: number | null;
+          Verfügbar: number | null;
+        }[] = [];
+        RestpostenKiste1.forEach((x) => {
+          tmp.push({
+            Artikelnummer: x.ARTNR || "",
+            Name: x.SUCHBEGRIFF || "",
+            Bestand: x.BESTAND,
+            Verfügbar: x.VERFUEGBAR,
+          });
+        });
+        setRestposten((prev) => [...prev, ...tmp]);
+      }
+      if (RestpostenKiste2 != null) {
+        const tmp: {
+          Artikelnummer: string;
+          Name: string;
+          Bestand: number | null;
+          Verfügbar: number | null;
+        }[] = [];
+        RestpostenKiste2.forEach((x) => {
+          tmp.push({
+            Artikelnummer: x.ARTNR || "",
+            Name: x.SUCHBEGRIFF || "",
+            Bestand: x.BESTAND,
+            Verfügbar: x.VERFUEGBAR,
+          });
+        });
+        setRestposten((prev) => [...prev, ...tmp]);
+      }
     }
     void x();
   }, [Kabel]);
@@ -134,12 +181,8 @@ export default function Kabelwand() {
         <Button onClick={toggleAdmin}>Admin</Button>
         <Row>
           <Col>
-            <fieldset
-              id="Auswahl"
-              className="mt-5">
-              <FormCheck
-                className="form-switch"
-                name="Auswahl">
+            <fieldset id="Auswahl" className="mt-5">
+              <FormCheck className="form-switch" name="Auswahl">
                 <FormCheck.Input
                   role="switch"
                   name="Auswahl"
@@ -155,9 +198,7 @@ export default function Kabelwand() {
                 />
                 <FormCheck.Label htmlFor="all">Alle</FormCheck.Label>
               </FormCheck>
-              <FormCheck
-                className="form-switch"
-                name="Auswahl">
+              <FormCheck className="form-switch" name="Auswahl">
                 <FormCheck.Input
                   role="switch"
                   name="Auswahl"
@@ -175,9 +216,7 @@ export default function Kabelwand() {
                   Große Kabelwand
                 </FormCheck.Label>
               </FormCheck>
-              <FormCheck
-                className="form-switch"
-                name="Auswahl">
+              <FormCheck className="form-switch" name="Auswahl">
                 <FormCheck.Input
                   role="switch"
                   name="Auswahl"
@@ -195,9 +234,7 @@ export default function Kabelwand() {
                   Kisten unter der Kasse und im Lager
                 </FormCheck.Label>
               </FormCheck>
-              <FormCheck
-                className="form-switch"
-                name="Auswahl">
+              <FormCheck className="form-switch" name="Auswahl">
                 <FormCheck.Input
                   role="switch"
                   name="Auswahl"
@@ -215,15 +252,28 @@ export default function Kabelwand() {
                   Kleine Kabelwand für Telefonkabel
                 </FormCheck.Label>
               </FormCheck>
+              <FormCheck className="form-switch" name="Auswahl">
+                <FormCheck.Input
+                  role="switch"
+                  name="Auswahl"
+                  type="radio"
+                  id="Restposten"
+                  value="Restposten"
+                  defaultChecked={Auswahl == "Restposten" ? true : false}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setAuswahl("Restposten");
+                    }
+                  }}
+                />
+              </FormCheck>
             </fieldset>
           </Col>
           {Admin && (
             <Col>
               <Row className="mb-3">
                 <Col>
-                  <Link
-                    href="/Kabelwand/new"
-                    className="btn btn-primary">
+                  <Link href="/Kabelwand/new" className="btn btn-primary">
                     Neues Kabel
                   </Link>
                 </Col>
@@ -231,29 +281,41 @@ export default function Kabelwand() {
             </Col>
           )}
         </Row>
-        {Auswahl === "all" && (
-          <CableTable
-            Kabel={AlleKabel}
-            Admin={Admin}
-          />
-        )}
+        {Auswahl === "all" && <CableTable Kabel={AlleKabel} Admin={Admin} />}
         {Auswahl === "Kabel" && (
-          <CableTable
-            Kabel={KabelwandKabel}
-            Admin={Admin}
-          />
+          <CableTable Kabel={KabelwandKabel} Admin={Admin} />
         )}
         {Auswahl === "Kiste" && (
-          <CableTable
-            Kabel={KistenKabel}
-            Admin={Admin}
-          />
+          <CableTable Kabel={KistenKabel} Admin={Admin} />
         )}
         {Auswahl === "Telefon" && (
-          <CableTable
-            Kabel={TelefonKabel}
-            Admin={Admin}
-          />
+          <CableTable Kabel={TelefonKabel} Admin={Admin} />
+        )}
+        {Auswahl === "Restposten" && (
+          <Table striped>
+            <thead>
+              <tr>
+                <th>Art. Nr.</th>
+                <th>Artikelname</th>
+                <th>
+                  Bestand <br />
+                </th>
+                <th>
+                  Verfügbar <br />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Restposten.map((Kabel, idx) => (
+                <tr key={idx}>
+                  <td>{Kabel.Artikelnummer}</td>
+                  <td>{Kabel.Name}</td>
+                  <td>{Kabel.Bestand}</td>
+                  <td>{Kabel.Verfügbar}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         )}
       </Container>
     </>
