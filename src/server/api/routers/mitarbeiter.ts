@@ -414,6 +414,28 @@ function getLine(short: string) {
         "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Vladyslav Hapan (Vladyslav.Hapan@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
       break;
     }
+    case "EG": {
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Eric Guthoff (Eric.Guthoff@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Eric Guthoff (Eric.Guthoff@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Eric Guthoff (Eric.Guthoff@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Eric Guthoff (Eric.Guthoff@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      break;
+    }
+    case "PC": {
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Philip Cander (Philip.Cander@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Philip Cander (Philip.Cander@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Philip Cander (Philip.Cander@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Philip Cander (Philip.Cander@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      break;
+    }
   }
   return line;
 }
