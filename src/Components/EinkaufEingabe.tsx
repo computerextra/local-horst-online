@@ -105,7 +105,6 @@ export default function EinkaufEingabe({
     if (pond1) {
       const files = pond1.getFiles();
       files.forEach((file) => {
-        // @ts-expect-error Methode ist da, wird aber nicht erkannt.
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         Bild1 = file.getFileEncodeBase64String();
         Bild1Type = file.fileType;
@@ -115,7 +114,6 @@ export default function EinkaufEingabe({
     if (pond2) {
       const files = pond2.getFiles();
       files.forEach((file) => {
-        // @ts-expect-error Methode ist da, wird aber nicht erkannt.
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         Bild2 = file.getFileEncodeBase64String();
         Bild2Type = file.fileType;
@@ -125,7 +123,6 @@ export default function EinkaufEingabe({
     if (pond3) {
       const files = pond3.getFiles();
       files.forEach((file) => {
-        // @ts-expect-error Methode ist da, wird aber nicht erkannt.
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         Bild3 = file.getFileEncodeBase64String();
         Bild3Type = file.fileType;
