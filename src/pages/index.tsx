@@ -94,7 +94,7 @@ export default function Home() {
           </FloatingLabel>
           <FloatingLabel
             className="mb-3"
-            label="Einkauf">
+            label="Feedback">
             <FormControl
               as="textarea"
               placeholder="Nachricht"
