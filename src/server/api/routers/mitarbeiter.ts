@@ -341,6 +341,14 @@ function getLine(short: string) {
         "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Service@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
       line +=
         "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Service@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Info@computer-extra.com)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Info@computer-extra.com).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Info@computer-extra.com).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      line +=
+        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Info@computer-extra.com).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
       break;
     }
     case "MS": {
