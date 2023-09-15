@@ -164,7 +164,7 @@ export const MailRouter = createTRPCRouter({
           item.AlterPreis != null &&
           item.NeuerPreis != null
         ) {
-          HTML_PREISE += `<b>${item.Artikelnummer}</b>: ${item.Artikelname} - Alt: ${item.AlterPreis}€ => Neu: ${item.NeuerPreis}€ <br />`;
+          HTML_PREISE += `<b>${item.Artikelnummer}</b>: ${item.Artikelname} - Alt: ${item.AlterPreis}0€ => Neu: ${item.NeuerPreis}0€ <br />`;
         }
       });
     }
@@ -172,7 +172,7 @@ export const MailRouter = createTRPCRouter({
     const Transporter = nodemailer.createTransport(Config);
     const Message = {
       from: "info@computer-extra.de",
-      to: "compexkg@computer-extra.de",
+      to: "service@computer-extra.de",
       subject: "Warenlieferung vom " + new Date().toLocaleDateString(),
       html: `<h1>Warenlieferung</h1>${HTML_HEUTE} ${HTML_GELIEFERT} ${HTML_PREISE}`,
     };

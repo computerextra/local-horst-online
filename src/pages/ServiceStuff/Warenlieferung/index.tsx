@@ -4,8 +4,6 @@ import { Button, Container } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
-// TODO: Neue Artikel sind bugy
-
 export default function Warenlieferung() {
   const [loading, setLoading] = useState(false);
   const WarenlieferungRes = api.Warenlieferung.getWarenlieferung.useQuery();
@@ -74,7 +72,6 @@ export default function Warenlieferung() {
         }
       });
       // DONE: Nimm "Alt" und zieh alle Bestände / Verfügbar aus Sage anhand von Artikelnummer. Wenn Verfügbar < 1, dann aus Array löschen
-      // TODO: Testen!
       const Artikelnummern: string[] = [];
       Alt.forEach((x) => {
         if (x.Artikelnummer != null) {
@@ -166,7 +163,7 @@ export default function Warenlieferung() {
                   {NeuePreise.map((i) => (
                     <li key={i.id}>
                       <b>{i.Artikelnummer}</b>: {i.Artikelname} - Alt:{" "}
-                      {i.AlterPreis}€ ={">"} Neu: {i.NeuerPreis}€
+                      {i.AlterPreis}0€ ={">"} Neu: {i.NeuerPreis}0€
                     </li>
                   ))}
                 </ul>
