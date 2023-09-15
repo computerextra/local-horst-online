@@ -164,7 +164,8 @@ export const MailRouter = createTRPCRouter({
           item.AlterPreis != null &&
           item.NeuerPreis != null
         ) {
-          HTML_PREISE += `<b>${item.Artikelnummer}</b>: ${item.Artikelname} - Alt: ${item.AlterPreis}0€ => Neu: ${item.NeuerPreis}0€ <br />`;
+          if (item.AlterPreis != item.NeuerPreis)
+            HTML_PREISE += `<b>${item.Artikelnummer}</b>: ${item.Artikelname} - Alt: ${item.AlterPreis}0€ => Neu: ${item.NeuerPreis}0€ <br />`;
         }
       });
     }

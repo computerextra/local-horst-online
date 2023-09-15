@@ -161,10 +161,13 @@ export default function Warenlieferung() {
                 <h3>Preisänderungen</h3>
                 <ul>
                   {NeuePreise.map((i) => (
-                    <li key={i.id}>
-                      <b>{i.Artikelnummer}</b>: {i.Artikelname} - Alt:{" "}
-                      {i.AlterPreis}0€ ={">"} Neu: {i.NeuerPreis}0€
-                    </li>
+                    <>
+                      {i.NeuerPreis != i.AlterPreis ? (
+                        <li key={i.id}>
+                          <b>{i.Artikelnummer}</b>: {i.Artikelname} - Alt:{" "}
+                          {i.AlterPreis}0€ ={">"} Neu: {i.NeuerPreis}0€
+                        </li>
+                      ) : (<></>)}</>
                   ))}
                 </ul>
               </>
