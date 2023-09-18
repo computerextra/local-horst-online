@@ -12,6 +12,8 @@ const MailConfig = z.object({
   }),
 });
 
+const ntfy = "https://ntfy.sh/Computer_Extra_Kassel_Alerts"
+
 const Config = MailConfig.parse({
   host: env.SMTP_HOST,
   port: env.SMTP_PORT,
@@ -78,6 +80,15 @@ export const MailRouter = createTRPCRouter({
       if (Res.response.includes("Ok")) {
         return "Sent";
       } else {
+        await fetch(ntfy, {
+          method: "POST",
+          body: "Nachricht an Kunden mit Emailadresse: " + input.Empfänger + " konnte nicht versendet werden.",
+          headers: {
+            "Title": "Infomail an Kunde",
+            "Priority": "urgent",
+            "Tags": "warning,skull",
+          }
+        })
         return "Error:" + Res.response;
       }
     }),
@@ -199,6 +210,13 @@ export const MailRouter = createTRPCRouter({
         subject: `Neues Feedback`,
         html: `<h1>Feedback von ${input.Sender}</h1><h3>Nachricht:</h3><p style="white-space: pre-line">${input.Nachricht}</p>`,
       };
+      await fetch(ntfy, {
+        method: "POST",
+        body: input.Nachricht,
+        headers: {
+          "Title": "Neues Feedback von " + input.Sender,
+        }
+      })
       const Res = await Transporter.sendMail(Message);
       if (Res.response.includes("Ok")) {
         return "Sent";
