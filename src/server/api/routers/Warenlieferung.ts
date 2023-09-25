@@ -92,6 +92,7 @@ export const WarenlieferungRouter = createTRPCRouter({
             },
             BEWEGUNG: { gte: 0 },
             BEMERKUNG: { contains: "Warenlieferung:" },
+            Hist_Action: { contains: "Insert" },
           },
         ],
       },
