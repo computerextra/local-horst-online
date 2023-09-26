@@ -20,10 +20,12 @@ export default function NeuerLieferant() {
   // States of Lieferant
   const [Firma, setFirma] = useState("");
   const [Kundennummer, setKundennummer] = useState("");
+  const [Website, setWebsite] = useState("");
+  const [Url, setUrl] = useState("");
 
   const handleSubmit = async () => {
     if (Firma.length < 1) return;
-    const res = await Anleger.mutateAsync({ Firma, Kundennummer });
+    const res = await Anleger.mutateAsync({ Firma, Kundennummer, Website, Url });
     await push("/Telefonlisten/Lieferanten/" + res.id);
   };
 
@@ -57,6 +59,24 @@ export default function NeuerLieferant() {
               type="text"
               defaultValue={Kundennummer}
               onChange={(e) => setKundennummer(e.target.value)}
+            />
+          </FormGroup>
+
+          <FormGroup className="mb-3">
+            <FormLabel>Websiten Anzeigename</FormLabel>
+            <FormControl
+              type="text"
+              defaultValue={Website}
+              onChange={(e) => setWebsite(e.target.value)}
+            />
+          </FormGroup>
+
+          <FormGroup className="mb-3">
+            <FormLabel>Webseiten Url</FormLabel>
+            <FormControl
+              type="text"
+              defaultValue={Url}
+              onChange={(e) => setUrl(e.target.value)}
             />
           </FormGroup>
 

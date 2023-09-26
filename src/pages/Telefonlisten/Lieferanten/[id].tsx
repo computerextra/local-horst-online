@@ -27,16 +27,26 @@ export default function EditLieferant() {
   // States of Lieferant
   const [Firma, setFirma] = useState("");
   const [Kundennummer, setKundennummer] = useState("");
+  const [Website, setWebsite] = useState("");
+  const [Url, setUrl] = useState("");
 
   useEffect(() => {
     if (Lieferant == null) return;
     setFirma(Lieferant.Firma);
     setKundennummer(Lieferant.Kundennummer);
+    if (Lieferant.WebsiteName == undefined) {
+      setWebsite("")
+    } else
+      setWebsite(Lieferant.WebsiteName);
+    if (Lieferant.WebsiteUrl == undefined) {
+      setUrl("")
+    } else
+      setUrl(Lieferant.WebsiteUrl);
   }, [Lieferant]);
 
   const handleSubmit = async () => {
     if (Firma.length < 1) return;
-    await Updater.mutateAsync({ id, Firma, Kundennummer });
+    await Updater.mutateAsync({ id, Firma, Kundennummer, Website, Url });
     location.reload();
   };
 
@@ -48,7 +58,7 @@ export default function EditLieferant() {
   if (LieferantenRes.isLoading) return <LoadingSpinner />;
   if (LieferantenRes.isError) return <>Fehler in der Abfrage</>;
 
-  if (Lieferant == null) return <>Kein Mitarbeiter gefunden</>;
+  if (Lieferant == null) return <>Kein Lieferant gefunden</>;
 
   return (
     <>
@@ -81,6 +91,20 @@ export default function EditLieferant() {
               defaultValue={Kundennummer}
               onChange={(e) => setKundennummer(e.target.value)}
             />
+          </FormGroup>
+          <FormGroup className="mb-3">
+            <FormLabel>Websiten Name</FormLabel>
+            <FormControl
+              type="text"
+              defaultValue={Website}
+              onChange={(e) => setWebsite(e.target.value)} />
+          </FormGroup>
+          <FormGroup className="mb-3">
+            <FormLabel>Website Url</FormLabel>
+            <FormControl
+              type="text"
+              defaultValue={Url}
+              onChange={(e) => setUrl(e.target.value)} />
           </FormGroup>
           <Table striped>
             <thead>

@@ -37,6 +37,7 @@ export default function Lieferanten() {
               <th scope="col">Telefon</th>
               <th scope="col">Mobil</th>
               <th scope="col">Mail</th>
+              <th scope="col">Website</th>
               <th scope="col"></th>
             </tr>
           </thead>
@@ -86,6 +87,17 @@ export default function Lieferanten() {
                         )}
                       </p>
                     ))}
+                </th>
+                <th scope="row">
+                  {Lieferant.WebsiteName != undefined &&
+                    Lieferant.WebsiteName.length > 0 &&
+                    Lieferant.WebsiteUrl != undefined ? (
+                    <a
+                      href={Lieferant.WebsiteUrl}
+                      target="_blank" rel="noopener noreferrer">
+                      {Lieferant.WebsiteName}
+                    </a>
+                  ) : (<>-</>)}
                 </th>
                 <th scope="row">
                   <Link
