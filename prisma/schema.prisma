@@ -67,6 +67,8 @@ model Lieferanten {
   Firma           String
   Kundennummer    String
   Ansprechpartner Ansprechpartner[]
+  WebsiteName     String?
+  WebsiteUrl      String?
 }
 
 model Mitarbeiter {

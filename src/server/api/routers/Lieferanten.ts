@@ -16,6 +16,8 @@ export const LieferantenRouter = createTRPCRouter({
       z.object({
         Firma: z.string(),
         Kundennummer: z.string(),
+        Website: z.string(),
+        Url: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -23,6 +25,8 @@ export const LieferantenRouter = createTRPCRouter({
         data: {
           Firma: input.Firma,
           Kundennummer: input.Kundennummer,
+          WebsiteName: input.Website,
+          WebsiteUrl: input.Url,
         },
       });
     }),
@@ -32,6 +36,8 @@ export const LieferantenRouter = createTRPCRouter({
         id: z.string(),
         Firma: z.string(),
         Kundennummer: z.string(),
+        Website: z.string(),
+        Url: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -42,6 +48,8 @@ export const LieferantenRouter = createTRPCRouter({
         data: {
           Firma: input.Firma,
           Kundennummer: input.Kundennummer,
+          WebsiteName: input.Website,
+          WebsiteUrl: input.Url,
         },
       });
     }),
