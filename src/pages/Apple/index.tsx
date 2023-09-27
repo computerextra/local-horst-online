@@ -31,6 +31,12 @@ export default function Apple() {
       <Container fluid="sm" className="mt-5 pt-2 text-center">
         <h1>Identifiziere mein Apple Gerät</h1>
         <p>Einfach die Modellnummer eingeben und Formular absenden</p>
+        <p>BEISPIEL:</p>
+        <p>
+          Eingabe: A1670 <br />
+          Ausgabe: iPad7,1
+        </p>
+
         <Form onSubmit={(e) => e.preventDefault()} className="mt-2 mb-5">
           <InputGroup>
             <FormControl
