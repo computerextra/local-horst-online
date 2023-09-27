@@ -1,18 +1,25 @@
-import { useState } from "react"
-import Head from "next/head"
-import { api } from "~/utils/api"
-import { Button, Container, Form, FormControl, InputGroup } from "react-bootstrap"
+import { useState } from "react";
+import Head from "next/head";
+import { api } from "~/utils/api";
+import {
+  Button,
+  Container,
+  Form,
+  FormControl,
+  InputGroup,
+} from "react-bootstrap";
 
 export default function Apple() {
-  const AppleRes = api.Apple.getAppleModel.useMutation()
-  const [Eingabe, setEingabe] = useState("")
-  const [Result, setResult] = useState("")
+  const AppleRes = api.Apple.getAppleModel.useMutation();
+  const [Eingabe, setEingabe] = useState("");
+  const [Result, setResult] = useState("");
 
   const handleSearch = () => {
     const res = AppleRes.mutate(Eingabe);
+    console.log(res);
     if (res == null) return;
-    setResult(res)
-  }
+    setResult(res);
+  };
 
   return (
     <>
@@ -21,9 +28,7 @@ export default function Apple() {
       </Head>
       <Container fluid="sm" className="mt-5 pt-2 text-center">
         <h1>Identifiziere mein Apple Gerät</h1>
-        <p>
-          Einfach die Modellnummer eingeben und Formular absenden
-        </p>
+        <p>Einfach die Modellnummer eingeben und Formular absenden</p>
         <Form onSubmit={(e) => e.preventDefault()}>
           <InputGroup>
             <FormControl
@@ -37,14 +42,14 @@ export default function Apple() {
               type="submit"
               variant="outline-success"
               onClick={() => void handleSearch()}
-            >Suchen</Button>
+            >
+              Suchen
+            </Button>
           </InputGroup>
-        </Form>)
-        <h2>Model:</h2>
-        <p>
-          {Result}
-        </p>
+        </Form>
+        )<h2>Model:</h2>
+        <p>{Result}</p>
       </Container>
     </>
-  )
+  );
 }

@@ -6,9 +6,14 @@ export const AppleRouter = createTRPCRouter({
     .input(z.string())
     .mutation(async ({ input }) => {
       const model = input;
-      const res = await fetch(`https://api.ipsw.me/v4/model/${model}`);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const json: { identifier: string } = await res.json();
-      return json.identifier;
+      const res = await fetch(`https://api.ipsw.me/v4/model/${model}`)
+        .then((response) => response.json())
+        .then((data) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          return data;
+        });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return res;
     }),
 });
