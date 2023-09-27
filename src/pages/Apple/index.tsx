@@ -14,10 +14,12 @@ export default function Apple() {
   const [Eingabe, setEingabe] = useState("");
   const [Result, setResult] = useState("");
 
-  const handleSearch = () => {
-    const res = AppleRes.mutate(Eingabe);
-    console.log(res);
+  const handleSearch = async () => {
+    if (Eingabe.length < 1) return;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const res = await AppleRes.mutateAsync(Eingabe);
     if (res == null) return;
+    console.log(res);
     setResult(res);
   };
 
@@ -29,7 +31,7 @@ export default function Apple() {
       <Container fluid="sm" className="mt-5 pt-2 text-center">
         <h1>Identifiziere mein Apple Gerät</h1>
         <p>Einfach die Modellnummer eingeben und Formular absenden</p>
-        <Form onSubmit={(e) => e.preventDefault()}>
+        <Form onSubmit={(e) => e.preventDefault()} className="mt-2 mb-5">
           <InputGroup>
             <FormControl
               type="text"
@@ -47,8 +49,10 @@ export default function Apple() {
             </Button>
           </InputGroup>
         </Form>
-        )<h2>Model:</h2>
-        <p>{Result}</p>
+        <Container className="mb-5">
+          <h2>Model:</h2>
+          <p>{Result}</p>
+        </Container>
       </Container>
     </>
   );
