@@ -10,9 +10,11 @@ export const AppleRouter = createTRPCRouter({
       const res = await fetch(`https://api.ipsw.me/v4/model/${model}`)
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           return data;
         });
+      console.log(res);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return res;
     }),
