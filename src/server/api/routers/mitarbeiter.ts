@@ -2,6 +2,25 @@ import * as fs from "fs";
 import path from "path";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  CB,
+  CK,
+  CS,
+  DN,
+  DW,
+  EG,
+  EK,
+  FG,
+  FI,
+  IE,
+  JK,
+  MR,
+  MS,
+  PC,
+  RJ,
+  TT,
+  VH,
+} from "~/signatures";
 
 export const MitarbeiterRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
@@ -199,190 +218,105 @@ function getLine(short: string) {
   let line = "";
   switch (short) {
     case "CS": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Christoph Salowski (Christoph.Salowski@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Christoph Salowski (Christoph.Salowski@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Christoph Salowski (Christoph.Salowski@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Christoph Salowski (Christoph.Salowski@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      CS.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "CB": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Claus Bayer (Claus.Bayer@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Claus Bayer (Claus.Bayer@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Claus Bayer (Claus.Bayer@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Claus Bayer (Claus.Bayer@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      CB.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "CK": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Christian Krauss (Christian.Krauss@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Christian Krauss (Christian.Krauss@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Christian Krauss (Christian.Krauss@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Christian Krauss (Christian.Krauss@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      CK.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "DN": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Daniel Nowak (Daniel.Nowak@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Daniel Nowak (Daniel.Nowak@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Daniel Nowak (Daniel.Nowak@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Daniel Nowak (Daniel.Nowak@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      DN.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "DW": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Daniela Weber (Daniela.Weber@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Daniela Weber (Daniela.Weber@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Daniela Weber (Daniela.Weber@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Daniela Weber (Daniela.Weber@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      DW.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "EK": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Evelyn Kwanka (Evelyn.Kwanka@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Evelyn Kwanka (Evelyn.Kwanka@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Evelyn Kwanka (Evelyn.Kwanka@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Evelyn Kwanka (Evelyn.Kwanka@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      EK.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "FI": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Fabian Iske (Fabian.Iske@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Fabian Iske (Fabian.Iske@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Fabian Iske (Fabian.Iske@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Fabian Iske (Fabian.Iske@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      FI.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "FG": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Felix Goehringer (Felix.Goehringer@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Felix Goehringer (Felix.Goehringer@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Felix Goehringer (Felix.Goehringer@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Felix Goehringer (Felix.Goehringer@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      FG.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "IE": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Ingo Ernst (Ingo.Ernst@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Ingo Ernst (Ingo.Ernst@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Ingo Ernst (Ingo.Ernst@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Ingo Ernst (Ingo.Ernst@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      IE.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "JK": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Johannes.Kirchner@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Johannes.Kirchner@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Johannes.Kirchner@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Johannes Kirchner (Johannes.Kirchner@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      JK.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "MS": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Marcus Silber (Marcus.Silber@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Marcus Silber (Marcus.Silber@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Marcus Silber (Marcus.Silber@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Marcus Silber (Marcus.Silber@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      MS.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "MR": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Maximilian Rau (Maximilian.Rau@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Maximilian Rau (Maximilian.Rau@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Maximilian Rau (Maximilian.Rau@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Maximilian Rau (Maximilian.Rau@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      MR.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "RJ": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Rainer Jacob (Rainer.Jacob@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Rainer Jacob (Rainer.Jacob@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Rainer Jacob (Rainer.Jacob@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Rainer Jacob (Rainer.Jacob@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      RJ.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "TT": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Tim Tulowitzki (Tim.Tulowitzki@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Tim Tulowitzki (Tim.Tulowitzki@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Tim Tulowitzki (Tim.Tulowitzki@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Tim Tulowitzki (Tim.Tulowitzki@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      TT.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "VH": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Vladyslav Hapan (Vladyslav.Hapan@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Vladyslav Hapan (Vladyslav.Hapan@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Vladyslav Hapan (Vladyslav.Hapan@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Vladyslav Hapan (Vladyslav.Hapan@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      VH.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "EG": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Eric Guthoff (Eric.Guthoff@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Eric Guthoff (Eric.Guthoff@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Eric Guthoff (Eric.Guthoff@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Eric Guthoff (Eric.Guthoff@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      EG.forEach((l) => {
+        line += l;
+      });
       break;
     }
     case "PC": {
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Philip Cander (Philip.Cander@computer-extra.de)-Dateien\\' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Philip Cander (Philip.Cander@computer-extra.de).htm' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Philip Cander (Philip.Cander@computer-extra.de).rtf' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
-      line +=
-        "PowerShell.exe -Command (Copy-Item -Path 'V:\\Compex Signaturen\\Signatures\\Philip Cander (Philip.Cander@computer-extra.de).txt' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+      PC.forEach((l) => {
+        line += l;
+      });
       break;
     }
   }
