@@ -1,7 +1,7 @@
-const command = "PowerShell.exe -Command (Copy-Item -Path";
-const path = "V:\\Compex Signaturen\\Signatures\\";
+const command = "PowerShell.exe -Command (Copy-Item -Path ";
+const path = "'V:\\Compex Signaturen\\Signatures\\";
 const dest =
-  "-Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
+  "' -Destination $env:appdata\\Microsoft\\Signatures\\ -Recurse -Force)\n";
 
 // Christian Krauss
 export const CK = [
