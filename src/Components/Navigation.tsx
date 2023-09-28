@@ -57,6 +57,12 @@ export default function Navigation() {
               CE Archiv
             </Link>
             <Link
+              className={`nav-link ${router.pathname === "/QRCode" ? "active" : ""}`}
+              href="/QRCode"
+              onClick={expand}>
+              QR-Code
+            </Link>
+            <Link
               className={`nav-link ${router.pathname === "/Fritz" ? "active" : ""
                 }`}
               href="/Fritz"
@@ -90,8 +96,8 @@ export default function Navigation() {
               <NavDropdown.Item
                 as={Link}
                 className={`${router.pathname === "/Telefonlisten/Mitarbeiter"
-                    ? "active"
-                    : ""
+                  ? "active"
+                  : ""
                   }`}
                 href="/Telefonlisten/Mitarbeiter"
                 onClick={expand}>
@@ -100,8 +106,8 @@ export default function Navigation() {
               <NavDropdown.Item
                 as={Link}
                 className={`${router.pathname === "/Telefonlisten/Lieferanten"
-                    ? "active"
-                    : ""
+                  ? "active"
+                  : ""
                   }`}
                 href="/Telefonlisten/Lieferanten"
                 onClick={expand}>
@@ -112,8 +118,8 @@ export default function Navigation() {
               <NavDropdown.Item
                 as={Link}
                 className={`${router.pathname === "/ServiceStuff/Seriennummern"
-                    ? "active"
-                    : ""
+                  ? "active"
+                  : ""
                   }`}
                 href="/ServiceStuff/Seriennummern"
                 onClick={expand}>
@@ -122,8 +128,8 @@ export default function Navigation() {
               <NavDropdown.Item
                 as={Link}
                 className={`${router.pathname === "/ServiceStuff/InfoAnKunde"
-                    ? "active"
-                    : ""
+                  ? "active"
+                  : ""
                   }`}
                 href="/ServiceStuff/InfoAnKunde"
                 onClick={expand}>
@@ -132,8 +138,8 @@ export default function Navigation() {
               <NavDropdown.Item
                 as={Link}
                 className={`${router.pathname === "/ServiceStuff/Warenlieferung"
-                    ? "active"
-                    : ""
+                  ? "active"
+                  : ""
                   }`}
                 href="/ServiceStuff/Warenlieferung"
                 onClick={expand}>
@@ -171,6 +177,6 @@ export default function Navigation() {
           </Nav>
         </Navbar.Collapse>
       </Container>
-    </Navbar>
+    </Navbar >
   );
 }
