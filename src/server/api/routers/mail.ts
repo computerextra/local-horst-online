@@ -83,22 +83,21 @@ export const MailRouter = createTRPCRouter({
           'Montag - Freitag 09:00 - 18:00 Uhr<br><br>' +
           'Mit freundlichen Grüßen<br>' +
           '<b>Ihr Computer Extra Team</b><br><br>' +
+          'Telefon <a href="tel:0561601440">0561 60 144 0</a> <br>' +
+          'Fax 0561 60 144 199 <br>' +
+          'E-Mail <a href="mailto:info@computer-extra.de">info@computer-extra.de</a> <br>' +
+          'Website <a href="https://computer-extra.de">www.computer-extra.de</a> <br> <br>' +
           '<b>Computer Extra GmbH</b><br>' +
           'Harleshäuser Str. 8<br>' +
           '34130 Kassel<br><br>' +
-          'tel. <a href="tel:0049561601440">0561/60144 - 0</a><br>' +
-          'fax 0561/60144 - 199<br>' +
-          'Mail: <a href="mailto:info@computer-extra.de">' +
-          'info@computer-extra.de</a><br>' +
-          'url: <a href="https://www.computer-extra.de">' +
-          'www.computer-extra.de</a><br><br>' +
-          'Besuchen Sie uns auch auf ' +
-          '<a href="https://www.facebook.com/computerextra">' +
-          'Facebook</a> oder ' +
-          '<a href="https://www.instagram.com/computerextra/">' +
-          'Instagram</a><br><font size="1">' +
-          'Amtsgericht Marburg | HRB 8151<br>' +
-          'Geschäftsführer: Christian Krauss</font>' +
+          'Sitz der Gesellschaft: 34637 Schrecksbach <br>' +
+          'Geschäftsführer: Christian Krauss - Hanselsregister: Marburg, HRB 8151' +
+          'USt.-IdNr.: DE357590630 <br>' +
+          '<a href="https://computer-extra.de/Datenschutz">Datenschutzinformationen</a>' +
+          ' - ' +
+          '<a href="https://computer-extra.de/AGB">AGB</a>' +
+          ' - ' +
+          '<a href="https://computer-extra.de/Impressum">Impressum</a>' +
           '<br><br><font color="#FF0000">' +
           'Der Inhalt dieser E-Mail und sämtliche Anhänge sind ' +
           'vertraulich und ausschließlich für den bezeichneten Empfänger ' +
