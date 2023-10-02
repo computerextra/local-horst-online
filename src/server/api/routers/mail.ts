@@ -12,7 +12,7 @@ const MailConfig = z.object({
   }),
 });
 
-const ntfy = "https://ntfy.sh/Computer_Extra_Kassel_Alerts"
+const ntfy = "https://ntfy.sh/Computer_Extra_Kassel_Alerts";
 
 const Config = MailConfig.parse({
   host: env.SMTP_HOST,
@@ -74,39 +74,40 @@ export const MailRouter = createTRPCRouter({
           "johannes.kirchner@computer-extra.de",
         ],
         subject: `Ihre Bestellung AU${input.Auftrag}`,
-        html: 'Sehr geehrte Kundin, sehr geehrter Kunde,<br><br>' +
-          'Ihre Bestellung ist soeben bei uns eingetroffen. Sie ' +
-          'durchläuft aktuell unseren Wareneingang. Sie können Ihre ' +
-          'bestellte Ware ab dem nächsten Werktag 9 Uhr bei uns ' +
-          'abholen.' +
-          '<br><br>Unsere Öffnungszeiten:<br>' +
-          'Montag - Freitag 09:00 - 18:00 Uhr<br><br>' +
-          'Mit freundlichen Grüßen<br>' +
-          '<b>Ihr Computer Extra Team</b><br><br>' +
+        html:
+          "Sehr geehrte Kundin, sehr geehrter Kunde,<br><br>" +
+          "Ihre Bestellung ist soeben bei uns eingetroffen. Sie " +
+          "durchläuft aktuell unseren Wareneingang. Sie können Ihre " +
+          "bestellte Ware ab dem nächsten Werktag 9 Uhr bei uns " +
+          "abholen." +
+          "<br><br>Unsere Öffnungszeiten:<br>" +
+          "Montag - Freitag 09:00 - 18:00 Uhr<br><br>" +
+          "Mit freundlichen Grüßen<br>" +
+          "<b>Ihr Computer Extra Team</b><br><br>" +
           'Telefon <a href="tel:0561601440">0561 60 144 0</a> <br>' +
-          'Fax 0561 60 144 199 <br>' +
+          "Fax 0561 60 144 199 <br>" +
           'E-Mail <a href="mailto:info@computer-extra.de">info@computer-extra.de</a> <br>' +
           'Website <a href="https://computer-extra.de">www.computer-extra.de</a> <br> <br>' +
-          '<b>Computer Extra GmbH</b><br>' +
-          'Harleshäuser Str. 8<br>' +
-          '34130 Kassel<br><br>' +
-          'Sitz der Gesellschaft: 34637 Schrecksbach <br>' +
-          'Geschäftsführer: Christian Krauss - Hanselsregister: Marburg, HRB 8151 <br>' +
-          'USt.-IdNr.: DE357590630 <br>' +
+          "<b>Computer Extra GmbH</b><br>" +
+          "Harleshäuser Str. 8<br>" +
+          "34130 Kassel<br><br>" +
+          "Sitz der Gesellschaft: 34637 Schrecksbach <br>" +
+          "Geschäftsführer: Christian Krauss - Handelsregister: Marburg, HRB 8151 <br>" +
+          "USt.-IdNr.: DE357590630 <br>" +
           '<a href="https://computer-extra.de/Datenschutz">Datenschutzinformationen</a>' +
-          ' - ' +
+          " - " +
           '<a href="https://computer-extra.de/AGB">AGB</a>' +
-          ' - ' +
+          " - " +
           '<a href="https://computer-extra.de/Impressum">Impressum</a>' +
           '<br><br><font color="#FF0000">' +
-          'Der Inhalt dieser E-Mail und sämtliche Anhänge sind ' +
-          'vertraulich und ausschließlich für den bezeichneten Empfänger ' +
-          'bestimmt. Sollten Sie nicht der bezeichnete Empfänger sein, ' +
-          'bitten wir Sie, umgehend den Absender zu benachrichtigen und ' +
-          'diese E-Mail zu löschen. Jede Form der unautorisierten ' +
-          'Veröffentlichung, Vervielfältigung und Weitergabe des Inhalts ' +
-          'dieser E-Mail oder auch das Ergreifen von Maßnahmen als ' +
-          'Reaktion darauf sind unzulässig.</font>',
+          "Der Inhalt dieser E-Mail und sämtliche Anhänge sind " +
+          "vertraulich und ausschließlich für den bezeichneten Empfänger " +
+          "bestimmt. Sollten Sie nicht der bezeichnete Empfänger sein, " +
+          "bitten wir Sie, umgehend den Absender zu benachrichtigen und " +
+          "diese E-Mail zu löschen. Jede Form der unautorisierten " +
+          "Veröffentlichung, Vervielfältigung und Weitergabe des Inhalts " +
+          "dieser E-Mail oder auch das Ergreifen von Maßnahmen als " +
+          "Reaktion darauf sind unzulässig.</font>",
       };
       const Res = await Transporter.sendMail(Message);
       if (Res.response.includes("Ok")) {
@@ -114,13 +115,16 @@ export const MailRouter = createTRPCRouter({
       } else {
         await fetch(ntfy, {
           method: "POST",
-          body: "Nachricht an Kunden mit Emailadresse: " + input.Empfänger + " konnte nicht versendet werden.",
+          body:
+            "Nachricht an Kunden mit Emailadresse: " +
+            input.Empfänger +
+            " konnte nicht versendet werden.",
           headers: {
-            "Title": "Infomail an Kunde",
-            "Priority": "urgent",
-            "Tags": "warning,skull",
-          }
-        })
+            Title: "Infomail an Kunde",
+            Priority: "urgent",
+            Tags: "warning,skull",
+          },
+        });
         return "Error:" + Res.response;
       }
     }),
@@ -246,9 +250,9 @@ export const MailRouter = createTRPCRouter({
         method: "POST",
         body: input.Nachricht,
         headers: {
-          "Title": "Neues Feedback von " + input.Sender,
-        }
-      })
+          Title: "Neues Feedback von " + input.Sender,
+        },
+      });
       const Res = await Transporter.sendMail(Message);
       if (Res.response.includes("Ok")) {
         return "Sent";
