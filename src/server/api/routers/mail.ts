@@ -91,7 +91,7 @@ export const MailRouter = createTRPCRouter({
           'Harleshäuser Str. 8<br>' +
           '34130 Kassel<br><br>' +
           'Sitz der Gesellschaft: 34637 Schrecksbach <br>' +
-          'Geschäftsführer: Christian Krauss - Hanselsregister: Marburg, HRB 8151' +
+          'Geschäftsführer: Christian Krauss - Hanselsregister: Marburg, HRB 8151 <br>' +
           'USt.-IdNr.: DE357590630 <br>' +
           '<a href="https://computer-extra.de/Datenschutz">Datenschutzinformationen</a>' +
           ' - ' +
