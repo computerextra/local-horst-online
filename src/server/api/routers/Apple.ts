@@ -15,21 +15,22 @@ export const AppleRouter = createTRPCRouter({
       } catch (_) {
         return "Fehlerhafte Eingabe!";
       }
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-
-      // const res = await fetch(`https://api.ipsw.me/v4/model/${model}`)
-      //   .then((response) => response.json())
-      //   .then((data) => {
-      //     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      //     return data;
-      //   });
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-      // if (res.identifier) {
-      //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      //   return String(res.identifier);
-      // } else {
-      //   return "Fehlerhafte Eingabe";
-      // }
     }),
+  getLatestFirmware: publicProcedure
+    .input(z.string())
+    .mutation(async ({ input }) => {
+      const identifier = input;
+      try {
+        const res = await axios.get<{ firmwares: { url: string, version: string }[] }>(
+          `https://api.ipsw.me/v4/device/${identifier}`
+        );
+        const fw = {
+          url: res.data?.firmwares[0]?.url,
+          version: res.data?.firmwares[0]?.version,
+        };
+        return fw;
+      } catch (_) {
+        return "Fehlerhafte Eingabe"
+      }
+    })
 });

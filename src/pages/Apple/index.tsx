@@ -11,16 +11,26 @@ import {
 
 export default function Apple() {
   const AppleRes = api.Apple.getAppleModel.useMutation();
+  const AppleFwRes = api.Apple.getLatestFirmware.useMutation();
   const [Eingabe, setEingabe] = useState("");
   const [Result, setResult] = useState("");
+  const [Firmware, setFirmware] = useState<
+    {
+      url: string | undefined,
+      version: string | undefined
+    } | undefined | string
+  >()
 
   const handleSearch = async () => {
     if (Eingabe.length < 1) return;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const res = await AppleRes.mutateAsync(Eingabe);
     if (res == null) return;
-    console.log(res);
+    //console.log(res);
     setResult(res);
+    const model = res;
+    const fw = await AppleFwRes.mutateAsync(model);
+    setFirmware(fw);
   };
 
   return (
@@ -58,6 +68,15 @@ export default function Apple() {
         <Container className="mb-5">
           <h2>Model:</h2>
           <p>{Result}</p>
+          <h2>Aktuelle Firmware:</h2>
+          {Firmware != undefined && typeof Firmware != "string" && (
+            <>
+              <p>{Firmware?.version}</p>
+              <p>
+                <a href={Firmware?.url} target="_blank" rel="noopener noreferrer">Download</a>
+              </p>
+            </>
+          )}
         </Container>
       </Container>
     </>
