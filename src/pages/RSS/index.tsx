@@ -7,16 +7,24 @@ import { api } from "~/utils/api";
 export default function RSS() {
   const SecRes = api.RSS.getHeiseSecurity.useQuery();
   const TipsRes = api.RSS.getHeiseTipps.useQuery();
+  const DrDRes = api.RSS.getDrDatenschutz.useQuery();
 
   const Sec = SecRes.data;
   const Tips = TipsRes.data;
+  const DrDatenschutz = DrDRes.data;
 
-  if (SecRes.status !== "success" || TipsRes.status !== "success")
+  if (SecRes.status !== "success" ||
+    TipsRes.status !== "success" ||
+    DrDRes.status !== "success")
     return <LoadingSpinner />;
 
-  if (SecRes.isError || TipsRes.isError) return <>Fehler in der Abfrage</>;
+  if (SecRes.isError || TipsRes.isError || DrDRes.isError)
+    return <>Fehler in der Abfrage</>;
 
-  if (Sec == null || Tips == null) return <>Keine Feeds gefunden</>;
+  if (Sec == null || Tips == null || DrDatenschutz == null)
+    return <>Keine Feeds gefunden</>;
+
+
 
   return (
     <>
@@ -71,27 +79,27 @@ export default function RSS() {
             </Container>
           </Col>
           <Col>
-            <h2 className="text-center mb-5">heise tipps+tricks 🦄💻📱</h2>
+            <h2 className="text-center mb-5">Dr Datenschutz</h2>
             <Container
               fluid
               className="d-flex flex-column">
-              {Tips.map((item) => {
+              {DrDatenschutz.map((item, idx) => {
                 return (
-                  <Card
-                    className="mb-3"
-                    key={item.id}>
+                  <Card className="mb-3" key={idx}>
                     <Card.Body>
-                      <Card.Title>
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noopener noreferrer">
-                          {item.title}
-                        </a>
-                      </Card.Title>
+                      <Card.Title><div
+                        dangerouslySetInnerHTML={{ __html: item.title }}
+                      ></div></Card.Title>
+                      <Card.Text>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: item.description }}
+                          className="customZeug"
+                        ></div>
+
+                      </Card.Text>
                     </Card.Body>
                   </Card>
-                );
+                )
               })}
             </Container>
           </Col>

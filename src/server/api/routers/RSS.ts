@@ -9,6 +9,13 @@ type RssFeed = {
   title: string;
 };
 
+type DrDatenschutzRSSFeed = {
+  title: string;
+  link: string;
+  pubDate: string;
+  description: string;
+}
+
 export const RSSRouter = createTRPCRouter({
   getHeiseSecurity: publicProcedure.query(async () => {
     const url = "https://www.heise.de/security/rss/alert-news-atom.xml";
@@ -20,4 +27,10 @@ export const RSSRouter = createTRPCRouter({
     const feed = await parse(url);
     return feed.items as RssFeed[];
   }),
+  getDrDatenschutz: publicProcedure.query(async () => {
+    const url = "https://www.dr-datenschutz.de/feed/";
+    const feed = await parse(url);
+    // console.log(feed.items);
+    return feed.items as DrDatenschutzRSSFeed[];
+  })
 });
