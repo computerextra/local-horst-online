@@ -174,6 +174,13 @@ export default function Navigation() {
               onClick={expand}>
               RSS
             </Link>
+            <Link
+              className={`nav-link ${router.pathname === "/Werkstatt" ? "active" : ""}`}
+              href="/Werkstatt"
+              onClick={expand}
+            >
+              Werkstatt
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

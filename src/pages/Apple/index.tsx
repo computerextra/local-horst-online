@@ -40,6 +40,11 @@ export default function Apple() {
       </Head>
       <Container fluid="sm" className="mt-5 pt-2 text-center">
         <h1>Identifiziere mein Apple Gerät</h1>
+        <h2>
+          Hinweis: Aktuell scheint es ein Problem mit den Modellnummern zu geben,
+          es werden nicht alle erkannt und das Ergebnis wird in diesen Fällen nicht
+          korrekt angezeit.
+        </h2>
         <p>Einfach die Modellnummer eingeben und Formular absenden</p>
         <p>BEISPIEL:</p>
         <p>
