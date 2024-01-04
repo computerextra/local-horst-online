@@ -10,52 +10,50 @@ import {
 import { useState } from "react";
 
 const Werkstatt = () => {
-  const [auswahl, setAuswahl] = useState<"MS" | "G" | "A" | "">("");
-  const [Vorname, setVorname] = useState("")
-  const [Nachname, setNachname] = useState("")
-  const [Mail, setMail] = useState("")
-  const [PassMail, setPassMail] = useState("")
-  const [Geburtstag, setGeburtstag] = useState("")
-  const [Geschlecht, setGeschlecht] = useState("")
-  const [Handynummer, setHandynummer] = useState("")
-  const [Login, setLogin] = useState("")
-  const [Password, setPassword] = useState("")
+  const [auswahl, setAuswahl] = useState<"MS" | "G" | "A" | "T" | "">("");
+  const [Vorname, setVorname] = useState("");
+  const [Nachname, setNachname] = useState("");
+  const [Mail, setMail] = useState("");
+  const [PassMail, setPassMail] = useState("");
+  const [Geburtstag, setGeburtstag] = useState("");
+  const [Geschlecht, setGeschlecht] = useState("");
+  const [Handynummer, setHandynummer] = useState("");
+  const [Login, setLogin] = useState("");
+  const [Password, setPassword] = useState("");
 
   const Intrexx = () => {
-    const area = document.querySelector("[data-intrexx=true]")
+    const area = document.querySelector("[data-intrexx=true]");
     if (area == null) return;
-    const myWindow = window.open("", "PRINT", "height=1000,width=1200")
+    const myWindow = window.open("", "PRINT", "height=1000,width=1200");
     if (myWindow == null) return;
-    myWindow.document.write("<html><body>")
-    myWindow.document.write(area.innerHTML)
-    myWindow.document.write("</body></html>")
+    myWindow.document.write("<html><body>");
+    myWindow.document.write(area.innerHTML);
+    myWindow.document.write("</body></html>");
     myWindow.document.close();
     myWindow.focus();
-  }
+  };
 
   const Print = () => {
     if (auswahl === "") return;
-    const area = document.querySelector("[data-druck=true]")
+    const area = document.querySelector("[data-druck=true]");
     if (area == null) return;
-    const myWindow = window.open("", "PRINT", "height=1000,width=1200")
+    const myWindow = window.open("", "PRINT", "height=1000,width=1200");
     if (myWindow == null) return;
-    myWindow.document.write("<html><body style='white-space: pre-line;'>")
-    if (auswahl == "MS")
-      myWindow.document.write("<h1>Microsoft Konto</h1>")
-    if (auswahl == "G")
-      myWindow.document.write("<h1>Google Konto</h1>")
-    if (auswahl == "A")
-      myWindow.document.write("<h1>Apple ID</h1>")
+    myWindow.document.write("<html><body style='white-space: pre-line;'>");
+    if (auswahl == "MS") myWindow.document.write("<h1>Microsoft Konto</h1>");
+    if (auswahl == "G") myWindow.document.write("<h1>Google Konto</h1>");
+    if (auswahl == "A") myWindow.document.write("<h1>Apple ID</h1>");
+    if (auswahl == "T") myWindow.document.write("<h1>Telekom Freemail</h1>");
 
     myWindow.document.write(area.innerHTML);
-    myWindow.document.write("</body></html>")
+    myWindow.document.write("</body></html>");
     myWindow.document.close();
     myWindow.focus();
     myWindow.print();
     setTimeout(() => {
       myWindow.close();
     }, 2000);
-  }
+  };
 
   return (
     <>
@@ -94,6 +92,16 @@ const Werkstatt = () => {
             if (e.target.checked) setAuswahl("A");
           }}
         />
+        <Form.Check
+          type="radio"
+          inline
+          name="Auswahl"
+          id="Telekom"
+          label="Telekom"
+          onChange={(e) => {
+            if (e.target.checked) setAuswahl("T");
+          }}
+        />
         <Form
           onSubmit={(e) => e.preventDefault()}
           className="mt-2 mb-5 text-start"
@@ -109,7 +117,8 @@ const Werkstatt = () => {
                   type="text"
                   placeholder="Vorname"
                   defaultValue={Vorname}
-                  onChange={(e) => setVorname(e.target.value)} />
+                  onChange={(e) => setVorname(e.target.value)}
+                />
               </FloatingLabel>
             </Col>
             <Col>
@@ -122,7 +131,8 @@ const Werkstatt = () => {
                   type="text"
                   defaultValue={Nachname}
                   onChange={(e) => setNachname(e.target.value)}
-                  placeholder="Nachname" />
+                  placeholder="Nachname"
+                />
               </FloatingLabel>
             </Col>
           </Row>
@@ -151,7 +161,8 @@ const Werkstatt = () => {
                   type="text"
                   defaultValue={PassMail}
                   onChange={(e) => setPassMail(e.target.value)}
-                  placeholder="Passwort für Mail" />
+                  placeholder="Passwort für Mail"
+                />
               </FloatingLabel>
             </Col>
           </Row>
@@ -160,15 +171,20 @@ const Werkstatt = () => {
             label="Geburtstag"
             className="mb-3"
           >
-            <Form.Control defaultValue={Geburtstag} type="date"
-              onChange={(e) => setGeburtstag(e.target.value)} />
+            <Form.Control
+              defaultValue={Geburtstag}
+              type="date"
+              onChange={(e) => setGeburtstag(e.target.value)}
+            />
           </FloatingLabel>
           <Form.Group className="mb-3" controlId="Geschlecht">
             <div>Geschlecht</div>
             <Form.Check
               inline
               type="radio"
-              onChange={(e) => { if (e.target.checked) setGeschlecht("Männlich") }}
+              onChange={(e) => {
+                if (e.target.checked) setGeschlecht("Männlich");
+              }}
               name="M"
               id="Männlich"
               label="Männlich"
@@ -177,7 +193,9 @@ const Werkstatt = () => {
               inline
               type="radio"
               name="W"
-              onChange={(e) => { if (e.target.checked) setGeschlecht("Weiblich") }}
+              onChange={(e) => {
+                if (e.target.checked) setGeschlecht("Weiblich");
+              }}
               id="Weiblich"
               label="Weiblich"
             />
@@ -185,7 +203,9 @@ const Werkstatt = () => {
               inline
               type="radio"
               name="D"
-              onChange={(e) => { if (e.target.checked) setGeschlecht("Divers") }}
+              onChange={(e) => {
+                if (e.target.checked) setGeschlecht("Divers");
+              }}
               id="Divers"
               label="Divers"
             />
@@ -199,7 +219,8 @@ const Werkstatt = () => {
               type="tel"
               defaultValue={Handynummer}
               onChange={(e) => setHandynummer(e.target.value)}
-              placeholder="Handynummer" />
+              placeholder="Handynummer"
+            />
           </FloatingLabel>
           <hr />
           <Row>
@@ -213,7 +234,8 @@ const Werkstatt = () => {
                   type="text"
                   defaultValue={Login}
                   onChange={(e) => setLogin(e.target.value)}
-                  placeholder="Login Information" />
+                  placeholder="Login Information"
+                />
               </FloatingLabel>
             </Col>
             <Col>
@@ -226,12 +248,12 @@ const Werkstatt = () => {
                   type="text"
                   defaultValue={Password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Login Passwort" />
+                  placeholder="Login Passwort"
+                />
               </FloatingLabel>
             </Col>
           </Row>
-          <Button variant="primary" className="me-5"
-            onClick={Print}>
+          <Button variant="primary" className="me-5" onClick={Print}>
             Drucken
           </Button>
           <Button variant="info" onClick={Intrexx}>
@@ -241,14 +263,16 @@ const Werkstatt = () => {
       </Container>
       <div data-intrexx="true" className="d-none">
         <p>
-          {
-            auswahl == "A" ?
-              "Apple ID" :
-              auswahl == "G" ?
-                "Google Konto" :
-                auswahl == "MS" ?
-                  "Microsoft Konto" :
-                  "FEHLENDE EINGABE!"} <br />
+          {auswahl == "A"
+            ? "Apple ID"
+            : auswahl == "G"
+              ? "Google Konto"
+              : auswahl == "MS"
+                ? "Microsoft Konto"
+                : auswahl == "T"
+                  ? "Telekom Freemail"
+                  : "FEHLENDE EINGABE!"}{" "}
+          <br />
           Name: {Vorname} {Nachname} <br />
           Mail: {Mail} <br />
           PW: {PassMail} <br />
@@ -260,34 +284,16 @@ const Werkstatt = () => {
         </p>
       </div>
       <div data-druck="true" className="d-none">
-        <p>
-          Vorname: {Vorname}
-        </p>
-        <p>
-          Nachname: {Nachname}
-        </p>
-        <p>
-          E-Mail-Adresse: {Mail}
-        </p>
-        <p>
-          E-Mail-Passwort: {PassMail}
-        </p>
-        <p>
-          Geburtstag: {new Date(Geburtstag).toLocaleDateString()}
-        </p>
-        <p>
-          Geschlecht: {Geschlecht}
-        </p>
-        <p>
-          Mobilfunk Nummer: {Handynummer}
-        </p>
+        <p>Vorname: {Vorname}</p>
+        <p>Nachname: {Nachname}</p>
+        <p>E-Mail-Adresse: {Mail}</p>
+        <p>E-Mail-Passwort: {PassMail}</p>
+        <p>Geburtstag: {new Date(Geburtstag).toLocaleDateString()}</p>
+        <p>Geschlecht: {Geschlecht}</p>
+        <p>Mobilfunk Nummer: {Handynummer}</p>
         <hr />
-        <p>
-          Benutzername: {Login}
-        </p>
-        <p>
-          Passwort: {Password}
-        </p>
+        <p>Benutzername: {Login}</p>
+        <p>Passwort: {Password}</p>
       </div>
     </>
   );
