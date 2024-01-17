@@ -3,6 +3,7 @@ import { open } from "node:fs/promises";
 import * as path from "path";
 import pdf from "pdf-parse";
 import { Prisma, type sg_auf_artikel } from "prisma/generated/Sage";
+import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 type AvmCB = {
@@ -22,7 +23,50 @@ type BrotherCB = {
   MaximalerBonus: string;
 };
 
+type InventurDate = {
+  Artikelnummer: string;
+  Suchbegriff: string;
+  Anzahl: number;
+};
+
+type AllInventur = {
+  Artikelnummer: string;
+  Suchbegriff: string;
+  Anzahl: number;
+  Team: string;
+};
+
 export const FileRouter = createTRPCRouter({
+  getAllInventur: publicProcedure
+    .input(z.object({ year: z.number().int() }))
+    .query(({ input }) => {
+      const file = path.join(
+        __dirname,
+        "../../../../../src/_InventurData",
+        input.year.toString(),
+        "_ALL.json"
+      );
+      if (!fs.existsSync(file)) {
+        return null;
+      }
+      return JSON.parse(fs.readFileSync(file, "utf-8")) as AllInventur[];
+    }),
+  getInventur: publicProcedure
+    .input(z.object({ team: z.string(), year: z.number().int() }))
+    .query(({ input }) => {
+      const file = path.join(
+        __dirname,
+        "../../../../../src/_InventurData",
+        input.year.toString(),
+        input.team
+      );
+      if (!fs.existsSync(file + ".json")) {
+        return null;
+      }
+      return JSON.parse(
+        fs.readFileSync(file + ".json", "utf-8")
+      ) as InventurDate[];
+    }),
   getAvm: publicProcedure.query(async ({ ctx }) => {
     const file = path.join(
       __dirname,

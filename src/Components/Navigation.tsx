@@ -117,6 +117,13 @@ export default function Navigation() {
             <NavDropdown title="Service Stuff">
               <NavDropdown.Item
                 as={Link}
+                className={`${router.pathname === "/ServiceStuff/Inventur" ? "active" : ""}`}
+                href="/ServiceStuff/Inventur"
+                onClick={expand}>
+                Inventur
+              </ NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
                 className={`${router.pathname === "/ServiceStuff/Seriennummern"
                   ? "active"
                   : ""
