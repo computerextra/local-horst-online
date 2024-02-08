@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Ansprechparnter {
+    id          String     @id @default(cuid())
+    Name        String
+    Telefon     String?
+    Mobil       String?
+    Mail        String?
+    Lieferant   Lieferant? @relation(fields: [lieferantId], references: [id])
+    lieferantId String?
+}
+
+model Lieferant {
+    id              String            @id @default(cuid())
+    Firma           String
+    Kundennummer    String
+    Webseite        String
+    Ansprechpartner Ansprechparnter[]
+}
+
+model Mitarbeiter {
+    id          String  @id @default(cuid())
+    Name        String  @unique
+    Mail        String?
+    Durchwahl   String?
+    Gruppenwahl String?
+    Homeoffice  String?
+    Telefon1    String?
+    Telefon2    String?
+    Mobil       String?
+    Azubi       Boolean @default(false)
+    Geburtstag  String?
+}
+
+model Einkauf {
+    id        String        @id @default(cuid())
+    Einkauf   String?
+    Geld      String?
+    Pfand     String?
+    Datum     DateTime?
+    Abonniert Boolean       @default(false)
+    Bilder    EinkaufBild[]
+}
+
+model EinkaufBild {
+    id        String   @id @default(cuid())
+    Bild      String
+    BildData  String
+    Einkauf   Einkauf? @relation(fields: [einkaufId], references: [id])
+    einkaufId String?
+}
+
+model Warenlieferung {
+    id            String    @id @default(cuid())
+    Artikelnummer String?
+    Artikelname   String?
+    Importiert    DateTime?
+    Geliefert     DateTime?
+    Neu           DateTime?
+    AlterPreis    String?
+    NeuerPreis    String?
+    Modifiziert   DateTime?
+}
