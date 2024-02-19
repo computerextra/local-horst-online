@@ -225,7 +225,7 @@ export default function Navigation() {
               target="_blank"
               onClick={expand}
             >
-              Werkstatt
+              CMS
             </Link>
           </Nav>
         </Navbar.Collapse>
