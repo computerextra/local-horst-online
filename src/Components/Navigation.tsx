@@ -16,101 +16,117 @@ export default function Navigation() {
       expand="lg"
       variant="dark"
       className="rounded mt-1"
-      expanded={expanded}>
+      expanded={expanded}
+    >
       <Container fluid>
-        <Link
-          className="navbar-brand"
-          href="/">
+        <Link className="navbar-brand" href="/">
           LocalHorst
         </Link>
         <Navbar.Collapse>
-          <Nav
-            className="me-aut"
-            variant="tabs">
+          <Nav className="me-aut" variant="tabs">
             {/* Startseite */}
             <Link
               href="/"
               className={`nav-link ${router.pathname === "/" ? "active" : ""}`}
-              onClick={expand}>
+              onClick={expand}
+            >
               Feedback
             </Link>
             {/* Einkaufen */}
             <Link
-              className={`nav-link ${router.pathname === "/Einkaufen" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Einkaufen" ? "active" : ""
+              }`}
               href="/Einkaufen"
-              onClick={expand}>
+              onClick={expand}
+            >
               Einkaufen
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/Geburtstage" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Geburtstage" ? "active" : ""
+              }`}
               href="/Geburtstage"
-              onClick={expand}>
+              onClick={expand}
+            >
               Geburtstage
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/Archive" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Archive" ? "active" : ""
+              }`}
               href="/Archive"
-              onClick={expand}>
+              onClick={expand}
+            >
               CE Archiv
             </Link>
             <Link
               className={`nav-link ${router.pathname === "/QRCode" ? "active" : ""}`}
               href="/QRCode"
-              onClick={expand}>
+              onClick={expand}
+            >
               QR-Code
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/Fritz" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Fritz" ? "active" : ""
+              }`}
               href="/Fritz"
-              onClick={expand}>
+              onClick={expand}
+            >
               Fritz Box
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/Apple" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Apple" ? "active" : ""
+              }`}
               href="/Apple"
               onClick={expand}
             >
               Apple
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/Signaturen" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Signaturen" ? "active" : ""
+              }`}
               href="/Signaturen"
-              onClick={expand}>
+              onClick={expand}
+            >
               Signaturen
             </Link>
             <NavDropdown title="Telefonlisten">
               <NavDropdown.Item
                 as={Link}
-                className={`${router.pathname === "/Telefonlisten/Sage" ? "active" : ""
-                  }`}
+                className={`${
+                  router.pathname === "/Telefonlisten/Sage" ? "active" : ""
+                }`}
                 href="/Telefonlisten/Sage"
-                onClick={expand}>
+                onClick={expand}
+              >
                 Kunden / Lieferanten Sage
               </NavDropdown.Item>
               <NavDropdown.Item
                 as={Link}
-                className={`${router.pathname === "/Telefonlisten/Mitarbeiter"
-                  ? "active"
-                  : ""
-                  }`}
+                className={`${
+                  router.pathname === "/Telefonlisten/Mitarbeiter"
+                    ? "active"
+                    : ""
+                }`}
                 href="/Telefonlisten/Mitarbeiter"
-                onClick={expand}>
+                onClick={expand}
+              >
                 Mitarbeiter
               </NavDropdown.Item>
               <NavDropdown.Item
                 as={Link}
-                className={`${router.pathname === "/Telefonlisten/Lieferanten"
-                  ? "active"
-                  : ""
-                  }`}
+                className={`${
+                  router.pathname === "/Telefonlisten/Lieferanten"
+                    ? "active"
+                    : ""
+                }`}
                 href="/Telefonlisten/Lieferanten"
-                onClick={expand}>
+                onClick={expand}
+              >
                 Lieferanten
               </NavDropdown.Item>
             </NavDropdown>
@@ -119,66 +135,81 @@ export default function Navigation() {
                 as={Link}
                 className={`${router.pathname === "/ServiceStuff/Inventur" ? "active" : ""}`}
                 href="/ServiceStuff/Inventur"
-                onClick={expand}>
+                onClick={expand}
+              >
                 Inventur
-              </ NavDropdown.Item>
+              </NavDropdown.Item>
               <NavDropdown.Item
                 as={Link}
-                className={`${router.pathname === "/ServiceStuff/Seriennummern"
-                  ? "active"
-                  : ""
-                  }`}
+                className={`${
+                  router.pathname === "/ServiceStuff/Seriennummern"
+                    ? "active"
+                    : ""
+                }`}
                 href="/ServiceStuff/Seriennummern"
-                onClick={expand}>
+                onClick={expand}
+              >
                 CE SN
               </NavDropdown.Item>
               <NavDropdown.Item
                 as={Link}
-                className={`${router.pathname === "/ServiceStuff/InfoAnKunde"
-                  ? "active"
-                  : ""
-                  }`}
+                className={`${
+                  router.pathname === "/ServiceStuff/InfoAnKunde"
+                    ? "active"
+                    : ""
+                }`}
                 href="/ServiceStuff/InfoAnKunde"
-                onClick={expand}>
+                onClick={expand}
+              >
                 Info an Kunde
               </NavDropdown.Item>
               <NavDropdown.Item
                 as={Link}
-                className={`${router.pathname === "/ServiceStuff/Warenlieferung"
-                  ? "active"
-                  : ""
-                  }`}
+                className={`${
+                  router.pathname === "/ServiceStuff/Warenlieferung"
+                    ? "active"
+                    : ""
+                }`}
                 href="/ServiceStuff/Warenlieferung"
-                onClick={expand}>
+                onClick={expand}
+              >
                 Warenlieferung
               </NavDropdown.Item>
             </NavDropdown>
             <Link
-              className={`nav-link ${router.pathname === "/Cashback" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Cashback" ? "active" : ""
+              }`}
               href="/Cashback"
-              onClick={expand}>
+              onClick={expand}
+            >
               CB
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/Kabelwand" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Kabelwand" ? "active" : ""
+              }`}
               href="/Kabelwand"
-              onClick={expand}>
+              onClick={expand}
+            >
               Kabelwand
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/Zeit" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/Zeit" ? "active" : ""
+              }`}
               href="/Zeit"
-              onClick={expand}>
+              onClick={expand}
+            >
               Zeit
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/RSS" ? "active" : ""
-                }`}
+              className={`nav-link ${
+                router.pathname === "/RSS" ? "active" : ""
+              }`}
               href="/RSS"
-              onClick={expand}>
+              onClick={expand}
+            >
               RSS
             </Link>
             <Link
@@ -188,9 +219,17 @@ export default function Navigation() {
             >
               Werkstatt
             </Link>
+            <Link
+              className={`nav-link`}
+              href="http://10.0.0.64:3000"
+              target="_blank"
+              onClick={expand}
+            >
+              Werkstatt
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
-    </Navbar >
+    </Navbar>
   );
 }
