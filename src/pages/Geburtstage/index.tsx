@@ -46,7 +46,10 @@ export default function Geburtstage() {
       if (ma.Geburtstag) {
         const Tag = ma.Geburtstag.split(".")[0] || "";
         const Monat = ma.Geburtstag.split(".")[1] || "";
-        if (Tag === day.toString() && Monat === month.toString())
+        if (
+          new Date(2000, parseInt(Monat), parseInt(Tag)) ==
+          new Date(2000, month, day)
+        )
           heute.push(ma);
         if (
           new Date(2000, parseInt(Monat), parseInt(Tag)) <
@@ -102,9 +105,7 @@ export default function Geburtstage() {
       <Head>
         <title>Geburtstage | LocalHorst v7</title>
       </Head>
-      <Container
-        fluid="sm"
-        className="mt-5">
+      <Container fluid="sm" className="mt-5">
         <h2 className="text-center">Geburtstage</h2>
         <section className="mb-4 mt-4">
           Heute ist <strong>{Datum}</strong>
@@ -128,9 +129,7 @@ export default function Geburtstage() {
             </h3>
             <p className="border border-4 border-danger">
               {Heute.map((ma) => (
-                <p
-                  key={ma.id}
-                  className="fs-4">
+                <p key={ma.id} className="fs-4">
                   <strong>{ma.Name}</strong> hat Heute Geburtstag
                 </p>
               ))}

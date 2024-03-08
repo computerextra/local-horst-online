@@ -61,7 +61,9 @@ export default function Navigation() {
               CE Archiv
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/QRCode" ? "active" : ""}`}
+              className={`nav-link ${
+                router.pathname === "/QRCode" ? "active" : ""
+              }`}
               href="/QRCode"
               onClick={expand}
             >
@@ -76,7 +78,7 @@ export default function Navigation() {
             >
               Fritz Box
             </Link>
-            <Link
+            {/* <Link
               className={`nav-link ${
                 router.pathname === "/Apple" ? "active" : ""
               }`}
@@ -84,7 +86,7 @@ export default function Navigation() {
               onClick={expand}
             >
               Apple
-            </Link>
+            </Link> */}
             <Link
               className={`nav-link ${
                 router.pathname === "/Signaturen" ? "active" : ""
@@ -131,14 +133,14 @@ export default function Navigation() {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Service Stuff">
-              <NavDropdown.Item
+              {/* <NavDropdown.Item
                 as={Link}
                 className={`${router.pathname === "/ServiceStuff/Inventur" ? "active" : ""}`}
                 href="/ServiceStuff/Inventur"
                 onClick={expand}
               >
                 Inventur
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
               <NavDropdown.Item
                 as={Link}
                 className={`${
@@ -176,7 +178,7 @@ export default function Navigation() {
                 Warenlieferung
               </NavDropdown.Item>
             </NavDropdown>
-            <Link
+            {/* <Link
               className={`nav-link ${
                 router.pathname === "/Cashback" ? "active" : ""
               }`}
@@ -184,7 +186,7 @@ export default function Navigation() {
               onClick={expand}
             >
               CB
-            </Link>
+            </Link> */}
             <Link
               className={`nav-link ${
                 router.pathname === "/Kabelwand" ? "active" : ""
@@ -192,7 +194,7 @@ export default function Navigation() {
               href="/Kabelwand"
               onClick={expand}
             >
-              Kabelwand
+              Kabelwand NYI
             </Link>
             <Link
               className={`nav-link ${
@@ -213,7 +215,9 @@ export default function Navigation() {
               RSS
             </Link>
             <Link
-              className={`nav-link ${router.pathname === "/Werkstatt" ? "active" : ""}`}
+              className={`nav-link ${
+                router.pathname === "/Werkstatt" ? "active" : ""
+              }`}
               href="/Werkstatt"
               onClick={expand}
             >
