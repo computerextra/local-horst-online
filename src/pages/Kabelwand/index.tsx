@@ -1,0 +1,326 @@
+import type {
+  Fach,
+  Farbe,
+  Input,
+  Kabel,
+  Laenge,
+  Output,
+  Regal,
+  Reihe,
+} from "@prisma/client";
+import Head from "next/head";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Button, Col, Container, FormCheck, Row, Table } from "react-bootstrap";
+import CableTable from "~/Components/CableTable";
+import LoadingSpinner from "~/Components/LoadingSpinner";
+import { api } from "~/utils/api";
+
+// TODO: Filter gehen nicht! Geht erst mit ein paar Kabeln
+
+export type Kabelwand = Kabel & {
+  Fach: Fach;
+  Farbe: Farbe;
+  Input: Input;
+  Laenge: Laenge;
+  Output: Output;
+  Regal: Regal;
+  Reihe: Reihe;
+} & {
+  Bestand?: number | null;
+  Verfügbar?: number | null;
+};
+
+export default function Kabelwand() {
+  const KabelRes = api.Kabelwand.getKabelwand.useQuery();
+  const SageInfosGetter = api.Sage.getBestand.useMutation();
+  const RestpostenKiste1Res = api.Sage.getRestpostenKiste1.useQuery();
+  const RestpostenKiste2Res = api.Sage.getRestpostenKiste2.useQuery();
+  const Kabel = KabelRes.data;
+  const RestpostenKiste1 = RestpostenKiste1Res.data;
+  const RestpostenKiste2 = RestpostenKiste2Res.data;
+
+  const [Auswahl, setAuswahl] = useState<
+    "all" | "Kabel" | "Kiste" | "Telefon" | "Restposten"
+  >("all");
+  const [AlleKabel, setAlleKabel] = useState<Kabelwand[]>([]);
+  const [KabelwandKabel, setKabelwandKabel] = useState<Kabelwand[]>([]);
+  const [KistenKabel, setKistenKabel] = useState<Kabelwand[]>([]);
+  const [TelefonKabel, setTelefonKabel] = useState<Kabelwand[]>([]);
+  const [Restposten, setRestposten] = useState<
+    {
+      Artikelnummer: string;
+      Name: string;
+      Bestand: number | null;
+      Verfügbar: number | null;
+    }[]
+  >([]);
+
+  const [Admin, setAdmin] = useState(false);
+
+  useEffect(() => {
+    async function x() {
+      if (Kabel == null) return;
+
+      // Ziehe Bestände aus Sage:
+      const Artikelnummern: string[] = [];
+      Kabel.forEach((x) => {
+        Artikelnummern.push(x.Artikelnummer);
+      });
+      if (Artikelnummern.length >= 1) {
+        const SageInfos = await SageInfosGetter.mutateAsync(Artikelnummern);
+        const RichtigeKabel: Kabelwand[] = [];
+        const KabelwandKabel: Kabelwand[] = [];
+        const KistenKabel: Kabelwand[] = [];
+        const TelefonKabel: Kabelwand[] = [];
+        if (SageInfos != null) {
+          if (SageInfos.length >= 1) {
+            Kabel.forEach((Kab) => {
+              const art = SageInfos.find((x) => x.ARTNR === Kab.Artikelnummer);
+              if (art != undefined) {
+                RichtigeKabel.push({
+                  ...Kab,
+                  Bestand: art.BESTAND,
+                  Verfügbar: art.VERFUEGBAR,
+                });
+
+                if (
+                  Kab.Regal.Name.startsWith("Regal") &&
+                  !Kab.Regal.Name.startsWith("Regal T")
+                ) {
+                  KabelwandKabel.push({
+                    ...Kab,
+                    Bestand: art.BESTAND,
+                    Verfügbar: art.VERFUEGBAR,
+                  });
+                }
+                if (Kab.Regal.Name.startsWith("Kiste"))
+                  KistenKabel.push({
+                    ...Kab,
+                    Bestand: art.BESTAND,
+                    Verfügbar: art.VERFUEGBAR,
+                  });
+                if (Kab.Regal.Name.startsWith("Regal T"))
+                  TelefonKabel.push({
+                    ...Kab,
+                    Bestand: art.BESTAND,
+                    Verfügbar: art.VERFUEGBAR,
+                  });
+              } else {
+                RichtigeKabel.push({ ...Kab });
+                if (
+                  Kab.Regal.Name.startsWith("Regal") &&
+                  !Kab.Regal.Name.startsWith("Regal T")
+                )
+                  KabelwandKabel.push({ ...Kab });
+                if (Kab.Regal.Name.startsWith("Kiste"))
+                  KistenKabel.push({ ...Kab });
+                if (Kab.Regal.Name.startsWith("Regal T"))
+                  TelefonKabel.push({ ...Kab });
+              }
+            });
+          }
+        }
+        setAlleKabel(RichtigeKabel);
+        setKabelwandKabel(KabelwandKabel);
+        setKistenKabel(KistenKabel);
+        setTelefonKabel(TelefonKabel);
+      }
+
+      if (RestpostenKiste1 != null) {
+        const tmp: {
+          Artikelnummer: string;
+          Name: string;
+          Bestand: number | null;
+          Verfügbar: number | null;
+        }[] = [];
+        RestpostenKiste1.forEach((x) => {
+          tmp.push({
+            Artikelnummer: x.ARTNR || "",
+            Name: x.SUCHBEGRIFF || "",
+            Bestand: x.BESTAND,
+            Verfügbar: x.VERFUEGBAR,
+          });
+        });
+        setRestposten((prev) => [...prev, ...tmp]);
+      }
+      if (RestpostenKiste2 != null) {
+        const tmp: {
+          Artikelnummer: string;
+          Name: string;
+          Bestand: number | null;
+          Verfügbar: number | null;
+        }[] = [];
+        RestpostenKiste2.forEach((x) => {
+          tmp.push({
+            Artikelnummer: x.ARTNR || "",
+            Name: x.SUCHBEGRIFF || "",
+            Bestand: x.BESTAND,
+            Verfügbar: x.VERFUEGBAR,
+          });
+        });
+        setRestposten((prev) => [...prev, ...tmp]);
+      }
+    }
+    void x();
+  }, [Kabel]);
+
+  if (KabelRes.isLoading) return <LoadingSpinner />;
+
+  const toggleAdmin = () => {
+    setAdmin(!Admin);
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Kabelwand | LocalHorst v7</title>
+      </Head>
+      <Container className="mt-5">
+        <h1 className="text-center">Kabelwand</h1>
+        <Button onClick={toggleAdmin}>Admin</Button>
+        <Row>
+          <Col>
+            <fieldset id="Auswahl" className="mt-5">
+              <FormCheck className="form-switch" name="Auswahl">
+                <FormCheck.Input
+                  role="switch"
+                  name="Auswahl"
+                  type="radio"
+                  id="all"
+                  value="all"
+                  defaultChecked={Auswahl == "all" ? true : false}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setAuswahl("all");
+                    }
+                  }}
+                />
+                <FormCheck.Label htmlFor="all">Alle</FormCheck.Label>
+              </FormCheck>
+              <FormCheck className="form-switch" name="Auswahl">
+                <FormCheck.Input
+                  role="switch"
+                  name="Auswahl"
+                  type="radio"
+                  id="Kabel"
+                  value="Kabel"
+                  defaultChecked={Auswahl == "Kabel" ? true : false}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setAuswahl("Kabel");
+                    }
+                  }}
+                />
+                <FormCheck.Label htmlFor="Kabel">
+                  Große Kabelwand
+                </FormCheck.Label>
+              </FormCheck>
+              <FormCheck className="form-switch" name="Auswahl">
+                <FormCheck.Input
+                  role="switch"
+                  name="Auswahl"
+                  type="radio"
+                  id="Kiste"
+                  value="Kiste"
+                  defaultChecked={Auswahl == "Kiste" ? true : false}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setAuswahl("Kiste");
+                    }
+                  }}
+                />
+                <FormCheck.Label htmlFor="Kiste">
+                  Kisten unter der Kasse und im Lager
+                </FormCheck.Label>
+              </FormCheck>
+              <FormCheck className="form-switch" name="Auswahl">
+                <FormCheck.Input
+                  role="switch"
+                  name="Auswahl"
+                  type="radio"
+                  id="Telefon"
+                  value="Telefon"
+                  defaultChecked={Auswahl == "Telefon" ? true : false}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setAuswahl("Telefon");
+                    }
+                  }}
+                />
+                <FormCheck.Label htmlFor="Telefon">
+                  Kleine Kabelwand für Telefonkabel
+                </FormCheck.Label>
+              </FormCheck>
+              <FormCheck className="form-switch" name="Auswahl">
+                <FormCheck.Input
+                  role="switch"
+                  name="Auswahl"
+                  type="radio"
+                  id="Restposten"
+                  value="Restposten"
+                  defaultChecked={Auswahl == "Restposten" ? true : false}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setAuswahl("Restposten");
+                    }
+                  }}
+                />
+                <FormCheck.Label htmlFor="Restposten">
+                  Restpostenkisten im Lager
+                </FormCheck.Label>
+              </FormCheck>
+            </fieldset>
+          </Col>
+          {Admin && (
+            <Col>
+              <Row className="mb-3">
+                <Col>
+                  <Link href="/Kabelwand/new" className="btn btn-primary">
+                    Neues Kabel
+                  </Link>
+                </Col>
+              </Row>
+            </Col>
+          )}
+        </Row>
+        {Auswahl === "all" && <CableTable Kabel={AlleKabel} Admin={Admin} />}
+        {Auswahl === "Kabel" && (
+          <CableTable Kabel={KabelwandKabel} Admin={Admin} />
+        )}
+        {Auswahl === "Kiste" && (
+          <CableTable Kabel={KistenKabel} Admin={Admin} />
+        )}
+        {Auswahl === "Telefon" && (
+          <CableTable Kabel={TelefonKabel} Admin={Admin} />
+        )}
+        {Auswahl === "Restposten" && (
+          <Table striped>
+            <thead>
+              <tr>
+                <th>Art. Nr.</th>
+                <th>Artikelname</th>
+                <th>
+                  Bestand <br />
+                </th>
+                <th>
+                  Verfügbar <br />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Restposten.map((Kabel, idx) => (
+                <tr key={idx}>
+                  <td>{Kabel.Artikelnummer}</td>
+                  <td>{Kabel.Name}</td>
+                  <td>{Kabel.Bestand}</td>
+                  <td>{Kabel.Verfügbar}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Container>
+    </>
+  );
+}
