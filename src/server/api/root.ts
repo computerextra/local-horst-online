@@ -4,6 +4,7 @@ import { ArchiveRouter } from "./routers/Archive";
 import { EinkaufBilderRouter } from "./routers/Bilder";
 import { EinkaufRouter } from "./routers/Einkauf";
 import { LieferantenRouter } from "./routers/Lieferanten";
+import { MailRouter } from "./routers/Mail";
 import { MitarbeiterRouter } from "./routers/Mitarbeiter";
 import { WarenlieferungRouter } from "./routers/Warenlieferung";
 
@@ -20,6 +21,7 @@ export const appRouter = createTRPCRouter({
   Einkauf: EinkaufRouter,
   EinkaufBild: EinkaufBilderRouter,
   Warenlieferung: WarenlieferungRouter,
+  Mail: MailRouter,
 });
 
 // export type definition of API
