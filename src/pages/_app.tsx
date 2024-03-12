@@ -1,3 +1,5 @@
+import { Menu } from "@/components/Layout/Menu";
+import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { api } from "@/utils/api";
@@ -17,7 +19,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         fontSans.variable,
       )}
     >
-      <Component {...pageProps} />
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <Menu />
+        <Component {...pageProps} />
+      </ThemeProvider>
     </main>
   );
 };
