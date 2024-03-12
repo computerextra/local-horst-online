@@ -1,20 +1,26 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model pdfs {
+  id    Int    @id @default(autoincrement())
+  title String @db.VarChar(255)
+  body  String @db.Text
 
-    @@index([name])
+  @@index([body])
+  @@index([title, body])
+  @@index([title])
+}
+
+model shorts {
+  id     Int     @id @default(autoincrement())
+  origin String  @db.VarChar(500)
+  short  String  @unique(map: "short") @db.VarChar(255)
+  count  Int?
+  user   String? @db.VarChar(255)
 }
