@@ -11,10 +11,6 @@ model pdfs {
   id    Int    @id @default(autoincrement())
   title String @db.VarChar(255)
   body  String @db.Text
-
-  @@index([body])
-  @@index([title, body])
-  @@index([title])
 }
 
 model shorts {
@@ -23,4 +19,51 @@ model shorts {
   short  String  @unique(map: "short") @db.VarChar(255)
   count  Int?
   user   String? @db.VarChar(255)
+}
+
+model Mitarbeiter {
+  id                 String   @id @unique @default(cuid())
+  Name               String
+  Short              String
+  Gruppenwahl        String?
+  InternTelefon1     String?
+  InternTelefon2     String?
+  FestnetzAlternativ String?
+  FestnetzPrivat     String?
+  HomeOffice         String?
+  MobilBusiness      String?
+  MobilPrivat        String?
+  Email              String?
+  Azubi              Boolean?
+  Einkauf            Einkauf?
+}
+
+model Einkauf {
+  id            String      @id @default(cuid())
+  Paypal        Boolean
+  Abonniert     Boolean
+  Geld          String?
+  Pfand         String?
+  Dinge         String?
+  Bilder        Bild[]
+  Mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id])
+  mitarbeiterId String      @unique
+}
+
+model Bild {
+  id        String   @id @default(cuid())
+  type      String
+  image     String
+  Einkauf   Einkauf? @relation(fields: [einkaufId], references: [id])
+  einkaufId String?
+}
+
+model Warenlieferung {
+  id         Int       @id
+  Name       String
+  angelegt   DateTime  @default(now())
+  geliefert  DateTime?
+  AlterPreis Decimal   @default(0)
+  NeuerPreis Decimal   @default(0)
+  Preis      DateTime?
 }
