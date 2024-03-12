@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -55,34 +56,36 @@ model Bild {
   id        String   @id @default(cuid())
   type      String
   image     String
-  Einkauf   Einkauf? @relation(fields: [einkaufId], references: [id])
+  Einkauf   Einkauf? @relation(fields: [einkaufId], references: [id], onDelete: Cascade)
   einkaufId String?
 }
 
 model Warenlieferung {
-  id         Int       @id
-  Name       String
-  angelegt   DateTime  @default(now())
-  geliefert  DateTime?
-  AlterPreis Decimal   @default(0)
-  NeuerPreis Decimal   @default(0)
-  Preis      DateTime?
+  id            Int       @id
+  Artikelnummer String
+  Name          String
+  angelegt      DateTime  @default(now())
+  geliefert     DateTime?
+  AlterPreis    Decimal?  @default(0)
+  NeuerPreis    Decimal?  @default(0)
+  Preis         DateTime?
 }
 
 model Lieferanten {
-  id                  String            @id @default(cuid())
-  Firma               String
-  Kundennummer        String?
-  Webseite            String?
-  Anschprechpartner   Anschprechpartner @relation(fields: [anschprechpartnerId], references: [id])
-  anschprechpartnerId String
+  id                String              @id @default(cuid())
+  Firma             String
+  Kundennummer      String?
+  Webseite          String?
+  Anschprechpartner Anschprechpartner[]
 }
 
 model Anschprechpartner {
-  id          String        @id @default(cuid())
-  Name        String
-  Telefon     String?
-  Mobil       String?
-  Mail        String?
-  Lieferanten Lieferanten[]
+  id      String  @id @default(cuid())
+  Name    String
+  Telefon String?
+  Mobil   String?
+  Mail    String?
+
+  Lieferanten   Lieferanten? @relation(fields: [lieferantenId], references: [id], onDelete: Cascade)
+  lieferantenId String?
 }

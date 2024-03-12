@@ -32,18 +32,42 @@ dependencies:
   clsx:
     specifier: ^2.1.0
     version: 2.1.0
+  filepond:
+    specifier: ^4.30.6
+    version: 4.30.6
+  filepond-plugin-file-encode:
+    specifier: ^2.1.14
+    version: 2.1.14(filepond@4.30.6)
+  filepond-plugin-file-validate-size:
+    specifier: ^2.2.8
+    version: 2.2.8(filepond@4.30.6)
+  filepond-plugin-image-exif-orientation:
+    specifier: ^1.0.11
+    version: 1.0.11(filepond@4.30.6)
+  filepond-plugin-image-preview:
+    specifier: ^4.6.12
+    version: 4.6.12(filepond@4.30.6)
+  filepond-plugin-image-validate-size:
+    specifier: ^1.2.7
+    version: 1.2.7(filepond@4.30.6)
   lucide-react:
     specifier: ^0.356.0
     version: 0.356.0(react@18.2.0)
   next:
     specifier: ^14.1.0
     version: 14.1.3(react-dom@18.2.0)(react@18.2.0)
+  nodemailer:
+    specifier: ^6.9.12
+    version: 6.9.12
   react:
     specifier: 18.2.0
     version: 18.2.0
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  react-filepond:
+    specifier: ^7.1.2
+    version: 7.1.2(filepond@4.30.6)(react-dom@18.2.0)(react@18.2.0)
   superjson:
     specifier: ^2.2.1
     version: 2.2.1
@@ -64,6 +88,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.11.20
     version: 20.11.26
+  '@types/nodemailer':
+    specifier: ^6.4.14
+    version: 6.4.14
   '@types/react':
     specifier: ^18.2.57
     version: 18.2.65
@@ -496,6 +523,12 @@ packages:
     resolution: {integrity: sha512-YwOMmyhNnAWijOBQweOJnQPl068Oqd4K3OFbTc6AHJwzweUwwWG3GIFY74OKks2PJUDkQPeddOQES9mLn1CTEQ==}
     dependencies:
       undici-types: 5.26.5
+    dev: true
+
+  /@types/nodemailer@6.4.14:
+    resolution: {integrity: sha512-fUWthHO9k9DSdPCSPRqcu6TWhYyxTBg382vlNIttSe9M7XfsT06y0f24KHXtbnijPGGRIcVvdKHTNikOI6qiHA==}
+    dependencies:
+      '@types/node': 20.11.26
     dev: true
 
   /@types/prop-types@15.7.11:
@@ -1616,6 +1649,50 @@ packages:
       flat-cache: 3.2.0
     dev: true
 
+  /filepond-plugin-file-encode@2.1.14(filepond@4.30.6):
+    resolution: {integrity: sha512-uWHCyO9ZwMSime025TCRN7/Nay4+MvTh6DLjzV7i9BaAZ1FOvK1sACLydyjv0rL82rabyTSFEG0M1dA2nnshWg==}
+    peerDependencies:
+      filepond: '>=3.x <5.x'
+    dependencies:
+      filepond: 4.30.6
+    dev: false
+
+  /filepond-plugin-file-validate-size@2.2.8(filepond@4.30.6):
+    resolution: {integrity: sha512-yzb8scATmkWqPTP7oKQz6L8WwJm6Xmgc/fuq6DFGRaLz0I7372BUvBsxagBk/hypMIjvieNzhggm33Y60x3rcw==}
+    peerDependencies:
+      filepond: '>=3.1.2 <5.x'
+    dependencies:
+      filepond: 4.30.6
+    dev: false
+
+  /filepond-plugin-image-exif-orientation@1.0.11(filepond@4.30.6):
+    resolution: {integrity: sha512-hLBc12Fk6Zkj3L8mSAn+elugHOqT5rLUbgVXQQIQjMe0FsGjtpoxqeVR6jt4IWHGat2L9sFAgU2TGmd1mqosCg==}
+    peerDependencies:
+      filepond: '>=3.x <5.x'
+    dependencies:
+      filepond: 4.30.6
+    dev: false
+
+  /filepond-plugin-image-preview@4.6.12(filepond@4.30.6):
+    resolution: {integrity: sha512-Y8ETX5QVV0mbPB0586UH8AUmG9tZg8PuN5bdEAIlZVJFTct5ebViJ7+Am94/VhTPjLqZjBf1zmDq5JU6XRsZKw==}
+    peerDependencies:
+      filepond: '>=4.x <5.x'
+    dependencies:
+      filepond: 4.30.6
+    dev: false
+
+  /filepond-plugin-image-validate-size@1.2.7(filepond@4.30.6):
+    resolution: {integrity: sha512-Sxu2XTbQHf9HRWu+AQg6zJkww0O6hTXq9IX5/SAJLuvohpF23XTzCNg+29KXr4Wulm70/jSSpMcJURn9AU72rA==}
+    peerDependencies:
+      filepond: '>=1.8.x <5.x'
+    dependencies:
+      filepond: 4.30.6
+    dev: false
+
+  /filepond@4.30.6:
+    resolution: {integrity: sha512-gBsVKJgr5HFTkQSA/3R6utne4Qt6Pue0O3+k3IjjVBbaQxMgGMI0fXwoob9SdRRoULCs8BAhWjttM28hOAi/0w==}
+    dev: false
+
   /fill-range@7.0.1:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
     engines: {node: '>=8'}
@@ -2263,6 +2340,11 @@ packages:
       - babel-plugin-macros
     dev: false
 
+  /nodemailer@6.9.12:
+    resolution: {integrity: sha512-pnLo7g37Br3jXbF0bl5DekBJihm2q+3bB3l2o/B060sWmb5l+VqeScAQCBqaQ+5ezRZFzW5SciZNGdRDEbq89w==}
+    engines: {node: '>=6.0.0'}
+    dev: false
+
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
@@ -2596,6 +2678,18 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-filepond@7.1.2(filepond@4.30.6)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-vrlx9o/n+jGikh6jLey+PpUGYtEZn8MdeB6JFeX/5/N/Mu75IHG+MFQbv8R27bNXvS41mDtV9Fo5DG+s6siVIA==}
+    peerDependencies:
+      filepond: '>=3.7.x < 5.x'
+      react: 16 - 18
+      react-dom: 16 - 18
+    dependencies:
+      filepond: 4.30.6
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-is@16.13.1:
