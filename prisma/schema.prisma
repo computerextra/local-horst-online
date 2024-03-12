@@ -47,6 +47,7 @@ model Einkauf {
   Geld          String?
   Pfand         String?
   Dinge         String?
+  Abgeschickt   DateTime?
   Bilder        Bild[]
   Mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id])
   mitarbeiterId String      @unique
