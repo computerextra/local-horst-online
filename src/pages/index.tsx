@@ -28,10 +28,13 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond/dist/filepond.min.css";
 import Head from "next/head";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FilePond, registerPlugin } from "react-filepond";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+// TODO: Bilder gehen nicht!
 
 export default function Home() {
   const Mitarbeiter = api.Mitarbeiter.getAll.useQuery();
@@ -138,7 +141,29 @@ export default function Home() {
                     Was: <br />
                   </p>
                   <pre>{mitarbeiter.Einkauf.Dinge}</pre>
-
+                  {mitarbeiter.Einkauf.Bilder &&
+                    mitarbeiter.Einkauf.Bilder.length > 0 && (
+                      <div className="grid grid-cols-3">
+                        {mitarbeiter.Einkauf.Bilder.map((bild) => {
+                          if (
+                            new Date(bild.Upload).toDateString() ==
+                            new Date().toDateString()
+                          ) {
+                            return (
+                              <Image
+                                key={bild.id}
+                                src={`data:${bild.type};base64,${bild.image}`}
+                                alt="Einkaufen Bild"
+                                height={150}
+                                width={150}
+                                className="mt-2 rounded-lg border object-cover"
+                                style={{ maxHeight: 200 }}
+                              />
+                            );
+                          }
+                        })}
+                      </div>
+                    )}
                   <hr />
                 </div>
               );
@@ -184,10 +209,14 @@ const UpdateForm = ({
   const EinkaufUpdater = api.Einkauf.upsert.useMutation();
   const BildUploader = api.EinkaufBild.create.useMutation();
 
-  const [files, setFiles] = useState();
+  const [file1, setFile1] = useState();
+  const [file2, setFile2] = useState();
+  const [file3, setFile3] = useState();
 
   // Ponds
-  let pond: FilePond | null = null;
+  let pond1: FilePond | null = null;
+  let pond2: FilePond | null = null;
+  let pond3: FilePond | null = null;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -202,16 +231,36 @@ const UpdateForm = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Get Images
-    const ImageTypes: string[] = [],
-      Images: string[] = [];
+    let Bild1Type = "",
+      Bild1 = "";
+    let Bild2Type = "",
+      Bild2 = "";
+    let Bild3Type = "",
+      Bild3 = "";
 
-    if (pond) {
-      const files = pond.getFiles();
+    if (pond1) {
+      const files = pond1.getFiles();
       files.forEach((file) => {
-        Images.push(file.getFileEncodeBase64String());
-        ImageTypes.push(file.fileType);
+        Bild1 = file.getFileEncodeBase64String();
+        Bild1Type = file.fileType;
       });
-      pond.processFiles(files).catch((err) => console.error(err));
+      pond1.processFiles(files).catch((err) => console.error(err));
+    }
+    if (pond2) {
+      const files = pond2.getFiles();
+      files.forEach((file) => {
+        Bild2 = file.getFileEncodeBase64String();
+        Bild2Type = file.fileType;
+      });
+      pond2.processFiles(files).catch((err) => console.error(err));
+    }
+    if (pond3) {
+      const files = pond3.getFiles();
+      files.forEach((file) => {
+        Bild3 = file.getFileEncodeBase64String();
+        Bild3Type = file.fileType;
+      });
+      pond3.processFiles(files).catch((err) => console.error(err));
     }
 
     const res = await EinkaufUpdater.mutateAsync({
@@ -224,19 +273,30 @@ const UpdateForm = ({
     if (res) {
       // Einkauf wurde angelegt oder Aktualisiert, wir haben auf jeden Fall eine ID.
       // Wir können jetzt die Bilder hochladen.
-      if (Images.length > 0) {
-        for (let i = 0; i < Images.length; i++) {
-          if (Images[i] && ImageTypes[i]) {
-            await BildUploader.mutateAsync({
-              einkaufId: res.id,
-              image: Images[i]!,
-              type: ImageTypes[i]!,
-            });
-          }
-        }
+      if (Bild1) {
+        await BildUploader.mutateAsync({
+          einkaufId: res.id,
+          image: Bild1,
+          type: Bild1Type,
+        });
       }
+      if (Bild2) {
+        await BildUploader.mutateAsync({
+          einkaufId: res.id,
+          image: Bild2,
+          type: Bild2Type,
+        });
+      }
+      if (Bild3) {
+        await BildUploader.mutateAsync({
+          einkaufId: res.id,
+          image: Bild3,
+          type: Bild3Type,
+        });
+      }
+
+      location.reload();
     }
-    // location.reload();
   }
 
   return (
@@ -324,24 +384,65 @@ const UpdateForm = ({
             </FormItem>
           )}
         />
-        <FilePond
-          files={files}
-          // @ts-expect-error Filepond ist komisch in React.
-          onupdatefiles={setFiles}
-          allowMultiple={true}
-          ref={(ref) => {
-            pond = ref;
-          }}
-          allowFileEncode={true}
-          allowFileSizeValidation={true}
-          maxFileSize={"1MB"}
-          labelMaxFileSizeExceeded={"Das Bild ist zu groß!"}
-          labelMaxFileSize="Maximal 1 MB"
-          maxFiles={3}
-          server="https://httpbin.org/post"
-          name="files"
-          labelIdle='Bilder hier ablegen oder <span class="filepond--label-action">Durchsuchen</span>'
-        />
+        <div className="grid grid-cols-3 gap-4">
+          <FilePond
+            files={file1}
+            ref={(ref) => {
+              pond1 = ref;
+            }}
+            allowFileEncode
+            // @ts-expect-error Filepond ist komisch in React.
+            onupdatefiles={setFile1}
+            allowFileSizeValidation={true}
+            maxFileSize={"1MB"}
+            labelMaxFileSizeExceeded={"Das Bild ist zu groß!"}
+            labelMaxFileSize="Maximal 1 MB"
+            instantUpload={false}
+            allowMultiple={false}
+            maxFiles={1}
+            server="https://httpbin.org/post"
+            name="file1"
+            labelIdle="Bild hier ablegen oder <span className='filepond--label-action'>Durchsuchen</span>"
+          />
+          <FilePond
+            files={file2}
+            ref={(ref) => {
+              pond2 = ref;
+            }}
+            allowFileEncode
+            // @ts-expect-error Filepond ist komisch in React.
+            onupdatefiles={setFile2}
+            allowFileSizeValidation={true}
+            maxFileSize={"1MB"}
+            labelMaxFileSizeExceeded={"Das Bild ist zu groß!"}
+            labelMaxFileSize="Maximal 1 MB"
+            instantUpload={false}
+            allowMultiple={false}
+            maxFiles={1}
+            server="https://httpbin.org/post"
+            name="file1"
+            labelIdle="Bild hier ablegen oder <span className='filepond--label-action'>Durchsuchen</span>"
+          />
+          <FilePond
+            files={file3}
+            ref={(ref) => {
+              pond3 = ref;
+            }}
+            allowFileEncode
+            // @ts-expect-error Filepond ist komisch in React.
+            onupdatefiles={setFile3}
+            allowFileSizeValidation={true}
+            maxFileSize={"1MB"}
+            labelMaxFileSizeExceeded={"Das Bild ist zu groß!"}
+            labelMaxFileSize="Maximal 1 MB"
+            instantUpload={false}
+            allowMultiple={false}
+            maxFiles={1}
+            server="https://httpbin.org/post"
+            name="file1"
+            labelIdle="Bild hier ablegen oder <span className='filepond--label-action'>Durchsuchen</span>"
+          />
+        </div>
 
         <Button type="submit">Submit</Button>
       </form>

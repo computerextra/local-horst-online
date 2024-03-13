@@ -6,7 +6,11 @@ export const MitarbeiterRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.mitarbeiter.findMany({
       include: {
-        Einkauf: true,
+        Einkauf: {
+          include: {
+            Bilder: true,
+          },
+        },
       },
     });
   }),
@@ -14,13 +18,6 @@ export const MitarbeiterRouter = createTRPCRouter({
     return ctx.db.mitarbeiter.findUnique({
       where: {
         id: input,
-      },
-      include: {
-        Einkauf: {
-          include: {
-            Bilder: true,
-          },
-        },
       },
     });
   }),
