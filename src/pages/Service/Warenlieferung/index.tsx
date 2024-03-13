@@ -7,13 +7,16 @@ import { useState } from "react";
 export default function WarenlieferungPage() {
   const [generiert, setGeneriert] = useState(false);
   const [Msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const Warenlieferung = api.Warenlieferung.get.useQuery();
   const WarenlieferungGenerator = api.Warenlieferung.generate.useMutation();
   const WarenlieferungsSender = api.Mail.sendWarenlieferung.useMutation();
 
   const generate = async () => {
+    setLoading(true);
     await WarenlieferungGenerator.mutateAsync();
     setGeneriert(true);
+    setLoading(false);
   };
 
   const sendMail = async () => {
@@ -46,61 +49,78 @@ export default function WarenlieferungPage() {
         </div>
         <p className="text-2xl">{Msg}</p>
       </SectionCard>
-      <SectionCard title="Warenlieferung">
-        <h2>Neue Artikel</h2>
-        <ul>
-          {Warenlieferung.data?.map((item) => {
-            if (
-              new Date(item.angelegt).toDateString() ==
-              new Date().toDateString()
-            ) {
-              return (
-                <li key={item.id}>
-                  <strong>{item.Artikelnummer}</strong>: {item.Name}
-                </li>
-              );
-            }
-          })}
-        </ul>
-        <h2>Gelieferte Artikel</h2>
-        <ul>
-          {Warenlieferung.data?.map((item) => {
-            if (
-              item.geliefert &&
-              new Date(item.geliefert).toDateString() ==
-                new Date().toDateString() &&
-              new Date(item.angelegt).toDateString() !=
-                new Date().toDateString()
-            ) {
-              return (
-                <li key={item.id}>
-                  <strong>{item.Artikelnummer}</strong>: {item.Name}
-                </li>
-              );
-            }
-          })}
-        </ul>
-        <h2>Preisänderungen</h2>
-        <ul>
-          {Warenlieferung.data?.map((item) => {
-            if (
-              item.Preis &&
-              new Date(item.Preis).toDateString() ==
-                new Date().toDateString() &&
-              item.AlterPreis &&
-              item.NeuerPreis
-            ) {
-              return (
-                <li key={item.id}>
-                  <strong>{item.Artikelnummer}</strong>: {item.Name} -{" "}
-                  {item.AlterPreis.toString()} =&gt;{" "}
-                  {item.NeuerPreis.toString()}
-                </li>
-              );
-            }
-          })}
-        </ul>
-      </SectionCard>
+      {loading ? (
+        <div className="text-center text-9xl font-bold">BIN LADEN ...</div>
+      ) : (
+        <SectionCard title="Warenlieferung">
+          {generiert && (
+            <>
+              <h2 className="my-4 text-2xl font-semibold underline">
+                Neue Artikel
+              </h2>
+              <ul>
+                {Warenlieferung.data?.map((item) => {
+                  if (
+                    new Date(item.angelegt).toDateString() ==
+                    new Date().toDateString()
+                  ) {
+                    return (
+                      <li key={item.id}>
+                        <strong>{item.Artikelnummer}</strong>: {item.Name}
+                      </li>
+                    );
+                  }
+                })}
+              </ul>
+              <h2 className="my-4 text-2xl font-semibold underline">
+                Gelieferte Artikel
+              </h2>
+              <ul>
+                {Warenlieferung.data?.map((item) => {
+                  if (
+                    item.geliefert &&
+                    new Date(item.geliefert).toDateString() ==
+                      new Date().toDateString() &&
+                    new Date(item.angelegt).toDateString() !=
+                      new Date().toDateString()
+                  ) {
+                    return (
+                      <li key={item.id}>
+                        <strong>{item.Artikelnummer}</strong>: {item.Name}
+                      </li>
+                    );
+                  }
+                })}
+              </ul>
+              <h2 className="my-4 text-2xl font-semibold underline">
+                Preisänderungen
+              </h2>
+              <ul>
+                {Warenlieferung.data?.map((item) => {
+                  if (
+                    item.Preis &&
+                    new Date(item.Preis).toDateString() ==
+                      new Date().toDateString() &&
+                    new Date(item.angelegt).toDateString() !=
+                      new Date(item.Preis).toDateString() &&
+                    item.AlterPreis &&
+                    item.NeuerPreis &&
+                    item.AlterPreis != item.NeuerPreis
+                  ) {
+                    return (
+                      <li key={item.id}>
+                        <strong>{item.Artikelnummer}</strong>: {item.Name} -&gt;{" "}
+                        {item.AlterPreis.toString()} =&gt;{" "}
+                        {item.NeuerPreis.toString()}
+                      </li>
+                    );
+                  }
+                })}
+              </ul>
+            </>
+          )}
+        </SectionCard>
+      )}
     </>
   );
 }

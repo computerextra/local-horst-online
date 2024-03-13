@@ -35,7 +35,7 @@ import { FilePond, registerPlugin } from "react-filepond";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-// TODO: Bilder gehen nicht!
+// TODO: Bilder gehen nicht! Werden nicht angezeigt.
 
 export default function Home() {
   const Mitarbeiter = api.Mitarbeiter.getAll.useQuery();

@@ -2,8 +2,6 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { Prisma, type Warenlieferung } from "@prisma/client";
 import type { sg_auf_artikel } from "prisma/generated/Sage";
 
-// TODO: Das Ding ist so Janky, das muss getestet werden.
-
 const heute = new Date().toDateString();
 const morgen = new Date(
   new Date().setDate(new Date().getDate() + 1),
