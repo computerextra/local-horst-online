@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -78,8 +79,31 @@ export default function Home() {
     }
   }, [ausgewählterMitarbeiter]);
 
+  const [showAbrechnung, setShowAbrechnung] = useState(false);
+
   if (Mitarbeiter.isLoading) return <p>Loading...</p>;
   if (Mitarbeiter.error) return <p>Error: {Mitarbeiter.error.message}</p>;
+
+  const Print = () => {
+    console.log("Print");
+    const area = document.querySelector("[data-druck=true]");
+    if (area == null) return;
+    console.log("Area found");
+    const myWindow = window.open("", "PRINT", "height=1000,width=1200");
+    if (myWindow == null) return;
+    console.log("Window found");
+    myWindow.document.write("<html><body style='white-space: pre-line;'>");
+    myWindow.document.write("<h1>Einkaufsliste</h1>");
+    myWindow.document.write("<h2>POST MITNEHMEN!</h2>");
+    myWindow.document.write(area.innerHTML);
+    myWindow.document.write("</body></html>");
+    myWindow.document.close();
+    myWindow.focus();
+    myWindow.print();
+    setTimeout(() => {
+      myWindow.close();
+    }, 2000);
+  };
 
   return (
     <>
@@ -90,86 +114,104 @@ export default function Home() {
       </Head>
       <main>
         <SectionCard title="Einkaufen">
-          <Select
-            value={ausgewählterMitarbeiter?.id}
-            onValueChange={(value) =>
-              setAusgewählterMitarbeiter(
-                Mitarbeiter.data?.find(
-                  (mitarbeiter) => mitarbeiter.id == value,
-                ),
-              )
-            }
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Mitarbeiter" />
-            </SelectTrigger>
-            <SelectContent>
-              {Mitarbeiter.data?.map((mitarbeiter) => (
-                <SelectItem key={mitarbeiter.id} value={mitarbeiter.id}>
-                  {mitarbeiter.Name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="grid grid-cols-3 gap-4">
+            <Select
+              value={ausgewählterMitarbeiter?.id}
+              onValueChange={(value) =>
+                setAusgewählterMitarbeiter(
+                  Mitarbeiter.data?.find(
+                    (mitarbeiter) => mitarbeiter.id == value,
+                  ),
+                )
+              }
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Mitarbeiter" />
+              </SelectTrigger>
+              <SelectContent>
+                {Mitarbeiter.data?.map((mitarbeiter) => (
+                  <SelectItem key={mitarbeiter.id} value={mitarbeiter.id}>
+                    {mitarbeiter.Name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              variant="outline"
+              onClick={() => setShowAbrechnung(!showAbrechnung)}
+            >
+              Abrechnung
+            </Button>
+            <Button variant="outline" onClick={Print}>
+              Drucken
+            </Button>
+          </div>
           <div className="mt-5">
             {EinkaufMitarbeiter && (
               <UpdateForm mitarbeiter={EinkaufMitarbeiter} />
             )}
           </div>
         </SectionCard>
-        <SectionCard title="Einkaufsliste">
-          {Mitarbeiter.data?.map((mitarbeiter) => {
-            if (
-              mitarbeiter.Einkauf?.Abgeschickt &&
-              new Date(mitarbeiter.Einkauf.Abgeschickt).toDateString() ==
-                new Date().toDateString()
-            ) {
-              return (
-                <div key={mitarbeiter.id}>
-                  <p>Wer: {mitarbeiter.Name}</p>
-                  <p>Pfand: {mitarbeiter.Einkauf.Pfand}</p>
+        {showAbrechnung && (
+          <SectionCard title="Abrechnung Paypal">
+            <AbrechnungsForm Mitarbeiter={Mitarbeiter.data} />
+          </SectionCard>
+        )}
+        <div data-druck="true">
+          <SectionCard title="Einkaufsliste">
+            {Mitarbeiter.data?.map((mitarbeiter) => {
+              if (
+                mitarbeiter.Einkauf?.Abgeschickt &&
+                new Date(mitarbeiter.Einkauf.Abgeschickt).toDateString() ==
+                  new Date().toDateString()
+              ) {
+                return (
+                  <div key={mitarbeiter.id}>
+                    <p>Wer: {mitarbeiter.Name}</p>
+                    <p>Pfand: {mitarbeiter.Einkauf.Pfand}</p>
 
-                  {mitarbeiter.Einkauf.Paypal ? (
-                    <p className="text-red-500">Paypal</p>
-                  ) : (
-                    <p>Geld: {mitarbeiter.Einkauf.Geld}</p>
-                  )}
-                  {mitarbeiter.Einkauf.Abonniert && (
-                    <p className="text-green-600">Abonnierter Einkauf</p>
-                  )}
-                  <p>
-                    Was: <br />
-                  </p>
-                  <pre>{mitarbeiter.Einkauf.Dinge}</pre>
-                  {mitarbeiter.Einkauf.Bilder &&
-                    mitarbeiter.Einkauf.Bilder.length > 0 && (
-                      <div className="grid grid-cols-3">
-                        {mitarbeiter.Einkauf.Bilder.map((bild) => {
-                          if (
-                            new Date(bild.Upload).toDateString() ==
-                            new Date().toDateString()
-                          ) {
-                            return (
-                              <Image
-                                key={bild.id}
-                                src={`data:${bild.type};base64,${bild.image}`}
-                                alt="Einkaufen Bild"
-                                height={150}
-                                width={150}
-                                className="mt-2 rounded-lg border object-cover"
-                                style={{ maxHeight: 200 }}
-                              />
-                            );
-                          }
-                        })}
-                      </div>
+                    {mitarbeiter.Einkauf.Paypal ? (
+                      <p className="text-red-500">Paypal</p>
+                    ) : (
+                      <p>Geld: {mitarbeiter.Einkauf.Geld}</p>
                     )}
-                  <hr />
-                </div>
-              );
-            }
-          })}
-        </SectionCard>
+                    {mitarbeiter.Einkauf.Abonniert && (
+                      <p className="text-green-600">Abonnierter Einkauf</p>
+                    )}
+                    <p>
+                      Was: <br />
+                    </p>
+                    <pre>{mitarbeiter.Einkauf.Dinge}</pre>
+                    {mitarbeiter.Einkauf.Bilder &&
+                      mitarbeiter.Einkauf.Bilder.length > 0 && (
+                        <div className="grid grid-cols-3">
+                          {mitarbeiter.Einkauf.Bilder.map((bild) => {
+                            if (
+                              new Date(bild.Upload).toDateString() ==
+                              new Date().toDateString()
+                            ) {
+                              return (
+                                <Image
+                                  key={bild.id}
+                                  src={`data:${bild.type};base64,${bild.image}`}
+                                  alt="Einkaufen Bild"
+                                  height={150}
+                                  width={150}
+                                  className="mt-2 rounded-lg border object-cover"
+                                  style={{ maxHeight: 200 }}
+                                />
+                              );
+                            }
+                          })}
+                        </div>
+                      )}
+                    <hr />
+                  </div>
+                );
+              }
+            })}
+          </SectionCard>
+        </div>
       </main>
     </>
   );
@@ -447,5 +489,95 @@ const UpdateForm = ({
         <Button type="submit">Submit</Button>
       </form>
     </Form>
+  );
+};
+
+const AbrechnungsForm = ({
+  Mitarbeiter,
+}: {
+  Mitarbeiter: ({
+    Einkauf: {
+      id: string;
+      Paypal: boolean;
+      Abonniert: boolean;
+      Geld: string | null;
+      Pfand: string | null;
+      Dinge: string | null;
+      Abgeschickt: Date | null;
+      mitarbeiterId: string;
+    } | null;
+  } & Mitarbeiter)[];
+}) => {
+  const [username, setUsername] = useState<string | undefined>(undefined);
+  const [Betrag, setBetrag] = useState<string | undefined>(undefined);
+  const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
+
+  const PaypalMailSender = api.Mail.sendPaypalMail.useMutation();
+
+  const sendMail = async () => {
+    if (username == null) return;
+    if (Betrag == null) return;
+    if (selectedId == null) return;
+
+    const res = await PaypalMailSender.mutateAsync({
+      id: selectedId,
+      username: username,
+      Schulden: Betrag,
+    });
+
+    if (res == "Sent") {
+      alert("E-Mail gesendet");
+    } else {
+      alert("E-Mail nicht gesendet");
+    }
+  };
+
+  return (
+    <div>
+      <Input
+        type="text"
+        placeholder="Dein Paypalbenutzername"
+        onChange={(e) => setUsername(e.target.value)}
+        value={username}
+        className="my-3"
+      />
+      <p className="py-2">Gespeicherter Benutzername für Paypal: {username}</p>
+      <Select onValueChange={setSelectedId}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Mitarbeiter" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {Mitarbeiter.map((mitarbeiter) => {
+              if (
+                mitarbeiter.Einkauf?.Abgeschickt &&
+                new Date(mitarbeiter.Einkauf?.Abgeschickt).toDateString() ==
+                  new Date().toDateString() &&
+                mitarbeiter.Einkauf.Paypal &&
+                mitarbeiter.Email
+              ) {
+                return (
+                  <SelectItem key={mitarbeiter.id} value={mitarbeiter.id}>
+                    {mitarbeiter.Name}
+                  </SelectItem>
+                );
+              }
+            })}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <div className="grid grid-cols-3 items-center gap-4">
+        <Input
+          type="text"
+          placeholder="Zu zahlender Betrag (in Euro)"
+          onChange={(e) => setBetrag(e.target.value)}
+          value={Betrag}
+          className="col-span-2 my-3"
+        />
+        <Button variant="outline" onClick={sendMail}>
+          Mail Senden
+        </Button>
+      </div>
+    </div>
   );
 };
