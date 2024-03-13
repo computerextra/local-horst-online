@@ -16,7 +16,11 @@ export const MitarbeiterRouter = createTRPCRouter({
         id: input,
       },
       include: {
-        Einkauf: true,
+        Einkauf: {
+          include: {
+            Bilder: true,
+          },
+        },
       },
     });
   }),

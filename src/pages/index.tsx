@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,39 +16,64 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Mitarbeiter } from "@prisma/client";
+import FilePondPluginFileEncode from "filepond-plugin-file-encode";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import "filepond/dist/filepond.min.css";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FilePond, registerPlugin } from "react-filepond";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
 
 export default function Home() {
   const Mitarbeiter = api.Mitarbeiter.getAll.useQuery();
 
   const [ausgewählterMitarbeiter, setAusgewählterMitarbeiter] = useState<
-    Mitarbeiter | undefined
+    | ({
+        Einkauf: {
+          id: string;
+          Paypal: boolean;
+          Abonniert: boolean;
+          Geld: string | null;
+          Pfand: string | null;
+          Dinge: string | null;
+          Abgeschickt: Date | null;
+          mitarbeiterId: string;
+        } | null;
+      } & Mitarbeiter)
+    | undefined
+  >(undefined);
+  const [EinkaufMitarbeiter, setEinkaufMitarbeiter] = useState<
+    | ({
+        Einkauf: {
+          id: string;
+          Paypal: boolean;
+          Abonniert: boolean;
+          Geld: string | null;
+          Pfand: string | null;
+          Dinge: string | null;
+          Abgeschickt: Date | null;
+          mitarbeiterId: string;
+        } | null;
+      } & Mitarbeiter)
+    | undefined
   >(undefined);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  useEffect(() => {
+    if (ausgewählterMitarbeiter == undefined) {
+      setEinkaufMitarbeiter(undefined);
+    } else {
+      setEinkaufMitarbeiter(ausgewählterMitarbeiter);
+    }
+  }, [ausgewählterMitarbeiter]);
 
   if (Mitarbeiter.isLoading) return <p>Loading...</p>;
   if (Mitarbeiter.error) return <p>Error: {Mitarbeiter.error.message}</p>;
@@ -63,48 +87,32 @@ export default function Home() {
       </Head>
       <main>
         <SectionCard title="Einkaufen">
-          <Select>
+          <Select
+            value={ausgewählterMitarbeiter?.id}
+            onValueChange={(value) =>
+              setAusgewählterMitarbeiter(
+                Mitarbeiter.data?.find(
+                  (mitarbeiter) => mitarbeiter.id == value,
+                ),
+              )
+            }
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Mitarbeiter" />
             </SelectTrigger>
             <SelectContent>
               {Mitarbeiter.data?.map((mitarbeiter) => (
-                <SelectItem
-                  key={mitarbeiter.id}
-                  value={mitarbeiter.id}
-                  onClick={() => setAusgewählterMitarbeiter(mitarbeiter)}
-                >
+                <SelectItem key={mitarbeiter.id} value={mitarbeiter.id}>
                   {mitarbeiter.Name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          {ausgewählterMitarbeiter != undefined && (
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Username</FormLabel>
-                      <FormControl>
-                        <Input placeholder="shadcn" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        This is your public display name.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit">Submit</Button>
-              </form>
-            </Form>
-          )}
+          <div className="mt-5">
+            {EinkaufMitarbeiter && (
+              <UpdateForm mitarbeiter={EinkaufMitarbeiter} />
+            )}
+          </div>
         </SectionCard>
         <SectionCard title="Einkaufsliste">
           {Mitarbeiter.data?.map((mitarbeiter) => {
@@ -117,8 +125,20 @@ export default function Home() {
                 <div key={mitarbeiter.id}>
                   <p>Wer: {mitarbeiter.Name}</p>
                   <p>Pfand: {mitarbeiter.Einkauf.Pfand}</p>
-                  <p>Geld: {mitarbeiter.Einkauf.Geld}</p>
-                  <p>Was: {mitarbeiter.Einkauf.Dinge}</p>
+
+                  {mitarbeiter.Einkauf.Paypal ? (
+                    <p className="text-red-500">Paypal</p>
+                  ) : (
+                    <p>Geld: {mitarbeiter.Einkauf.Geld}</p>
+                  )}
+                  {mitarbeiter.Einkauf.Abonniert && (
+                    <p className="text-green-600">Abonnierter Einkauf</p>
+                  )}
+                  <p>
+                    Was: <br />
+                  </p>
+                  <pre>{mitarbeiter.Einkauf.Dinge}</pre>
+
                   <hr />
                 </div>
               );
@@ -129,3 +149,202 @@ export default function Home() {
     </>
   );
 }
+
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginFileValidateSize,
+  FilePondPluginImagePreview,
+  FilePondPluginFileEncode,
+);
+
+const formSchema = z.object({
+  Paypal: z.boolean().default(false),
+  Abonniert: z.boolean().default(false),
+  Geld: z.string().optional(),
+  Pfand: z.string().optional(),
+  Dinge: z.string().optional(),
+});
+
+const UpdateForm = ({
+  mitarbeiter,
+}: {
+  mitarbeiter: {
+    Einkauf: {
+      id: string;
+      Paypal: boolean;
+      Abonniert: boolean;
+      Geld: string | null;
+      Pfand: string | null;
+      Dinge: string | null;
+      Abgeschickt: Date | null;
+      mitarbeiterId: string;
+    } | null;
+  } & Mitarbeiter;
+}) => {
+  const EinkaufUpdater = api.Einkauf.upsert.useMutation();
+  const BildUploader = api.EinkaufBild.create.useMutation();
+
+  const [files, setFiles] = useState();
+
+  // Ponds
+  let pond: FilePond | null = null;
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      Paypal: mitarbeiter.Einkauf?.Paypal,
+      Abonniert: mitarbeiter.Einkauf?.Abonniert,
+      Geld: mitarbeiter.Einkauf?.Geld ?? undefined,
+      Pfand: mitarbeiter.Einkauf?.Pfand ?? undefined,
+      Dinge: mitarbeiter.Einkauf?.Dinge ?? undefined,
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Get Images
+    const ImageTypes: string[] = [],
+      Images: string[] = [];
+
+    if (pond) {
+      const files = pond.getFiles();
+      files.forEach((file) => {
+        Images.push(file.getFileEncodeBase64String());
+        ImageTypes.push(file.fileType);
+      });
+      pond.processFiles(files).catch((err) => console.error(err));
+    }
+
+    const res = await EinkaufUpdater.mutateAsync({
+      id: mitarbeiter.Einkauf?.id,
+      ...values,
+      mitarbeiterId: mitarbeiter.id,
+      Abgeschickt: new Date(),
+    });
+
+    if (res) {
+      // Einkauf wurde angelegt oder Aktualisiert, wir haben auf jeden Fall eine ID.
+      // Wir können jetzt die Bilder hochladen.
+      if (Images.length > 0) {
+        for (let i = 0; i < Images.length; i++) {
+          if (Images[i] && ImageTypes[i]) {
+            await BildUploader.mutateAsync({
+              einkaufId: res.id,
+              image: Images[i]!,
+              type: ImageTypes[i]!,
+            });
+          }
+        }
+      }
+    }
+    // location.reload();
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="Paypal"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Paypal</FormLabel>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="Geld"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Geld</FormLabel>
+                <FormControl>
+                  <Input placeholder="Geld" {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Pfand"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Pfand</FormLabel>
+                <FormControl>
+                  <Input placeholder="Pfand" {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+          control={form.control}
+          name="Dinge"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Bio</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Was darf es denn sein?"
+                  className="resize-none"
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="Abonniert"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Abonniert?</FormLabel>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FilePond
+          files={files}
+          // @ts-expect-error Filepond ist komisch in React.
+          onupdatefiles={setFiles}
+          allowMultiple={true}
+          ref={(ref) => {
+            pond = ref;
+          }}
+          allowFileEncode={true}
+          allowFileSizeValidation={true}
+          maxFileSize={"1MB"}
+          labelMaxFileSizeExceeded={"Das Bild ist zu groß!"}
+          labelMaxFileSize="Maximal 1 MB"
+          maxFiles={3}
+          server="https://httpbin.org/post"
+          name="files"
+          labelIdle='Bilder hier ablegen oder <span class="filepond--label-action">Durchsuchen</span>'
+        />
+
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
+  );
+};

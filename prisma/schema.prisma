@@ -57,6 +57,7 @@ model Bild {
   id        String   @id @default(cuid())
   type      String
   image     String
+  Upload    DateTime @default(now())
   Einkauf   Einkauf? @relation(fields: [einkaufId], references: [id], onDelete: Cascade)
   einkaufId String?
 }
