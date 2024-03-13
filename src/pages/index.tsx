@@ -10,9 +10,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { Mitarbeiter } from "@prisma/client";
 import Head from "next/head";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,6 +34,10 @@ const formSchema = z.object({
 export default function Home() {
   const Mitarbeiter = api.Mitarbeiter.getAll.useQuery();
 
+  const [ausgewählterMitarbeiter, setAusgewählterMitarbeiter] = useState<
+    Mitarbeiter | undefined
+  >(undefined);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,7 +45,7 @@ export default function Home() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -50,35 +63,55 @@ export default function Home() {
       </Head>
       <main>
         <SectionCard title="Einkaufen">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Submit</Button>
-            </form>
-          </Form>
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Mitarbeiter" />
+            </SelectTrigger>
+            <SelectContent>
+              {Mitarbeiter.data?.map((mitarbeiter) => (
+                <SelectItem
+                  key={mitarbeiter.id}
+                  value={mitarbeiter.id}
+                  onClick={() => setAusgewählterMitarbeiter(mitarbeiter)}
+                >
+                  {mitarbeiter.Name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {ausgewählterMitarbeiter != undefined && (
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="shadcn" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        This is your public display name.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Submit</Button>
+              </form>
+            </Form>
+          )}
         </SectionCard>
         <SectionCard title="Einkaufsliste">
           {Mitarbeiter.data?.map((mitarbeiter) => {
             if (
               mitarbeiter.Einkauf?.Abgeschickt &&
-              new Date(
-                mitarbeiter.Einkauf.Abgeschickt as Date,
-              ).toDateString() == new Date().toDateString()
+              new Date(mitarbeiter.Einkauf.Abgeschickt).toDateString() ==
+                new Date().toDateString()
             ) {
               return (
                 <div key={mitarbeiter.id}>
