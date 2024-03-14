@@ -1,39 +1,18 @@
 import SectionCard from "@/components/SectionCard";
 import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/utils/api";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { Mitarbeiter } from "@prisma/client";
-import FilePondPluginFileEncode from "filepond-plugin-file-encode";
-import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import "filepond/dist/filepond.min.css";
 import Head from "next/head";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FilePond, registerPlugin } from "react-filepond";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import AbrechnungsForm from "./AbrechnungsForm";
+import EinkaufUpdateForm from "./EinkaufUpdateForm";
 
 // TODO: Bilder gehen nicht! Werden nicht angezeigt.
 
@@ -148,7 +127,7 @@ export default function Home() {
           </div>
           <div className="mt-5">
             {EinkaufMitarbeiter && (
-              <UpdateForm mitarbeiter={EinkaufMitarbeiter} />
+              <EinkaufUpdateForm mitarbeiter={EinkaufMitarbeiter} />
             )}
           </div>
         </SectionCard>
@@ -182,29 +161,23 @@ export default function Home() {
                       Was: <br />
                     </p>
                     <pre>{mitarbeiter.Einkauf.Dinge}</pre>
-                    {mitarbeiter.Einkauf.Bilder &&
-                      mitarbeiter.Einkauf.Bilder.length > 0 && (
-                        <div className="grid grid-cols-3">
-                          {mitarbeiter.Einkauf.Bilder.map((bild) => {
-                            if (
-                              new Date(bild.Upload).toDateString() ==
-                              new Date().toDateString()
-                            ) {
-                              return (
-                                <Image
-                                  key={bild.id}
-                                  src={`data:${bild.type};base64,${bild.image}`}
-                                  alt="Einkaufen Bild"
-                                  height={150}
-                                  width={150}
-                                  className="mt-2 rounded-lg border object-cover"
-                                  style={{ maxHeight: 200 }}
-                                />
-                              );
-                            }
-                          })}
-                        </div>
-                      )}
+                    <div className="grid grid-cols-3">
+                      {mitarbeiter.Einkauf.Bild1 &&
+                        new Date(
+                          mitarbeiter.Einkauf.Bild1Date,
+                        ).toDateString() == new Date().toDateString() &&
+                        mitarbeiter.Einkauf.Bild1.length > 0 && (
+                          <img
+                            key={mitarbeiter.id + "Bild1"}
+                            src={`/Upload/${mitarbeiter.Einkauf.Bild1}`}
+                            alt="Einkaufen Bild"
+                            height={150}
+                            width={150}
+                            className="mt-2 rounded-lg border object-cover"
+                            style={{ maxHeight: 200 }}
+                          />
+                        )}
+                    </div>
                     <hr />
                   </div>
                 );
@@ -216,368 +189,3 @@ export default function Home() {
     </>
   );
 }
-
-registerPlugin(
-  FilePondPluginImageExifOrientation,
-  FilePondPluginFileValidateSize,
-  FilePondPluginImagePreview,
-  FilePondPluginFileEncode,
-);
-
-const formSchema = z.object({
-  Paypal: z.boolean().default(false),
-  Abonniert: z.boolean().default(false),
-  Geld: z.string().optional(),
-  Pfand: z.string().optional(),
-  Dinge: z.string().optional(),
-});
-
-const UpdateForm = ({
-  mitarbeiter,
-}: {
-  mitarbeiter: {
-    Einkauf: {
-      id: string;
-      Paypal: boolean;
-      Abonniert: boolean;
-      Geld: string | null;
-      Pfand: string | null;
-      Dinge: string | null;
-      Abgeschickt: Date | null;
-      mitarbeiterId: string;
-    } | null;
-  } & Mitarbeiter;
-}) => {
-  const EinkaufUpdater = api.Einkauf.upsert.useMutation();
-  const BildUploader = api.EinkaufBild.create.useMutation();
-
-  const [file1, setFile1] = useState();
-  const [file2, setFile2] = useState();
-  const [file3, setFile3] = useState();
-
-  // Ponds
-  let pond1: FilePond | null = null;
-  let pond2: FilePond | null = null;
-  let pond3: FilePond | null = null;
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      Paypal: mitarbeiter.Einkauf?.Paypal,
-      Abonniert: mitarbeiter.Einkauf?.Abonniert,
-      Geld: mitarbeiter.Einkauf?.Geld ?? undefined,
-      Pfand: mitarbeiter.Einkauf?.Pfand ?? undefined,
-      Dinge: mitarbeiter.Einkauf?.Dinge ?? undefined,
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Get Images
-    let Bild1Type = "",
-      Bild1 = "";
-    let Bild2Type = "",
-      Bild2 = "";
-    let Bild3Type = "",
-      Bild3 = "";
-
-    if (pond1) {
-      const files = pond1.getFiles();
-      files.forEach((file) => {
-        Bild1 = file.getFileEncodeBase64String();
-        Bild1Type = file.fileType;
-      });
-      pond1.processFiles(files).catch((err) => console.error(err));
-    }
-    if (pond2) {
-      const files = pond2.getFiles();
-      files.forEach((file) => {
-        Bild2 = file.getFileEncodeBase64String();
-        Bild2Type = file.fileType;
-      });
-      pond2.processFiles(files).catch((err) => console.error(err));
-    }
-    if (pond3) {
-      const files = pond3.getFiles();
-      files.forEach((file) => {
-        Bild3 = file.getFileEncodeBase64String();
-        Bild3Type = file.fileType;
-      });
-      pond3.processFiles(files).catch((err) => console.error(err));
-    }
-
-    const res = await EinkaufUpdater.mutateAsync({
-      id: mitarbeiter.Einkauf?.id,
-      ...values,
-      mitarbeiterId: mitarbeiter.id,
-      Abgeschickt: new Date(),
-    });
-
-    if (res) {
-      // Einkauf wurde angelegt oder Aktualisiert, wir haben auf jeden Fall eine ID.
-      // Wir können jetzt die Bilder hochladen.
-      if (Bild1) {
-        await BildUploader.mutateAsync({
-          einkaufId: res.id,
-          image: Bild1,
-          type: Bild1Type,
-        });
-      }
-      if (Bild2) {
-        await BildUploader.mutateAsync({
-          einkaufId: res.id,
-          image: Bild2,
-          type: Bild2Type,
-        });
-      }
-      if (Bild3) {
-        await BildUploader.mutateAsync({
-          einkaufId: res.id,
-          image: Bild3,
-          type: Bild3Type,
-        });
-      }
-
-      location.reload();
-    }
-  }
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="Paypal"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Paypal</FormLabel>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="Geld"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Geld</FormLabel>
-                <FormControl>
-                  <Input placeholder="Geld" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Pfand"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Pfand</FormLabel>
-                <FormControl>
-                  <Input placeholder="Pfand" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <FormField
-          control={form.control}
-          name="Dinge"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Was darf es denn sein?"
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="Abonniert"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <FormLabel className="text-base">Abonniert?</FormLabel>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <div className="grid grid-cols-3 gap-4">
-          <FilePond
-            files={file1}
-            ref={(ref) => {
-              pond1 = ref;
-            }}
-            allowFileEncode
-            // @ts-expect-error Filepond ist komisch in React.
-            onupdatefiles={setFile1}
-            allowFileSizeValidation={true}
-            maxFileSize={"1MB"}
-            labelMaxFileSizeExceeded={"Das Bild ist zu groß!"}
-            labelMaxFileSize="Maximal 1 MB"
-            instantUpload={false}
-            allowMultiple={false}
-            maxFiles={1}
-            server="https://httpbin.org/post"
-            name="file1"
-            labelIdle="Bild hier ablegen oder <span className='filepond--label-action'>Durchsuchen</span>"
-          />
-          <FilePond
-            files={file2}
-            ref={(ref) => {
-              pond2 = ref;
-            }}
-            allowFileEncode
-            // @ts-expect-error Filepond ist komisch in React.
-            onupdatefiles={setFile2}
-            allowFileSizeValidation={true}
-            maxFileSize={"1MB"}
-            labelMaxFileSizeExceeded={"Das Bild ist zu groß!"}
-            labelMaxFileSize="Maximal 1 MB"
-            instantUpload={false}
-            allowMultiple={false}
-            maxFiles={1}
-            server="https://httpbin.org/post"
-            name="file1"
-            labelIdle="Bild hier ablegen oder <span className='filepond--label-action'>Durchsuchen</span>"
-          />
-          <FilePond
-            files={file3}
-            ref={(ref) => {
-              pond3 = ref;
-            }}
-            allowFileEncode
-            // @ts-expect-error Filepond ist komisch in React.
-            onupdatefiles={setFile3}
-            allowFileSizeValidation={true}
-            maxFileSize={"1MB"}
-            labelMaxFileSizeExceeded={"Das Bild ist zu groß!"}
-            labelMaxFileSize="Maximal 1 MB"
-            instantUpload={false}
-            allowMultiple={false}
-            maxFiles={1}
-            server="https://httpbin.org/post"
-            name="file1"
-            labelIdle="Bild hier ablegen oder <span className='filepond--label-action'>Durchsuchen</span>"
-          />
-        </div>
-
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
-  );
-};
-
-const AbrechnungsForm = ({
-  Mitarbeiter,
-}: {
-  Mitarbeiter: ({
-    Einkauf: {
-      id: string;
-      Paypal: boolean;
-      Abonniert: boolean;
-      Geld: string | null;
-      Pfand: string | null;
-      Dinge: string | null;
-      Abgeschickt: Date | null;
-      mitarbeiterId: string;
-    } | null;
-  } & Mitarbeiter)[];
-}) => {
-  const [username, setUsername] = useState<string | undefined>(undefined);
-  const [Betrag, setBetrag] = useState<string | undefined>(undefined);
-  const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
-
-  const PaypalMailSender = api.Mail.sendPaypalMail.useMutation();
-
-  const sendMail = async () => {
-    if (username == null) return;
-    if (Betrag == null) return;
-    if (selectedId == null) return;
-
-    const res = await PaypalMailSender.mutateAsync({
-      id: selectedId,
-      username: username,
-      Schulden: Betrag,
-    });
-
-    if (res == "Sent") {
-      alert("E-Mail gesendet");
-    } else {
-      alert("E-Mail nicht gesendet");
-    }
-  };
-
-  return (
-    <div>
-      <Input
-        type="text"
-        placeholder="Dein Paypalbenutzername"
-        onChange={(e) => setUsername(e.target.value)}
-        value={username}
-        className="my-3"
-      />
-      <p className="py-2">Gespeicherter Benutzername für Paypal: {username}</p>
-      <Select onValueChange={setSelectedId}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Mitarbeiter" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {Mitarbeiter.map((mitarbeiter) => {
-              if (
-                mitarbeiter.Einkauf?.Abgeschickt &&
-                new Date(mitarbeiter.Einkauf?.Abgeschickt).toDateString() ==
-                  new Date().toDateString() &&
-                mitarbeiter.Einkauf.Paypal &&
-                mitarbeiter.Email
-              ) {
-                return (
-                  <SelectItem key={mitarbeiter.id} value={mitarbeiter.id}>
-                    {mitarbeiter.Name}
-                  </SelectItem>
-                );
-              }
-            })}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <div className="grid grid-cols-3 items-center gap-4">
-        <Input
-          type="text"
-          placeholder="Zu zahlender Betrag (in Euro)"
-          onChange={(e) => setBetrag(e.target.value)}
-          value={Betrag}
-          className="col-span-2 my-3"
-        />
-        <Button variant="outline" onClick={sendMail}>
-          Mail Senden
-        </Button>
-      </div>
-    </div>
-  );
-};

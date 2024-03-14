@@ -14,6 +14,9 @@ export const EinkaufRouter = createTRPCRouter({
         Dinge: z.string().optional(),
         mitarbeiterId: z.string(),
         Abgeschickt: z.date(),
+        Bild1: z.string().optional(),
+        Bild2: z.string().optional(),
+        Bild3: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

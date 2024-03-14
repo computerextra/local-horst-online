@@ -6,11 +6,7 @@ export const MitarbeiterRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.mitarbeiter.findMany({
       include: {
-        Einkauf: {
-          include: {
-            Bilder: true,
-          },
-        },
+        Einkauf: true,
       },
     });
   }),

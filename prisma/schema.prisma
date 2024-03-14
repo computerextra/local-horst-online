@@ -48,18 +48,14 @@ model Einkauf {
   Pfand         String?
   Dinge         String?
   Abgeschickt   DateTime?
-  Bilder        Bild[]
+  Bild1         String?
+  Bild1Date     DateTime    @default(now())
+  Bild2         String?
+  Bild2Date     DateTime    @default(now())
+  Bild3         String?
+  Bild3Date     DateTime    @default(now())
   Mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id])
   mitarbeiterId String      @unique
-}
-
-model Bild {
-  id        String   @id @default(cuid())
-  type      String
-  image     String
-  Upload    DateTime @default(now())
-  Einkauf   Einkauf? @relation(fields: [einkaufId], references: [id], onDelete: Cascade)
-  einkaufId String?
 }
 
 model Warenlieferung {
