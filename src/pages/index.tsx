@@ -10,6 +10,7 @@ import {
 import { api } from "@/utils/api";
 import type { Mitarbeiter } from "@prisma/client";
 import Head from "next/head";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import AbrechnungsForm from "./AbrechnungsForm";
 import EinkaufUpdateForm from "./EinkaufUpdateForm";
@@ -167,9 +168,9 @@ export default function Home() {
                           mitarbeiter.Einkauf.Bild1Date,
                         ).toDateString() == new Date().toDateString() &&
                         mitarbeiter.Einkauf.Bild1.length > 0 && (
-                          <img
+                          <Image
                             key={mitarbeiter.id + "Bild1"}
-                            src={`/Upload/${mitarbeiter.Einkauf.Bild1}`}
+                            src={mitarbeiter.Einkauf.Bild1}
                             alt="Einkaufen Bild"
                             height={150}
                             width={150}

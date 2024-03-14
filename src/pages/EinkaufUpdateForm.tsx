@@ -11,10 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/utils/api";
+import { UploadButton } from "@/utils/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Mitarbeiter } from "@prisma/client";
-import Image from "next/image";
-import React, { useState } from "react";
+import "@uploadthing/react/styles.css";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -43,37 +44,10 @@ export default function EinkaufUpdateForm({
   } & Mitarbeiter;
 }) {
   const EinkaufUpdater = api.Einkauf.upsert.useMutation();
-  const BildUploader = api.EinkaufBild.upload.useMutation();
 
-  const [file1, setFile1] = useState<File | undefined>();
-  const [checkFile1, setCheckFile1] = useState(false);
-  const [file2, setFile2] = useState<File | undefined>();
-  const [checkFile2, setCheckFile2] = useState(false);
-  const [file3, setFile3] = useState<File | undefined>();
-  const [checkFile3, setCheckFile3] = useState(false);
-
-  const imageHandler = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
-    const { files } = e.target;
-    if (files == null) return;
-    const selectedFiles = files;
-    switch (id) {
-      case 1: {
-        setFile1(selectedFiles?.[0]);
-        setCheckFile1(true);
-        break;
-      }
-      case 2: {
-        setFile2(selectedFiles?.[0]);
-        setCheckFile2(true);
-        break;
-      }
-      case 3: {
-        setFile3(selectedFiles?.[0]);
-        setCheckFile3(true);
-        break;
-      }
-    }
-  };
+  const [file1, setFile1] = useState<string | undefined>();
+  const [file2, setFile2] = useState<string | undefined>();
+  const [file3, setFile3] = useState<string | undefined>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,40 +64,19 @@ export default function EinkaufUpdateForm({
     // TODO: Get Images
     // TODO: Bilder verarbeiten und hochloden
 
-    const encoder = cipher();
+    // const encoder = cipher();
     let filename1: string | undefined = undefined,
       filename2: string | undefined = undefined,
       filename3: string | undefined = undefined;
-    // Upload Images
+    // // Upload Images
     if (file1) {
-      const base64 = (await convertBase64(file1)) as string;
-      const encString = encoder(base64);
-      filename1 = await BildUploader.mutateAsync({
-        file: encString,
-        filetype: base64.split(";")[0]!.split("/")[1]!,
-        mitarbeiterId: mitarbeiter.id,
-        imageNo: 1,
-      });
+      filename1 = file1;
     }
     if (file2) {
-      const base64 = (await convertBase64(file2)) as string;
-      const encString = encoder(base64);
-      filename2 = await BildUploader.mutateAsync({
-        file: encString,
-        filetype: base64.split(";")[0]!.split("/")[1]!,
-        mitarbeiterId: mitarbeiter.id,
-        imageNo: 2,
-      });
+      filename2 = file2;
     }
     if (file3) {
-      const base64 = (await convertBase64(file3)) as string;
-      const encString = encoder(base64);
-      filename3 = await BildUploader.mutateAsync({
-        file: encString,
-        filetype: base64.split(";")[0]!.split("/")[1]!,
-        mitarbeiterId: mitarbeiter.id,
-        imageNo: 3,
-      });
+      filename3 = file3;
     }
 
     const res = await EinkaufUpdater.mutateAsync({
@@ -227,6 +180,62 @@ export default function EinkaufUpdateForm({
           )}
         />
         <div className="grid grid-cols-3 gap-4">
+          <UploadButton
+            endpoint="imageUploader"
+            content={{
+              button({ ready }) {
+                if (ready) return <div>Bild 1 Hochladen</div>;
+
+                return "Warten ...";
+              },
+            }}
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setFile1(res[0]?.url);
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
+          <UploadButton
+            endpoint="imageUploader"
+            content={{
+              button({ ready }) {
+                if (ready) return <div>Bild 2 Hochladen</div>;
+
+                return "Warten ...";
+              },
+            }}
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setFile2(res[0]?.url);
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
+          <UploadButton
+            endpoint="imageUploader"
+            content={{
+              button({ ready }) {
+                if (ready) return <div>Bild 2 Hochladen</div>;
+
+                return "Warten ...";
+              },
+            }}
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              setFile3(res[0]?.url);
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
+        </div>
+        {/* <div className="grid grid-cols-3 gap-4">
           <div className="grid w-[320px] gap-2">
             <div className="relative flex h-24 cursor-pointer items-center justify-center rounded-lg border-2">
               <input
@@ -291,9 +300,9 @@ export default function EinkaufUpdateForm({
                   {checkFile3 ? file3?.name : "choose a file"}
                 </span>
               </div>
-            </div>
-          </div>
-        </div>
+            </div> 
+          </div> 
+        </div> */}
 
         <Button type="submit">Submit</Button>
       </form>

@@ -31,6 +31,7 @@
     "@trpc/next": "^10.45.1",
     "@trpc/react-query": "^10.45.1",
     "@trpc/server": "^10.45.1",
+    "@uploadthing/react": "^6.4.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.4.0",
@@ -52,6 +53,7 @@
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.6.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
