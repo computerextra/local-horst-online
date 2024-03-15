@@ -3,6 +3,9 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 export const MitarbeiterRouter = createTRPCRouter({
+  getBirthday: publicProcedure.query(({ ctx }) => {
+    return ctx.db.mitarbeiter.findMany({});
+  }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.mitarbeiter.findMany({
       include: {
