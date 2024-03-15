@@ -187,10 +187,13 @@ export const MailRouter = createTRPCRouter({
       HTML_PREISE = "<hr /><h2>Preisänderungen</h2>";
       Preis.map((item) => {
         if (
-          item.Artikelnummer != null &&
-          item.Name != null &&
-          item.AlterPreis != null &&
-          item.NeuerPreis != null
+          item.Preis &&
+          new Date(item.Preis).toDateString() == new Date().toDateString() &&
+          new Date(item.angelegt).toDateString() !=
+            new Date(item.Preis).toDateString() &&
+          item.AlterPreis &&
+          item.NeuerPreis &&
+          item.AlterPreis != item.NeuerPreis
         ) {
           if (item.AlterPreis != item.NeuerPreis)
             HTML_PREISE += `<b>${item.Artikelnummer}</b>: ${item.Name} - Alt: ${item.AlterPreis.toString()}0€ => Neu: ${item.NeuerPreis.toString()}0€ <br />`;
