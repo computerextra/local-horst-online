@@ -164,18 +164,48 @@ export default function Home() {
                     <pre>{mitarbeiter.Einkauf.Dinge}</pre>
                     <div className="grid grid-cols-3">
                       {mitarbeiter.Einkauf.Bild1 &&
+                        mitarbeiter.Einkauf.Bild1Date &&
                         new Date(
                           mitarbeiter.Einkauf.Bild1Date,
                         ).toDateString() == new Date().toDateString() &&
                         mitarbeiter.Einkauf.Bild1.length > 0 && (
                           <Image
-                            key={mitarbeiter.id + "Bild1"}
                             src={mitarbeiter.Einkauf.Bild1}
                             alt="Einkaufen Bild"
                             height={150}
                             width={150}
-                            className="mt-2 rounded-lg border object-cover"
-                            style={{ maxHeight: 200 }}
+                            className="object-fit mt-2 rounded-lg border"
+                            style={{ maxHeight: 200, width: "auto" }}
+                          />
+                        )}
+                      {mitarbeiter.Einkauf.Bild2 &&
+                        mitarbeiter.Einkauf.Bild2Date &&
+                        new Date(
+                          mitarbeiter.Einkauf.Bild2Date,
+                        ).toDateString() == new Date().toDateString() &&
+                        mitarbeiter.Einkauf.Bild2.length > 0 && (
+                          <Image
+                            src={mitarbeiter.Einkauf.Bild2}
+                            alt="Einkaufen Bild"
+                            height={150}
+                            width={150}
+                            className="object-fit mt-2 rounded-lg border"
+                            style={{ maxHeight: 200, width: "auto" }}
+                          />
+                        )}
+                      {mitarbeiter.Einkauf.Bild3 &&
+                        mitarbeiter.Einkauf.Bild3Date &&
+                        new Date(
+                          mitarbeiter.Einkauf.Bild3Date,
+                        ).toDateString() == new Date().toDateString() &&
+                        mitarbeiter.Einkauf.Bild3.length > 0 && (
+                          <Image
+                            src={mitarbeiter.Einkauf.Bild3}
+                            alt="Einkaufen Bild"
+                            height={150}
+                            width={150}
+                            className="object-fit mt-2 rounded-lg border"
+                            style={{ maxHeight: 200, width: "auto" }}
                           />
                         )}
                     </div>

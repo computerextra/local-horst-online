@@ -49,11 +49,11 @@ model Einkauf {
   Dinge         String?
   Abgeschickt   DateTime?
   Bild1         String?
-  Bild1Date     DateTime    @default(now())
+  Bild1Date     DateTime?
   Bild2         String?
-  Bild2Date     DateTime    @default(now())
+  Bild2Date     DateTime?
   Bild3         String?
-  Bild3Date     DateTime    @default(now())
+  Bild3Date     DateTime?
   Mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id])
   mitarbeiterId String      @unique
 }

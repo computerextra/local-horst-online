@@ -15,6 +15,7 @@ import { UploadButton } from "@/utils/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Mitarbeiter } from "@prisma/client";
 import "@uploadthing/react/styles.css";
+import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -45,9 +46,12 @@ export default function EinkaufUpdateForm({
 }) {
   const EinkaufUpdater = api.Einkauf.upsert.useMutation();
 
-  const [file1, setFile1] = useState<string | undefined>();
-  const [file2, setFile2] = useState<string | undefined>();
-  const [file3, setFile3] = useState<string | undefined>();
+  const [file1, setFile1] = useState<string | undefined>(undefined);
+  const [file2, setFile2] = useState<string | undefined>(undefined);
+  const [file3, setFile3] = useState<string | undefined>(undefined);
+
+  const [allowed2, setAllowed2] = useState(false);
+  const [allowed3, setAllowed3] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,21 +65,20 @@ export default function EinkaufUpdateForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO: Get Images
-    // TODO: Bilder verarbeiten und hochloden
+    // TODO: Wenn keine Bilder da sind, diese aus der DB löschen!°
 
     // const encoder = cipher();
     let filename1: string | undefined = undefined,
       filename2: string | undefined = undefined,
       filename3: string | undefined = undefined;
     // // Upload Images
-    if (file1) {
+    if (file1 != null) {
       filename1 = file1;
     }
-    if (file2) {
+    if (file2 != null) {
       filename2 = file2;
     }
-    if (file3) {
+    if (file3 != null) {
       filename3 = file3;
     }
 
@@ -90,7 +93,7 @@ export default function EinkaufUpdateForm({
     });
 
     if (res) {
-      // location.reload();
+      location.reload();
     }
   }
 
@@ -180,60 +183,81 @@ export default function EinkaufUpdateForm({
           )}
         />
         <div className="grid grid-cols-3 gap-4">
-          <UploadButton
-            endpoint="imageUploader"
-            content={{
-              button({ ready }) {
-                if (ready) return <div>Bild 1 Hochladen</div>;
-
-                return "Warten ...";
-              },
-            }}
-            onClientUploadComplete={(res) => {
-              // Do something with the response
-              setFile1(res[0]?.url);
-            }}
-            onUploadError={(error: Error) => {
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`);
-            }}
-          />
-          <UploadButton
-            endpoint="imageUploader"
-            content={{
-              button({ ready }) {
-                if (ready) return <div>Bild 2 Hochladen</div>;
-
-                return "Warten ...";
-              },
-            }}
-            onClientUploadComplete={(res) => {
-              // Do something with the response
-              setFile2(res[0]?.url);
-            }}
-            onUploadError={(error: Error) => {
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`);
-            }}
-          />
-          <UploadButton
-            endpoint="imageUploader"
-            content={{
-              button({ ready }) {
-                if (ready) return <div>Bild 2 Hochladen</div>;
-
-                return "Warten ...";
-              },
-            }}
-            onClientUploadComplete={(res) => {
-              // Do something with the response
-              setFile3(res[0]?.url);
-            }}
-            onUploadError={(error: Error) => {
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`);
-            }}
-          />
+          <div className="flex flex-col items-center">
+            {file1 && (
+              <Image
+                width={200}
+                height={200}
+                className="mb-5 rounded-lg"
+                style={{ maxHeight: 200, width: "auto" }}
+                src={file1}
+                alt="Uploaded image"
+              />
+            )}
+            <UploadButton
+              endpoint="imageUploader"
+              onClientUploadComplete={(res) => {
+                // Do something with the response
+                setFile1(res[0]?.url);
+                setAllowed2(true);
+              }}
+              onUploadError={(error: Error) => {
+                // Do something with the error.
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+          </div>
+          {allowed2 && (
+            <div className="flex flex-col items-center justify-center">
+              {file2 && (
+                <Image
+                  width={200}
+                  height={200}
+                  className="mb-5 rounded-lg"
+                  style={{ maxHeight: 200, width: "auto" }}
+                  src={file2}
+                  alt="Uploaded image"
+                />
+              )}
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  // Do something with the response
+                  setFile2(res[0]?.url);
+                  setAllowed3(true);
+                }}
+                onUploadError={(error: Error) => {
+                  // Do something with the error.
+                  alert(`ERROR! ${error.message}`);
+                }}
+              />
+            </div>
+          )}
+          {allowed3 && (
+            <div className="flex flex-col items-center justify-center">
+              {file3 && (
+                <Image
+                  width={200}
+                  height={200}
+                  className="mb-5 rounded-lg"
+                  style={{ maxHeight: 200, width: "auto" }}
+                  src={file3}
+                  alt="Uploaded image"
+                />
+              )}
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  // Do something with the response
+                  setFile3(res[0]?.url);
+                }}
+                onUploadError={(error: Error) => {
+                  // Do something with the error.
+                  alert(`ERROR! ${error.message}`);
+                }}
+              />
+            </div>
+          )}
         </div>
         {/* <div className="grid grid-cols-3 gap-4">
           <div className="grid w-[320px] gap-2">

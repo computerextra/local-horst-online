@@ -20,15 +20,30 @@ export const EinkaufRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      console.log("BILD1", input.Bild1);
+      console.log("BILD2", input.Bild2);
+      console.log("BILD3", input.Bild3);
       return ctx.db.einkauf.upsert({
         where: {
           mitarbeiterId: input.mitarbeiterId,
         },
         create: {
           ...input,
+          Bild1: input.Bild1 ? input.Bild1 : null,
+          Bild2: input.Bild2 ? input.Bild2 : null,
+          Bild3: input.Bild3 ? input.Bild3 : null,
+          Bild1Date: input.Bild1 ? new Date() : null,
+          Bild2Date: input.Bild2 ? new Date() : null,
+          Bild3Date: input.Bild3 ? new Date() : null,
         },
         update: {
           ...input,
+          Bild1: input.Bild1 ? input.Bild1 : null,
+          Bild2: input.Bild2 ? input.Bild2 : null,
+          Bild3: input.Bild3 ? input.Bild3 : null,
+          Bild1Date: input.Bild1 ? new Date() : null,
+          Bild2Date: input.Bild2 ? new Date() : null,
+          Bild3Date: input.Bild3 ? new Date() : null,
         },
       });
     }),
