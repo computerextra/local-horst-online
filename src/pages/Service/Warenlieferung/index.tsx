@@ -5,7 +5,6 @@ import { LoaderIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function WarenlieferungPage() {
-  const [generiert, setGeneriert] = useState(false);
   const [Msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const Warenlieferung = api.Warenlieferung.get.useQuery();
@@ -15,7 +14,7 @@ export default function WarenlieferungPage() {
   const generate = async () => {
     setLoading(true);
     await WarenlieferungGenerator.mutateAsync();
-    setGeneriert(true);
+
     setLoading(false);
   };
 
@@ -39,11 +38,7 @@ export default function WarenlieferungPage() {
           <Button variant="secondary" onClick={generate}>
             Generieren
           </Button>
-          <Button
-            variant="destructive"
-            disabled={!generiert}
-            onClick={sendMail}
-          >
+          <Button variant="destructive" onClick={sendMail}>
             Senden
           </Button>
         </div>
@@ -63,38 +58,46 @@ export default function WarenlieferungPage() {
                   Neue Artikel
                 </h2>
                 <ul>
-                  {Warenlieferung.data?.map((item) => {
-                    if (
-                      new Date(item.angelegt).toDateString() ==
-                      new Date().toDateString()
-                    ) {
-                      return (
-                        <li key={item.id}>
-                          <strong>{item.Artikelnummer}</strong>: {item.Name}
-                        </li>
-                      );
-                    }
-                  })}
+                  {Warenlieferung.data
+                    ?.sort((a, b) =>
+                      a.Artikelnummer.localeCompare(b.Artikelnummer),
+                    )
+                    .map((item) => {
+                      if (
+                        new Date(item.angelegt).toDateString() ==
+                        new Date().toDateString()
+                      ) {
+                        return (
+                          <li key={item.id}>
+                            <strong>{item.Artikelnummer}</strong>: {item.Name}
+                          </li>
+                        );
+                      }
+                    })}
                 </ul>
                 <h2 className="my-4 text-2xl font-semibold underline">
                   Gelieferte Artikel
                 </h2>
                 <ul>
-                  {Warenlieferung.data?.map((item) => {
-                    if (
-                      item.geliefert &&
-                      new Date(item.geliefert).toDateString() ==
-                        new Date().toDateString() &&
-                      new Date(item.angelegt).toDateString() !=
-                        new Date().toDateString()
-                    ) {
-                      return (
-                        <li key={item.id}>
-                          <strong>{item.Artikelnummer}</strong>: {item.Name}
-                        </li>
-                      );
-                    }
-                  })}
+                  {Warenlieferung.data
+                    ?.sort((a, b) =>
+                      a.Artikelnummer.localeCompare(b.Artikelnummer),
+                    )
+                    .map((item) => {
+                      if (
+                        item.geliefert &&
+                        new Date(item.geliefert).toDateString() ==
+                          new Date().toDateString() &&
+                        new Date(item.angelegt).toDateString() !=
+                          new Date().toDateString()
+                      ) {
+                        return (
+                          <li key={item.id}>
+                            <strong>{item.Artikelnummer}</strong>: {item.Name}
+                          </li>
+                        );
+                      }
+                    })}
                 </ul>
                 <h2 className="my-4 text-2xl font-semibold underline">
                   Preisänderungen
