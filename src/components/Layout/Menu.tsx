@@ -41,7 +41,7 @@ const Internal: Props[] = [
     description: "Aktueller RSS Feed von Heise Sec. und Dr. Datenschutz",
   },
   {
-    title: "Kabelwand",
+    title: "Kabelwand NYI",
     href: "/",
     description: "Hier könnte mal eine Kabelwand App kommen!",
   },
