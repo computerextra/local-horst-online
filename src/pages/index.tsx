@@ -12,8 +12,8 @@ import type { Mitarbeiter } from "@prisma/client";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import AbrechnungsForm from "./AbrechnungsForm";
-import EinkaufUpdateForm from "./EinkaufUpdateForm";
+import AbrechnungsForm from "./_components/AbrechnungsForm";
+import EinkaufUpdateForm from "./_components/EinkaufUpdateForm";
 
 // TODO: Bilder gehen nicht! Werden nicht angezeigt.
 
