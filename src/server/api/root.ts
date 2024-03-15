@@ -1,7 +1,6 @@
 import { createTRPCRouter } from "@/server/api/trpc";
 import { AnsprechpartnerRouter } from "./routers/Ansprechpartner";
 import { ArchiveRouter } from "./routers/Archive";
-import { EinkaufBilderRouter } from "./routers/Bilder";
 import { EinkaufRouter } from "./routers/Einkauf";
 import { LieferantenRouter } from "./routers/Lieferanten";
 import { MailRouter } from "./routers/Mail";
@@ -19,7 +18,6 @@ export const appRouter = createTRPCRouter({
   Archive: ArchiveRouter,
   Mitarbeiter: MitarbeiterRouter,
   Einkauf: EinkaufRouter,
-  EinkaufBild: EinkaufBilderRouter,
   Warenlieferung: WarenlieferungRouter,
   Mail: MailRouter,
 });
