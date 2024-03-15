@@ -12,7 +12,7 @@ import {
 import { api } from "@/utils/api";
 import type { Mitarbeiter } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, Check, MoreHorizontal, X } from "lucide-react";
 import Link from "next/link";
 
 export const columns: ColumnDef<Mitarbeiter>[] = [
@@ -45,10 +45,30 @@ export const columns: ColumnDef<Mitarbeiter>[] = [
   {
     accessorKey: "FestnetzAlternativ",
     header: "Tel.",
+    cell: ({ row }) => {
+      const mitarbeiter = row.original;
+      return mitarbeiter.FestnetzAlternativ ? (
+        <a className="underline" href={`tel:${mitarbeiter.FestnetzAlternativ}`}>
+          {mitarbeiter.FestnetzAlternativ}
+        </a>
+      ) : (
+        "-"
+      );
+    },
   },
   {
     accessorKey: "FestnetzPrivat",
     header: "Tel. Priv",
+    cell: ({ row }) => {
+      const mitarbeiter = row.original;
+      return mitarbeiter.FestnetzPrivat ? (
+        <a className="underline" href={`tel:${mitarbeiter.FestnetzPrivat}`}>
+          {mitarbeiter.FestnetzPrivat}
+        </a>
+      ) : (
+        "-"
+      );
+    },
   },
   {
     accessorKey: "HomeOffice",
@@ -57,10 +77,30 @@ export const columns: ColumnDef<Mitarbeiter>[] = [
   {
     accessorKey: "MobilBusiness",
     header: "Mobil Bus.",
+    cell: ({ row }) => {
+      const mitarbeiter = row.original;
+      return mitarbeiter.MobilBusiness ? (
+        <a className="underline" href={`tel:${mitarbeiter.MobilBusiness}`}>
+          {mitarbeiter.MobilBusiness}
+        </a>
+      ) : (
+        "-"
+      );
+    },
   },
   {
     accessorKey: "MobilPrivat",
     header: "Mobil Priv.",
+    cell: ({ row }) => {
+      const mitarbeiter = row.original;
+      return mitarbeiter.MobilPrivat ? (
+        <a className="underline" href={`tel:${mitarbeiter.MobilPrivat}`}>
+          {mitarbeiter.MobilPrivat}
+        </a>
+      ) : (
+        "-"
+      );
+    },
   },
   {
     accessorKey: "Email",
@@ -75,6 +115,16 @@ export const columns: ColumnDef<Mitarbeiter>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const mitarbeiter = row.original;
+      return mitarbeiter.Email ? (
+        <a className="underline" href={`mailto:${mitarbeiter.Email}`}>
+          {mitarbeiter.Email}
+        </a>
+      ) : (
+        "-"
+      );
+    },
   },
   {
     accessorKey: "Azubi",
@@ -87,6 +137,14 @@ export const columns: ColumnDef<Mitarbeiter>[] = [
           Azubi
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const mitarbeiter = row.original;
+      return mitarbeiter.Azubi ? (
+        <Check color="#27b41d" />
+      ) : (
+        <X color="#b41d1d" />
       );
     },
   },
