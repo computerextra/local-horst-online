@@ -7,9 +7,6 @@ export default function BirthdayPage() {
   const Mitarbeiter = api.Mitarbeiter.getBirthday.useQuery();
 
   const [zukunft, setZukuenft] = useState<Mitarbeiter[] | undefined>(undefined);
-  const [vergangen, setVergangen] = useState<Mitarbeiter[] | undefined>(
-    undefined,
-  );
   const [geburtstag, setGeburtstag] = useState<Mitarbeiter[] | undefined>(
     undefined,
   );
@@ -20,20 +17,27 @@ export default function BirthdayPage() {
     const today = new Date().toLocaleDateString();
     const year = new Date().getFullYear();
 
+    const z: Mitarbeiter[] = [];
+    const g: Mitarbeiter[] = [];
+
     Mitarbeiter.data.forEach((mitarbeiter) => {
       if (mitarbeiter.Geburtstag) {
         const day = new Date(mitarbeiter.Geburtstag).getDate();
         const month = new Date(mitarbeiter.Geburtstag).getMonth();
         const bday = new Date(year, month, day).toLocaleDateString();
         if (bday === today) {
-          setGeburtstag((prev) => [...(prev ?? []), mitarbeiter]);
-        } else if (bday < today) {
-          setVergangen((prev) => [...(prev ?? []), mitarbeiter]);
+          g.push(mitarbeiter);
         } else {
-          setZukuenft((prev) => [...(prev ?? []), mitarbeiter]);
+          z.push(mitarbeiter);
         }
       }
     });
+
+    // Sort Mitarbeiter
+    z.sort((a, b) => a.Name.localeCompare(b.Name));
+
+    setZukuenft(z);
+    setGeburtstag(g);
   }, [Mitarbeiter.data]);
 
   if (Mitarbeiter.isLoading) return <p>Loading...</p>;
@@ -58,30 +62,11 @@ export default function BirthdayPage() {
           </ul>
         </>
       )}
-      {vergangen && vergangen.length > 0 && (
-        <>
-          {geburtstag && geburtstag.length > 0 && <hr />}
 
-          <h2 className="py-4 text-2xl">Vergangene Geburtstage</h2>
-          <ul>
-            {vergangen.map((mitarbeiter) => (
-              <li key={mitarbeiter.id}>
-                {mitarbeiter.Name} am{" "}
-                {mitarbeiter.Geburtstag &&
-                  new Date(
-                    new Date().getFullYear(),
-                    new Date(mitarbeiter.Geburtstag).getMonth(),
-                    new Date(mitarbeiter.Geburtstag).getDate(),
-                  ).toLocaleDateString()}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
       {zukunft && zukunft.length > 0 && (
         <>
-          {vergangen && vergangen.length > 0 && <hr />}
-          <h2 className="py-4 text-2xl">Zukünftige Geburtstage</h2>
+          {geburtstag && geburtstag.length > 0 && <hr />}
+          <h2 className="py-4 text-2xl">Annere Geburtstage</h2>
           <ul>
             {zukunft.map((mitarbeiter) => (
               <li key={mitarbeiter.id}>
