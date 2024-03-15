@@ -12,6 +12,8 @@ model pdfs {
   id    Int    @id @default(autoincrement())
   title String @db.VarChar(255)
   body  String @db.Text
+
+  @@fulltext([title, body])
 }
 
 model shorts {
