@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -42,64 +43,69 @@ export default function NewAp() {
   }
 
   return (
-    <SectionCard title="Neuer Ansprechpartner">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="Name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Peter Pan" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Telefon"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Telefon</FormLabel>
-                <FormControl>
-                  <Input placeholder="0561/601440" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Mobil"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mobil</FormLabel>
-                <FormControl>
-                  <Input placeholder="0151/123456" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Mail"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mail</FormLabel>
-                <FormControl>
-                  <Input placeholder="U7lT6@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
-    </SectionCard>
+    <>
+      <Head>
+        <title>LocalHorst V9 | Neuer Ansprechpartner</title>
+      </Head>
+      <SectionCard title="Neuer Ansprechpartner">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="Name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Peter Pan" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Telefon"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Telefon</FormLabel>
+                  <FormControl>
+                    <Input placeholder="0561/601440" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Mobil"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mobil</FormLabel>
+                  <FormControl>
+                    <Input placeholder="0151/123456" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Mail"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mail</FormLabel>
+                  <FormControl>
+                    <Input placeholder="U7lT6@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+      </SectionCard>
+    </>
   );
 }

@@ -1,16 +1,17 @@
 import SectionCard from "@/components/SectionCard";
 import { Button } from "@/components/ui/button";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Head from "next/head";
 import type { sg_auf_artikel } from "prisma/generated/Sage";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -52,6 +53,9 @@ export default function CESN() {
 
   return (
     <>
+      <Head>
+        <title>LocalHorst V9 | Seriennummern</title>
+      </Head>
       <SectionCard title="CE Seriennummern">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

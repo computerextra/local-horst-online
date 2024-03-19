@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Anschprechpartner } from "@prisma/client";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,9 +27,14 @@ export default function NewAp() {
   if (AP.isError) return <p>Error</p>;
 
   return (
-    <SectionCard title={AP.data?.Name + " bearbeiten"}>
-      <UpdateForm id={id as string} Ap={AP.data!} />
-    </SectionCard>
+    <>
+      <Head>
+        <title>LocalHorst V9 | {AP.data?.Name + " bearbeiten"}</title>
+      </Head>
+      <SectionCard title={AP.data?.Name + " bearbeiten"}>
+        <UpdateForm id={id as string} Ap={AP.data!} />
+      </SectionCard>
+    </>
   );
 }
 

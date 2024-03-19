@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Lieferanten } from "@prisma/client";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,9 +27,14 @@ export default function EditLieferant() {
   if (Lieferant.isError) return <p>Error</p>;
 
   return (
-    <SectionCard title={Lieferant.data?.Firma + " bearbeiten"}>
-      <UpdateForm id={id as string} lieferant={Lieferant.data!} />
-    </SectionCard>
+    <>
+      <Head>
+        <title>LocalHorst V9 | {Lieferant.data?.Firma + " bearbeiten"}</title>
+      </Head>
+      <SectionCard title={Lieferant.data?.Firma + " bearbeiten"}>
+        <UpdateForm id={id as string} lieferant={Lieferant.data!} />
+      </SectionCard>
+    </>
   );
 }
 
