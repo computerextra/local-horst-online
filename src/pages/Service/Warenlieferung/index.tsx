@@ -2,6 +2,7 @@ import SectionCard from "@/components/SectionCard";
 import { Button } from "@/components/ui/button";
 import { api } from "@/utils/api";
 import { LoaderIcon } from "lucide-react";
+import Head from "next/head";
 import { useState } from "react";
 
 export default function WarenlieferungPage() {
@@ -33,6 +34,9 @@ export default function WarenlieferungPage() {
 
   return (
     <>
+      <Head>
+        <title>LocalHorst V9 | Warenlieferung</title>
+      </Head>
       <SectionCard title="Warenlieferung Generator">
         <div className="grid grid-cols-2 gap-12">
           <Button variant="secondary" onClick={generate}>

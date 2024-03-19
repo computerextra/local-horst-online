@@ -23,6 +23,7 @@ import type { Mitarbeiter } from "@prisma/client";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -54,9 +55,14 @@ export default function MitarbeiterEdit() {
   if (!Mitarbeiter.data) return <p>No data</p>;
 
   return (
-    <SectionCard title={`${Mitarbeiter.data.Name} bearbeiten`}>
-      <UpdateForm id={id as string} Mitarbeiter={Mitarbeiter.data} />
-    </SectionCard>
+    <>
+      <Head>
+        <title>LocalHorst V9 | {Mitarbeiter.data.Name}</title>
+      </Head>
+      <SectionCard title={`${Mitarbeiter.data.Name} bearbeiten`}>
+        <UpdateForm id={id as string} Mitarbeiter={Mitarbeiter.data} />
+      </SectionCard>
+    </>
   );
 }
 

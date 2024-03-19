@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { api } from "@/utils/api";
+import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -44,6 +45,9 @@ export default function SignaturePage() {
 
   return (
     <>
+      <Head>
+        <title>LocalHorst V9 | Signaturen</title>
+      </Head>
       <SectionCard title="So geht's">
         <ol className="list-decimal ps-5">
           <li>Erst lesen, dann klicken!</li>

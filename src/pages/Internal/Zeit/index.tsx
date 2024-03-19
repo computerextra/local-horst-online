@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Select } from "@radix-ui/react-select";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 
 export default function TimePage() {
@@ -29,6 +30,9 @@ export default function TimePage() {
 
   return (
     <>
+      <Head>
+        <title>LocalHorst V9 | Zeiterfassung</title>
+      </Head>
       <SectionCard title="Zeiterfassung">
         <h2>
           Diese Maske dient dazu, Arbeitszeiten von einer Uhrzeit in ein

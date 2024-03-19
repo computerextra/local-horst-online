@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { api } from "@/utils/api";
+import Head from "next/head";
 import Image from "next/image";
 
 export default function RSSPage() {
@@ -20,65 +21,75 @@ export default function RSSPage() {
   if (Datenschutz.isError) return <div>Error</div>;
 
   return (
-    <SectionCard title="RSS Feed">
-      <div className="grid grid-cols-2">
-        <div>
-          {Heise.data?.map((x) => {
-            const linkArr = x.content.split('"');
-            const link = linkArr[1];
-            const pic = linkArr[3];
-            const pArr = x.content.split("<p>");
-            let p = "";
-            if (pArr[2]) p = pArr[2].replace("</p>", "");
-            if (link && pic)
-              return (
-                <Card className="mx-auto my-2 w-[90%]" key={x.id}>
-                  <CardHeader>
-                    <CardTitle>{x.title}</CardTitle>
-                    <CardDescription>
-                      Deploy your new project in one-click.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-row gap-3">
-                      <a href={link} target="_blank" rel="noopener noreferrer">
-                        <Image
-                          className="rounded-lg object-cover"
-                          width={300}
-                          height={100}
-                          src={pic}
-                          alt=""
-                        />
-                      </a>
-                      <p>{p}</p>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between"></CardFooter>
-                </Card>
-              );
-          })}
+    <>
+      <Head>
+        <title>LocalHorst V9 | RSS</title>
+      </Head>
+
+      <SectionCard title="RSS Feed">
+        <div className="grid grid-cols-2">
+          <div>
+            {Heise.data?.map((x) => {
+              const linkArr = x.content.split('"');
+              const link = linkArr[1];
+              const pic = linkArr[3];
+              const pArr = x.content.split("<p>");
+              let p = "";
+              if (pArr[2]) p = pArr[2].replace("</p>", "");
+              if (link && pic)
+                return (
+                  <Card className="mx-auto my-2 w-[90%]" key={x.id}>
+                    <CardHeader>
+                      <CardTitle>{x.title}</CardTitle>
+                      <CardDescription>
+                        Deploy your new project in one-click.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-row gap-3">
+                        <a
+                          href={link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Image
+                            className="rounded-lg object-cover"
+                            width={300}
+                            height={100}
+                            src={pic}
+                            alt=""
+                          />
+                        </a>
+                        <p>{p}</p>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="flex justify-between"></CardFooter>
+                  </Card>
+                );
+            })}
+          </div>
+          <div>
+            {Datenschutz.data?.map((x, idx) => (
+              <Card className="mx-auto my-2 w-[90%]" key={idx}>
+                <CardHeader>
+                  <CardTitle>{x.title}</CardTitle>
+                  <CardDescription>
+                    Deploy your new project in one-click.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-row gap-3">
+                    <div
+                      dangerouslySetInnerHTML={{ __html: x.description }}
+                    ></div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between"></CardFooter>
+              </Card>
+            ))}
+          </div>
         </div>
-        <div>
-          {Datenschutz.data?.map((x, idx) => (
-            <Card className="mx-auto my-2 w-[90%]" key={idx}>
-              <CardHeader>
-                <CardTitle>{x.title}</CardTitle>
-                <CardDescription>
-                  Deploy your new project in one-click.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-row gap-3">
-                  <div
-                    dangerouslySetInnerHTML={{ __html: x.description }}
-                  ></div>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-between"></CardFooter>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </SectionCard>
+      </SectionCard>
+    </>
   );
 }

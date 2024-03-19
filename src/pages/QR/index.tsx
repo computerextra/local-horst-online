@@ -1,6 +1,7 @@
 import SectionCard from "@/components/SectionCard";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import Head from "next/head";
 import { useState } from "react";
 
 export default function QRPage() {
@@ -47,6 +48,9 @@ export default function QRPage() {
 
   return (
     <>
+      <Head>
+        <title>LocalHorst V9 | QR</title>
+      </Head>
       <SectionCard title="QR-Code">
         <input type="file" name="file" onChange={handleFileChange} required />
         <Button onClick={handleSubmit}>Absenden</Button>

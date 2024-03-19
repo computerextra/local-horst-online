@@ -1,5 +1,6 @@
 import SectionCard from "@/components/SectionCard";
 import { api } from "@/utils/api";
+import Head from "next/head";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
 
@@ -11,8 +12,13 @@ export default function MitarbeiterPage() {
   const data = Mitarbeiter.data ?? [];
 
   return (
-    <SectionCard title="Mitarbeiter Übersicht">
-      <DataTable columns={columns} data={data} />
-    </SectionCard>
+    <>
+      <Head>
+        <title>LocalHorst V9 | Mitarbeiter</title>
+      </Head>
+      <SectionCard title="Mitarbeiter Übersicht">
+        <DataTable columns={columns} data={data} />
+      </SectionCard>
+    </>
   );
 }

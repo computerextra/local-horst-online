@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Head from "next/head";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -56,6 +57,10 @@ export default function ArchivePage() {
 
   return (
     <>
+      <Head>
+        <title>LocalHorst V9 | Archiv</title>
+      </Head>
+
       <SectionCard title="CE Archiv">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
