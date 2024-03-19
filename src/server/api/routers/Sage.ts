@@ -47,4 +47,13 @@ export const SageRouter = createTRPCRouter({
       const query = `SELECT * FROM sg_adressen WHERE ${replaceQuery("Telefon1")} LIKE '%${search}%' OR ${replaceQuery("Telefon2")} LIKE '%${search}%'`;
       return await ctx.sage.$queryRaw<sg_adressen[] | null>(Prisma.raw(query));
     }),
+  getName: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.sage.sg_auf_artikel.findFirst({
+        where: {
+          ARTNR: input,
+        },
+      });
+    }),
 });
