@@ -22,6 +22,9 @@ export const MitarbeiterRouter = createTRPCRouter({
       include: {
         Einkauf: true,
       },
+      orderBy: {
+        Name: "asc",
+      },
     });
   }),
   get: publicProcedure.input(z.string()).query(({ ctx, input }) => {
