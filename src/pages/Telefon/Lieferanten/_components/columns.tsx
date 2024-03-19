@@ -73,7 +73,13 @@ export const columns: ColumnDef<
     header: "Ansprechpartner",
     cell: ({ row }) => {
       const lieferant = row.original;
-      return <APTable data={lieferant.Anschprechpartner} />;
+      return (
+        <APTable
+          data={lieferant.Anschprechpartner.sort((a, b) =>
+            a.Name.localeCompare(b.Name),
+          )}
+        />
+      );
     },
   },
   {
