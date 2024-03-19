@@ -1,19 +1,27 @@
 import SectionCard from "@/components/SectionCard";
+import {
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Select } from "@radix-ui/react-select";
 import { useEffect, useState } from "react";
 
 export default function TimePage() {
-  const [hourStart, setHourStart] = useState(1);
-  const [minuteStart, setMinuteStart] = useState(1);
-  const [hourEnd, setHourEnd] = useState(1);
-  const [minuteEnd, setMinuteEnd] = useState(1);
+  const [hourStart, setHourStart] = useState("9");
+  const [minuteStart, setMinuteStart] = useState("0");
+  const [hourEnd, setHourEnd] = useState("18");
+  const [minuteEnd, setMinuteEnd] = useState("0");
 
   const [timeStart, setTimeStart] = useState(1);
   const [timeEnd, setTimeEnd] = useState(1);
   const [workingHours, setWorkingHours] = useState(0);
 
   useEffect(() => {
-    const start = (60 * hourStart + minuteStart) / 60;
-    const end = (60 * hourEnd + minuteEnd) / 60;
+    const start = (60 * parseInt(hourStart) + parseInt(minuteStart)) / 60;
+    const end = (60 * parseInt(hourEnd) + parseInt(minuteEnd)) / 60;
     setTimeStart(start);
     setTimeEnd(end);
     setWorkingHours(end - start);
@@ -30,77 +38,73 @@ export default function TimePage() {
         <div className="grid max-w-max grid-cols-2 gap-5">
           <div className="flex items-baseline">
             <span className="me-5">Start:</span>
-            <div className="mt-2 w-min rounded-lg bg-gray-600 p-5 shadow-xl">
-              <div className="flex">
-                <select
-                  onChange={(e) => setHourStart(parseInt(e.target.value))}
-                  name="hours"
-                  className="appearance-none bg-transparent text-xl outline-none"
-                >
-                  {[...Array(24).keys()].map((x) => (
-                    <option
-                      className="bg-gray-500 text-white"
-                      value={x}
-                      key={x}
-                    >
-                      {x < 10 ? `0${x}` : x}
-                    </option>
-                  ))}
-                </select>
-                <span className="mr-3 text-xl">:</span>
-                <select
-                  onChange={(e) => setMinuteStart(parseInt(e.target.value))}
-                  name="minutes"
-                  className="mr-4 appearance-none bg-transparent text-xl outline-none"
-                >
-                  {[...Array(60).keys()].map((x) => (
-                    <option
-                      className="bg-gray-500 text-white"
-                      value={x}
-                      key={x}
-                    >
-                      {x < 10 ? `0${x}` : x}
-                    </option>
-                  ))}
-                </select>
+            <div className="mt-2 w-min rounded-lg p-5 shadow-xl dark:bg-gray-600">
+              <div className="flex items-baseline">
+                <Select onValueChange={setHourStart} value={hourStart}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Stunde" />
+                  </SelectTrigger>
+                  <SelectContent className="w-min">
+                    <SelectGroup>
+                      {[...Array(24).keys()].map((x) => (
+                        <SelectItem key={x} value={x.toString()}>
+                          {x < 10 ? `0${x}` : x}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <span className="mx-3 text-xl">:</span>
+                <Select onValueChange={setMinuteStart} value={minuteStart}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Minute" />
+                  </SelectTrigger>
+                  <SelectContent className="w-min">
+                    <SelectGroup>
+                      {[...Array(60).keys()].map((x) => (
+                        <SelectItem key={x} value={x.toString()}>
+                          {x < 10 ? `0${x}` : x}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
           <div className="flex items-baseline">
             <span className="me-5">Ende:</span>
-            <div className="mt-2 w-min rounded-lg bg-gray-600 p-5 shadow-xl">
-              <div className="flex">
-                <select
-                  onChange={(e) => setHourEnd(parseInt(e.target.value))}
-                  name="hours"
-                  className="appearance-none bg-transparent text-xl outline-none"
-                >
-                  {[...Array(24).keys()].map((x) => (
-                    <option
-                      className="bg-gray-500 text-white"
-                      value={x}
-                      key={x}
-                    >
-                      {x < 10 ? `0${x}` : x}
-                    </option>
-                  ))}
-                </select>
-                <span className="mr-3 text-xl">:</span>
-                <select
-                  onChange={(e) => setMinuteEnd(parseInt(e.target.value))}
-                  name="minutes"
-                  className="mr-4 appearance-none bg-transparent text-xl outline-none"
-                >
-                  {[...Array(60).keys()].map((x) => (
-                    <option
-                      className="bg-gray-500 text-white"
-                      value={x}
-                      key={x}
-                    >
-                      {x < 10 ? `0${x}` : x}
-                    </option>
-                  ))}
-                </select>
+            <div className="mt-2 w-min rounded-lg p-5 shadow-xl dark:bg-gray-600">
+              <div className="flex items-baseline">
+                <Select onValueChange={setHourEnd} value={hourEnd}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Stunde" />
+                  </SelectTrigger>
+                  <SelectContent className="w-min">
+                    <SelectGroup>
+                      {[...Array(24).keys()].map((x) => (
+                        <SelectItem key={x} value={x.toString()}>
+                          {x < 10 ? `0${x}` : x}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <span className="mx-3 text-xl">:</span>
+                <Select onValueChange={setMinuteEnd} value={minuteEnd}>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Minute" />
+                  </SelectTrigger>
+                  <SelectContent className="w-min">
+                    <SelectGroup>
+                      {[...Array(60).keys()].map((x) => (
+                        <SelectItem key={x} value={x.toString()}>
+                          {x < 10 ? `0${x}` : x}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
@@ -108,13 +112,14 @@ export default function TimePage() {
       </SectionCard>
       <SectionCard title="Arbeitszeit">
         <p>
-          Angefangen um: {hourStart < 10 ? `0${hourStart}` : hourStart}:
-          {minuteStart < 10 ? `0${minuteStart}` : minuteStart} Uhr. Dezimal:{" "}
-          {timeStart.toFixed(2).replace(".", ",")}
+          Angefangen um:{" "}
+          {parseInt(hourStart) < 10 ? `0${hourStart}` : hourStart}:
+          {parseInt(minuteStart) < 10 ? `0${minuteStart}` : minuteStart} Uhr.
+          Dezimal: {timeStart.toFixed(2).replace(".", ",")}
         </p>
         <p>
-          Augehört um: {hourEnd < 10 ? `0${hourEnd}` : hourEnd}:
-          {minuteEnd < 10 ? `0${minuteEnd}` : minuteEnd} Uhr. Dezimal:{" "}
+          Aufgehört um: {parseInt(hourEnd) < 10 ? `0${hourEnd}` : hourEnd}:
+          {parseInt(minuteEnd) < 10 ? `0${minuteEnd}` : minuteEnd} Uhr. Dezimal:{" "}
           {timeEnd.toFixed(2).replace(".", ",")}
         </p>
         <p>Arbeitszeit die geschlafen wurde: {workingHours.toFixed(2)} Std.</p>
