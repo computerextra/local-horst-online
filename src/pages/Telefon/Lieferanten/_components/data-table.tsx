@@ -11,7 +11,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -28,12 +27,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Switch } from "@/components/ui/switch";
-import {
   Table,
   TableBody,
   TableCell,
@@ -41,7 +34,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type {
@@ -54,13 +46,9 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { format } from "date-fns";
-import { de } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -81,7 +69,6 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
@@ -99,9 +86,9 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         <Input
           placeholder="Suche nach Namen"
-          value={(table.getColumn("Name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("Firma")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("Name")?.setFilterValue(event.target.value)
+            table.getColumn("Firma")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -183,54 +170,23 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
     </div>
   );
 }
 
 const formSchema = z.object({
-  Name: z.string().min(2),
-  Short: z.string().min(2).max(2),
-  Gruppenwahl: z.string().optional(),
-  InternTelefon1: z.string().optional(),
-  InternTelefon2: z.string().optional(),
-  FestnetzAlternativ: z.string().optional(),
-  FestnetzPrivat: z.string().optional(),
-  HomeOffice: z.string().optional(),
-  MobilBusiness: z.string().optional(),
-  MobilPrivat: z.string().optional(),
-  Email: z.string().email().optional(),
-  Azubi: z.boolean().default(false),
-  Geburtstag: z.date().optional(),
+  Firma: z.string().min(2),
+  Kundennummer: z.string().optional(),
+  Webseite: z.string().url().optional(),
 });
 
 function NeuerLieferant() {
-  const MitarbeiterAnleger = api.Mitarbeiter.create.useMutation();
+  const LieferantenAnleger = api.Lieferant.create.useMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      Azubi: false,
-    },
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const res = await MitarbeiterAnleger.mutateAsync(values);
+    const res = await LieferantenAnleger.mutateAsync(values);
     if (res) {
       location.reload();
     }
@@ -239,223 +195,54 @@ function NeuerLieferant() {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="outline" className="me-5">
-          Neuer Mitarbeiter
+          Neuer Lieferant
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Neuen Mitarbeiter anlegen</AlertDialogTitle>
+          <AlertDialogTitle>Neuen Lieferanten anlegen</AlertDialogTitle>
           <AlertDialogDescription>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8"
               >
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="Name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Max Mustermann" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="Short"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Short</FormLabel>
-                        <FormControl>
-                          <Input placeholder="MM" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="Gruppenwahl"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Gruppenwahl</FormLabel>
-                        <FormControl>
-                          <Input placeholder="121" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="InternTelefon1"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Interne Nummer 1</FormLabel>
-                        <FormControl>
-                          <Input placeholder="221" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="InternTelefon2"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Interne Nummer 2</FormLabel>
-                        <FormControl>
-                          <Input placeholder="321" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="FestnetzAlternativ"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Festnetz</FormLabel>
-                        <FormControl>
-                          <Input placeholder="0561 123456" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="FestnetzPrivat"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Festnetz Privat</FormLabel>
-                        <FormControl>
-                          <Input placeholder="0561 123456" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="HomeOffice"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>HomeOffice</FormLabel>
-                        <FormControl>
-                          <Input placeholder="421" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="MobilBusiness"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Mobil Geschäftlich</FormLabel>
-                        <FormControl>
-                          <Input placeholder="0151 123456" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="MobilPrivat"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Mobil Privat</FormLabel>
-                        <FormControl>
-                          <Input placeholder="0151 123456" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="Email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="max@muster.com"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
                 <FormField
                   control={form.control}
-                  name="Geburtstag"
+                  name="Firma"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Geburtstag</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-[240px] pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground",
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP", { locale: de })
-                              ) : (
-                                <span>Wähle ein Datum</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date: Date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-
+                    <FormItem>
+                      <FormLabel>Firma</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Muster KG" {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="Azubi"
+                  name="Kundennummer"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">Azubi?</FormLabel>
-                      </div>
+                    <FormItem>
+                      <FormLabel>Kundennummer</FormLabel>
                       <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
+                        <Input placeholder="0815" {...field} />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="Webseite"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Webseite</FormLabel>
+                      <FormControl>
+                        <Input placeholder="www.musterkg.de" {...field} />
+                      </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />

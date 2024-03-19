@@ -10,11 +10,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/utils/api";
-import type { Lieferanten } from "@prisma/client";
+import type { Anschprechpartner } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
-import APTable from "../Ansprechpartner";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -25,43 +24,19 @@ export type Payment = {
   email: string;
 };
 
-export const columns: ColumnDef<
-  Lieferanten & {
-    Anschprechpartner: {
-      id: string;
-      Name: string;
-      Telefon: string | null;
-      Mobil: string | null;
-      Mail: string | null;
-      lieferantenId: string | null;
-    }[];
-  }
->[] = [
+export const columns: ColumnDef<Anschprechpartner>[] = [
   {
-    accessorKey: "Firma",
-    header: "Firma",
+    accessorKey: "Name",
+    header: "Name",
   },
   {
-    accessorKey: "Kundennummer",
-    header: "Kundennummer",
-  },
-  {
-    accessorKey: "Webseite",
-    header: "Webseite",
+    accessorKey: "Telefon",
+    header: "Telefon",
     cell: ({ row }) => {
-      const lieferant = row.original;
-      return lieferant.Webseite ? (
-        <a
-          href={lieferant.Webseite}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-900 underline"
-        >
-          {
-            lieferant.Webseite.replace("https://", "")
-              .replace("www.", "")
-              .split("/")[0]
-          }
+      const AP = row.original;
+      return AP.Telefon ? (
+        <a className="text-blue-900 underline" href={"tel:" + AP.Telefon}>
+          {AP.Telefon}
         </a>
       ) : (
         "-"
@@ -69,20 +44,41 @@ export const columns: ColumnDef<
     },
   },
   {
-    accessorKey: "Ansprechpartner",
-    header: "Ansprechpartner",
+    accessorKey: "Mobil",
+    header: "Mobil",
     cell: ({ row }) => {
-      const lieferant = row.original;
-      return <APTable data={lieferant.Anschprechpartner} />;
+      const AP = row.original;
+      return AP.Mobil ? (
+        <a className="text-blue-900 underline" href={"tel:" + AP.Mobil}>
+          {AP.Mobil}
+        </a>
+      ) : (
+        "-"
+      );
     },
   },
   {
+    accessorKey: "Mail",
+    header: "Mail",
+    cell: ({ row }) => {
+      const AP = row.original;
+      return AP.Mail ? (
+        <a className="text-blue-900 underline" href={"mailto:" + AP.Mail}>
+          {AP.Mail}
+        </a>
+      ) : (
+        "-"
+      );
+    },
+  },
+
+  {
     id: "actions",
     cell: ({ row }) => {
-      const mitarbeiter = row.original;
-      const MitarbeiterLöscher = api.Lieferant.delete.useMutation();
+      const AP = row.original;
+      const APLöscher = api.Ansprechpartner.delete.useMutation();
       const handleDelete = async () => {
-        await MitarbeiterLöscher.mutateAsync(mitarbeiter.id);
+        await APLöscher.mutateAsync(AP.id);
         location.reload();
       };
       return (
@@ -96,15 +92,8 @@ export const columns: ColumnDef<
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/Telefon/Lieferanten/${mitarbeiter.id}/`}>
+              <Link href={`/Telefon/Lieferanten/Ansprechpartner/${AP.id}/`}>
                 Bearbeiten
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                href={`/Telefon/Lieferanten/Ansprechpartner/new/${mitarbeiter.id}`}
-              >
-                Neuer Ansprechpartner
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

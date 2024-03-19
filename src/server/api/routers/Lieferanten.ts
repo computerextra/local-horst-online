@@ -1,12 +1,14 @@
-import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { z } from "zod";
 
 export const LieferantenRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.lieferanten.findMany({
       include: {
         Anschprechpartner: true,
+      },
+      orderBy: {
+        Firma: "asc",
       },
     });
   }),
@@ -26,7 +28,7 @@ export const LieferantenRouter = createTRPCRouter({
         id: z.string(),
         Firma: z.string(),
         Kundennummer: z.string().optional(),
-        Website: z.string().optional(),
+        Website: z.string().url().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -46,15 +48,16 @@ export const LieferantenRouter = createTRPCRouter({
       z.object({
         Firma: z.string(),
         Kundennummer: z.string().optional(),
-        Website: z.string().optional(),
+        Webseite: z.string().url().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      console.log(input);
       return ctx.db.lieferanten.create({
         data: {
           Firma: input.Firma,
           Kundennummer: input.Kundennummer,
-          Webseite: input.Website,
+          Webseite: input.Webseite,
         },
       });
     }),
