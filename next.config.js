@@ -26,6 +26,12 @@ const config = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "www.heise.de",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

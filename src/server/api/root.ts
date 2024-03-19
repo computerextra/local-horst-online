@@ -6,6 +6,7 @@ import { LieferantenRouter } from "./routers/Lieferanten";
 import { MailRouter } from "./routers/Mail";
 import { MitarbeiterRouter } from "./routers/Mitarbeiter";
 import { WarenlieferungRouter } from "./routers/Warenlieferung";
+import { RSSRouter } from "./routers/RSS";
 
 /**
  * This is the primary router for your server.
@@ -20,6 +21,7 @@ export const appRouter = createTRPCRouter({
   Einkauf: EinkaufRouter,
   Warenlieferung: WarenlieferungRouter,
   Mail: MailRouter,
+  RSS: RSSRouter,
 });
 
 // export type definition of API
