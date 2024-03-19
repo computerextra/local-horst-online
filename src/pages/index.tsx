@@ -15,8 +15,6 @@ import { useEffect, useState } from "react";
 import AbrechnungsForm from "./_components/AbrechnungsForm";
 import EinkaufUpdateForm from "./_components/EinkaufUpdateForm";
 
-// TODO: Bilder gehen nicht! Werden nicht angezeigt.
-
 export default function Home() {
   const Mitarbeiter = api.Mitarbeiter.getAll.useQuery();
 

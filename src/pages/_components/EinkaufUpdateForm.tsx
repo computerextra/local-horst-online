@@ -65,8 +65,6 @@ export default function EinkaufUpdateForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO: Wenn keine Bilder da sind, diese aus der DB löschen!°
-
     // const encoder = cipher();
     let filename1: string | undefined = undefined,
       filename2: string | undefined = undefined,
