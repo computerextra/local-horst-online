@@ -183,7 +183,7 @@ export const MailRouter = createTRPCRouter({
         }
       });
     }
-    // TODO: Preisänderungen werden falsch angezeigt.
+
     if (Preis.length > 0) {
       HTML_PREISE = "<hr /><h2>Preisänderungen</h2>";
       Preis.map((item) => {
@@ -194,7 +194,8 @@ export const MailRouter = createTRPCRouter({
             new Date(item.Preis).toDateString() &&
           item.AlterPreis &&
           item.NeuerPreis &&
-          item.AlterPreis != item.NeuerPreis
+          item.AlterPreis != item.NeuerPreis &&
+          item.AlterPreis.toPrecision(2) != item.NeuerPreis.toPrecision(2)
         ) {
           if (item.AlterPreis != item.NeuerPreis)
             HTML_PREISE += `<b>${item.Artikelnummer}</b>: ${item.Name} - Alt: ${item.AlterPreis.toString()}0€ => Neu: ${item.NeuerPreis.toString()}0€ <br />`;

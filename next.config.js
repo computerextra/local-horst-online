@@ -3,7 +3,6 @@
  * for Docker builds.
  */
 await import("./src/env.js");
-import MillionCompiler from "@million/lint";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -37,4 +36,4 @@ const config = {
   },
 };
 
-export default MillionCompiler.next({})(config);
+export default config;
