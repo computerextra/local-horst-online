@@ -13,6 +13,7 @@ import { shortsRouter } from "./routers/Horst/shorts";
 import { warenlieferungRouter } from "./routers/Horst/warenlieferung";
 import { artikelSucheRouter } from "./routers/Sage/artikelsuche";
 import { kundenSucheRouter } from "./routers/Sage/kundensuche";
+import { MailRouter } from "./routers/mail";
 
 /**
  * This is the primary router for your server.
@@ -37,6 +38,8 @@ export const appRouter = createTRPCRouter({
   Jobs: jobRouter,
   OnlineMitarbeiter: mitarbeiterCmsRouter,
   Partner: partnerRouter,
+  // General Routes
+  Mail: MailRouter,
 });
 
 // export type definition of API
