@@ -8802,7 +8802,7 @@ export namespace Prisma {
     /**
      * The data needed to create a User.
      */
-    data: XOR<UserCreateInput, UserUncheckedCreateInput>
+    data?: XOR<UserCreateInput, UserUncheckedCreateInput>
   }
 
 
@@ -10609,13 +10609,13 @@ export namespace Prisma {
   }
 
   export type AbteilungCreateInput = {
-    id: string
+    id?: string
     name: string
     Mitarbeiter?: MitarbeiterCreateNestedManyWithoutAbteilungInput
   }
 
   export type AbteilungUncheckedCreateInput = {
-    id: string
+    id?: string
     name: string
     Mitarbeiter?: MitarbeiterUncheckedCreateNestedManyWithoutAbteilungInput
   }
@@ -10633,7 +10633,7 @@ export namespace Prisma {
   }
 
   export type AbteilungCreateManyInput = {
-    id: string
+    id?: string
     name: string
   }
 
@@ -10648,7 +10648,7 @@ export namespace Prisma {
   }
 
   export type AccountCreateInput = {
-    id: string
+    id?: string
     type: string
     provider: string
     providerAccountId: string
@@ -10663,7 +10663,7 @@ export namespace Prisma {
   }
 
   export type AccountUncheckedCreateInput = {
-    id: string
+    id?: string
     userId: string
     type: string
     provider: string
@@ -10708,7 +10708,7 @@ export namespace Prisma {
   }
 
   export type AccountCreateManyInput = {
-    id: string
+    id?: string
     userId: string
     type: string
     provider: string
@@ -10752,7 +10752,7 @@ export namespace Prisma {
   }
 
   export type AngebotCreateInput = {
-    id: string
+    id?: string
     title: string
     subtitle?: string | null
     date_start: Date | string
@@ -10763,7 +10763,7 @@ export namespace Prisma {
   }
 
   export type AngebotUncheckedCreateInput = {
-    id: string
+    id?: string
     title: string
     subtitle?: string | null
     date_start: Date | string
@@ -10796,7 +10796,7 @@ export namespace Prisma {
   }
 
   export type AngebotCreateManyInput = {
-    id: string
+    id?: string
     title: string
     subtitle?: string | null
     date_start: Date | string
@@ -10829,13 +10829,13 @@ export namespace Prisma {
   }
 
   export type JobsCreateInput = {
-    id: string
+    id?: string
     name: string
     online: boolean
   }
 
   export type JobsUncheckedCreateInput = {
-    id: string
+    id?: string
     name: string
     online: boolean
   }
@@ -10853,7 +10853,7 @@ export namespace Prisma {
   }
 
   export type JobsCreateManyInput = {
-    id: string
+    id?: string
     name: string
     online: boolean
   }
@@ -10871,7 +10871,7 @@ export namespace Prisma {
   }
 
   export type MitarbeiterCreateInput = {
-    id: string
+    id?: string
     name: string
     short: string
     image: boolean
@@ -10882,7 +10882,7 @@ export namespace Prisma {
   }
 
   export type MitarbeiterUncheckedCreateInput = {
-    id: string
+    id?: string
     name: string
     short: string
     image: boolean
@@ -10915,7 +10915,7 @@ export namespace Prisma {
   }
 
   export type MitarbeiterCreateManyInput = {
-    id: string
+    id?: string
     name: string
     short: string
     image: boolean
@@ -10947,14 +10947,14 @@ export namespace Prisma {
   }
 
   export type PartnerCreateInput = {
-    id: string
+    id?: string
     name: string
     link: string
     image: string
   }
 
   export type PartnerUncheckedCreateInput = {
-    id: string
+    id?: string
     name: string
     link: string
     image: string
@@ -10975,7 +10975,7 @@ export namespace Prisma {
   }
 
   export type PartnerCreateManyInput = {
-    id: string
+    id?: string
     name: string
     link: string
     image: string
@@ -10996,14 +10996,14 @@ export namespace Prisma {
   }
 
   export type SessionCreateInput = {
-    id: string
+    id?: string
     sessionToken: string
     expires: Date | string
     User: UserCreateNestedOneWithoutSessionInput
   }
 
   export type SessionUncheckedCreateInput = {
-    id: string
+    id?: string
     sessionToken: string
     userId: string
     expires: Date | string
@@ -11024,7 +11024,7 @@ export namespace Prisma {
   }
 
   export type SessionCreateManyInput = {
-    id: string
+    id?: string
     sessionToken: string
     userId: string
     expires: Date | string
@@ -11044,7 +11044,7 @@ export namespace Prisma {
   }
 
   export type UserCreateInput = {
-    id: string
+    id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
@@ -11054,7 +11054,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateInput = {
-    id: string
+    id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
@@ -11084,7 +11084,7 @@ export namespace Prisma {
   }
 
   export type UserCreateManyInput = {
-    id: string
+    id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
@@ -12055,7 +12055,7 @@ export namespace Prisma {
   }
 
   export type MitarbeiterCreateWithoutAbteilungInput = {
-    id: string
+    id?: string
     name: string
     short: string
     image: boolean
@@ -12065,7 +12065,7 @@ export namespace Prisma {
   }
 
   export type MitarbeiterUncheckedCreateWithoutAbteilungInput = {
-    id: string
+    id?: string
     name: string
     short: string
     image: boolean
@@ -12115,7 +12115,7 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutAccountInput = {
-    id: string
+    id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
@@ -12124,7 +12124,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateWithoutAccountInput = {
-    id: string
+    id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
@@ -12167,12 +12167,12 @@ export namespace Prisma {
   }
 
   export type AbteilungCreateWithoutMitarbeiterInput = {
-    id: string
+    id?: string
     name: string
   }
 
   export type AbteilungUncheckedCreateWithoutMitarbeiterInput = {
-    id: string
+    id?: string
     name: string
   }
 
@@ -12203,7 +12203,7 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutSessionInput = {
-    id: string
+    id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
@@ -12212,7 +12212,7 @@ export namespace Prisma {
   }
 
   export type UserUncheckedCreateWithoutSessionInput = {
-    id: string
+    id?: string
     name?: string | null
     email?: string | null
     emailVerified?: Date | string | null
@@ -12255,7 +12255,7 @@ export namespace Prisma {
   }
 
   export type AccountCreateWithoutUserInput = {
-    id: string
+    id?: string
     type: string
     provider: string
     providerAccountId: string
@@ -12269,7 +12269,7 @@ export namespace Prisma {
   }
 
   export type AccountUncheckedCreateWithoutUserInput = {
-    id: string
+    id?: string
     type: string
     provider: string
     providerAccountId: string
@@ -12293,13 +12293,13 @@ export namespace Prisma {
   }
 
   export type SessionCreateWithoutUserInput = {
-    id: string
+    id?: string
     sessionToken: string
     expires: Date | string
   }
 
   export type SessionUncheckedCreateWithoutUserInput = {
-    id: string
+    id?: string
     sessionToken: string
     expires: Date | string
   }
@@ -12375,7 +12375,7 @@ export namespace Prisma {
   }
 
   export type MitarbeiterCreateManyAbteilungInput = {
-    id: string
+    id?: string
     name: string
     short: string
     image: boolean
@@ -12415,7 +12415,7 @@ export namespace Prisma {
   }
 
   export type AccountCreateManyUserInput = {
-    id: string
+    id?: string
     type: string
     provider: string
     providerAccountId: string
@@ -12429,7 +12429,7 @@ export namespace Prisma {
   }
 
   export type SessionCreateManyUserInput = {
-    id: string
+    id?: string
     sessionToken: string
     expires: Date | string
   }

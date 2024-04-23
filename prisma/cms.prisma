@@ -10,13 +10,13 @@ datasource db {
 }
 
 model Abteilung {
-  id          String        @id
+  id          String        @id @default(cuid())
   name        String
   Mitarbeiter Mitarbeiter[]
 }
 
 model Account {
-  id                String  @id
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -35,7 +35,7 @@ model Account {
 }
 
 model Angebot {
-  id         String   @id
+  id         String   @id @default(cuid())
   title      String
   subtitle   String?
   date_start DateTime
@@ -46,13 +46,13 @@ model Angebot {
 }
 
 model Jobs {
-  id     String  @id
+  id     String  @id @default(cuid())
   name   String
   online Boolean
 }
 
 model Mitarbeiter {
-  id          String    @id
+  id          String    @id @default(cuid())
   name        String
   short       String
   image       Boolean
@@ -66,14 +66,14 @@ model Mitarbeiter {
 }
 
 model Partner {
-  id    String @id
+  id    String @id @default(cuid())
   name  String
   link  String
   image String
 }
 
 model Session {
-  id           String   @id
+  id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -83,7 +83,7 @@ model Session {
 }
 
 model User {
-  id            String    @id
+  id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime?

@@ -1,5 +1,18 @@
-import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { abteilungsRouter } from "./routers/CMS/abteilung";
+import { angeboteRouter } from "./routers/CMS/angebot";
+import { jobRouter } from "./routers/CMS/jobs";
+import { mitarbeiterCmsRouter } from "./routers/CMS/mitarbeiter";
+import { partnerRouter } from "./routers/CMS/partner";
+import { ansprechpartnerRouter } from "./routers/Horst/ansprechpartner";
+import { einkaufRouter } from "./routers/Horst/einkauf";
+import { lieferantenRouter } from "./routers/Horst/lieferanten";
+import { mitarbeiterRouter } from "./routers/Horst/mitarbeiter";
+import { pdfRouter } from "./routers/Horst/pdf";
+import { shortsRouter } from "./routers/Horst/shorts";
+import { warenlieferungRouter } from "./routers/Horst/warenlieferung";
+import { artikelSucheRouter } from "./routers/Sage/artikelsuche";
+import { kundenSucheRouter } from "./routers/Sage/kundensuche";
 
 /**
  * This is the primary router for your server.
@@ -7,7 +20,23 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
+  // Horst Routes
+  Ansprechpartner: ansprechpartnerRouter,
+  Einkauf: einkaufRouter,
+  Lieferanten: lieferantenRouter,
+  Mitarbeiter: mitarbeiterRouter,
+  Archiv: pdfRouter,
+  Short: shortsRouter,
+  Warenlieferung: warenlieferungRouter,
+  // SAGE Routes
+  KundenSuche: kundenSucheRouter,
+  ArtikelSuche: artikelSucheRouter,
+  // CMS Routes
+  Abteilung: abteilungsRouter,
+  Angebot: angeboteRouter,
+  Jobs: jobRouter,
+  OnlineMitarbeiter: mitarbeiterCmsRouter,
+  Partner: partnerRouter,
 });
 
 // export type definition of API

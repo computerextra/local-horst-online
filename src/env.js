@@ -8,8 +8,8 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
-    SAGE_URL: z.string().url(),
-    CMS_URL: z.string().url(),
+    SAGE_URL: z.string(),
+    CMS_URL: z.string(),
     ARCHIVE_PATH: z.string(),
     SMTP_HOST: z.string(),
     SMTP_PORT: z.number().int(),
