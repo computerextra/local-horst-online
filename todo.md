@@ -1,0 +1,36 @@
+- [ ] Signaturen Seite
+- [ ] Zeit Seite
+- [ ] RSS Seite?
+- [ ] Werkstatt Seite
+- [ ] Mitarbeiter Telefonliste
+- [ ] Mitarbeiter anlegen
+- [ ] Mitarbeiter bearbeiten
+- [ ] Mitarbeiter löschen
+- [ ] Lieferanten Telefonliste
+- [ ] Lieferanten anlegen
+- [ ] Lieferanten bearbeiten
+- [ ] Lieferanten löschen
+- [ ] Ansprechpartner anlegen
+- [ ] Anprechpartner bearbeiten
+- [ ] Ansprechpartner löschen
+- [ ] Sage Suche Seite
+- [ ] SN Artikel Suche Seite
+- [ ] Info an Kunde Seite
+- [ ] Warenlieferung Seite
+- [ ] Inventur Seite?
+- [ ] Abteilung Seite für Website
+- [ ] Abteilung anlegen
+- [ ] Abteilung bearbeiten
+- [ ] Abteilung löschen
+- [ ] Mitarbeiter Seite für Website
+- [ ] Mitarbeiter anlegen
+- [ ] Mitarbeiter bearbeiten
+- [ ] Mitarbeiter löschen
+- [ ] Partner Seite für Website
+- [ ] Partner anlegen
+- [ ] Partner bearbeiten
+- [ ] Partner löschen
+- [ ] Angebote Seite für Website
+- [ ] Angebote anlegen
+- [ ] Angebote bearbeiten
+- [ ] Angebote löschen
