@@ -13,7 +13,9 @@ export default function EinkaufsListe({
   if (Name == null) return <></>;
 
   if (
-    new Date(Einkauf?.Abgeschickt).toDateString() == new Date().toDateString()
+    new Date(Einkauf?.Abgeschickt).toDateString() ==
+      new Date().toDateString() ||
+    (Einkauf.Abonniert && new Date(Einkauf.Abgeschickt) <= new Date())
   )
     return (
       <div>

@@ -83,6 +83,33 @@ export default function Einkaufen({
     }
   };
 
+  const Ausblenden = async () => {
+    if (Auswahl == null) return;
+    const Einkauf = Liste.data?.find((e) => e.mitarbeiterId == Auswahl.id);
+    if (Einkauf == null) return;
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+    today.setHours(8, 0, 0, 0);
+    const res = await EinkaufUpdater.mutateAsync({
+      Abonniert: Einkauf.Abonniert,
+      Abgeschickt: today,
+      mitarbeiterId: Einkauf.mitarbeiterId,
+      Bild1: Einkauf.Bild1 ?? undefined,
+      Bild2: Einkauf.Bild2 ?? undefined,
+      Bild3: Einkauf.Bild3 ?? undefined,
+      Bild1Date: Einkauf.Bild1Date ?? undefined,
+      Bild2Date: Einkauf.Bild2Date ?? undefined,
+      Bild3Date: Einkauf.Bild3Date ?? undefined,
+      Dinge: Einkauf.Dinge ?? undefined,
+      Geld: Einkauf.Geld ?? undefined,
+      Pfand: Einkauf.Pfand ?? undefined,
+      Paypal: Einkauf.Paypal,
+    });
+    if (res) {
+      location.reload();
+    }
+  };
+
   useEffect(() => {
     if (Auswahl == null) return;
     const Einkauf = Liste.data?.find((e) => e.mitarbeiterId == Auswahl.id);
@@ -229,6 +256,13 @@ export default function Einkaufen({
           disabled={Auswahl == null}
         >
           Einkauf löschen
+        </Button>
+        <Button
+          variant="warning"
+          onClick={Ausblenden}
+          disabled={Auswahl == null}
+        >
+          Einkauf für heute ausblenden
         </Button>
         <Button variant="secondary" onClick={() => setShow(false)}>
           Schließen
