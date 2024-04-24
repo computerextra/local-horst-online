@@ -14,6 +14,7 @@ import { warenlieferungRouter } from "./routers/Horst/warenlieferung";
 import { artikelSucheRouter } from "./routers/Sage/artikelsuche";
 import { kundenSucheRouter } from "./routers/Sage/kundensuche";
 import { MailRouter } from "./routers/mail";
+import { SignatureRouter } from "./routers/signatures";
 
 /**
  * This is the primary router for your server.
@@ -40,6 +41,7 @@ export const appRouter = createTRPCRouter({
   Partner: partnerRouter,
   // General Routes
   Mail: MailRouter,
+  Signaturen: SignatureRouter,
 });
 
 // export type definition of API

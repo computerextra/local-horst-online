@@ -27,7 +27,7 @@ export default function Menu() {
             <NavLink as={Link} href="/Archiv">
               Archiv
             </NavLink>
-            <NavLink as={Link} href="/">
+            <NavLink as={Link} href="/Signatures">
               Signaturen
             </NavLink>
             <NavLink as={Link} href="/">
