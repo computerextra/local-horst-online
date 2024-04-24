@@ -1,44 +1,48 @@
-import type { Einkauf, Mitarbeiter } from "@prisma/client";
+import type { Einkauf } from "@prisma/client";
 import Image from "next/image";
 import { Col, Row } from "react-bootstrap";
 
 export default function EinkaufsListe({
-  Mitarbeiter,
+  Einkauf,
+  Name,
 }: {
-  Mitarbeiter: Mitarbeiter & { Einkauf?: Einkauf };
+  Einkauf: Einkauf | undefined;
+  Name: string | undefined;
 }) {
-  if (Mitarbeiter.Einkauf?.Abgeschickt == null) return <></>;
+  if (Einkauf?.Abgeschickt == null) return <></>;
+  if (Name == null) return <></>;
 
   if (
-    new Date(Mitarbeiter.Einkauf?.Abgeschickt).toDateString() ==
-    new Date().toDateString()
+    new Date(Einkauf?.Abgeschickt).toDateString() == new Date().toDateString()
   )
     return (
       <div>
-        <p>Wer: {Mitarbeiter.Name}</p>
-        <p>Pfand: {Mitarbeiter.Einkauf.Pfand}</p>
-
-        {Mitarbeiter.Einkauf.Paypal ? (
-          <p className="text-red-500">Paypal</p>
+        <span>Wer: {Name}</span> <br />
+        <span>Pfand: {Einkauf.Pfand}</span>
+        <br />
+        {Einkauf.Paypal ? (
+          <span className="text-danger">Bezahlung per Paypal</span>
         ) : (
-          <p>Geld: {Mitarbeiter.Einkauf.Geld}</p>
+          <span>Geld: {Einkauf.Geld}</span>
         )}
-        {Mitarbeiter.Einkauf.Abonniert && (
-          <p className="text-green-600">Abonnierter Einkauf</p>
+        <br />
+        {Einkauf.Abonniert && (
+          <span className="text-success">Abonnierter Einkauf</span>
         )}
-        <p>
+        <br />
+        <span>
           Was: <br />
-        </p>
-        <pre>{Mitarbeiter.Einkauf.Dinge}</pre>
+        </span>
+        <pre>{Einkauf.Dinge}</pre>
         <Row>
-          {Mitarbeiter.Einkauf.Bild1 &&
-            Mitarbeiter.Einkauf.Bild1Date &&
-            new Date(Mitarbeiter.Einkauf.Bild1Date).toDateString() ==
+          {Einkauf.Bild1 &&
+            Einkauf.Bild1Date &&
+            new Date(Einkauf.Bild1Date).toDateString() ==
               new Date().toDateString() &&
-            Mitarbeiter.Einkauf.Bild1.length > 0 && (
+            Einkauf.Bild1.length > 0 && (
               <Col>
                 <Image
-                  src={Mitarbeiter.Einkauf.Bild1}
+                  src={Einkauf.Bild1}
                   alt="Einkaufen Bild"
                   height={150}
                   width={150}
@@ -47,14 +51,14 @@ export default function EinkaufsListe({
                 />
               </Col>
             )}
-          {Mitarbeiter.Einkauf.Bild2 &&
-            Mitarbeiter.Einkauf.Bild2Date &&
-            new Date(Mitarbeiter.Einkauf.Bild2Date).toDateString() ==
+          {Einkauf.Bild2 &&
+            Einkauf.Bild2Date &&
+            new Date(Einkauf.Bild2Date).toDateString() ==
               new Date().toDateString() &&
-            Mitarbeiter.Einkauf.Bild2.length > 0 && (
+            Einkauf.Bild2.length > 0 && (
               <Col>
                 <Image
-                  src={Mitarbeiter.Einkauf.Bild2}
+                  src={Einkauf.Bild2}
                   alt="Einkaufen Bild"
                   height={150}
                   width={150}
@@ -63,14 +67,14 @@ export default function EinkaufsListe({
                 />
               </Col>
             )}
-          {Mitarbeiter.Einkauf.Bild3 &&
-            Mitarbeiter.Einkauf.Bild3Date &&
-            new Date(Mitarbeiter.Einkauf.Bild3Date).toDateString() ==
+          {Einkauf.Bild3 &&
+            Einkauf.Bild3Date &&
+            new Date(Einkauf.Bild3Date).toDateString() ==
               new Date().toDateString() &&
-            Mitarbeiter.Einkauf.Bild3.length > 0 && (
+            Einkauf.Bild3.length > 0 && (
               <Col>
                 <Image
-                  src={Mitarbeiter.Einkauf.Bild3}
+                  src={Einkauf.Bild3}
                   alt="Einkaufen Bild"
                   height={150}
                   width={150}

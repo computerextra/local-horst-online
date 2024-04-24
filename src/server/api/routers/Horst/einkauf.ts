@@ -1,4 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -33,7 +32,6 @@ export const einkaufRouter = createTRPCRouter({
   upsert: publicProcedure
     .input(
       z.object({
-        id: z.string().optional(),
         Paypal: z.boolean().default(false),
         Abonniert: z.boolean().default(false),
         Geld: z.string().optional(),
@@ -44,22 +42,43 @@ export const einkaufRouter = createTRPCRouter({
         Bild1: z.string().optional(),
         Bild2: z.string().optional(),
         Bild3: z.string().optional(),
-        Bild1Date: z.string().optional(),
-        Bild2Date: z.string().optional(),
-        Bild3Date: z.string().optional(),
+        Bild1Date: z.date().optional(),
+        Bild2Date: z.date().optional(),
+        Bild3Date: z.date().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const id = input.id ?? createId();
       return await ctx.horst.einkauf.upsert({
-        where: { id: input.id },
+        where: { mitarbeiterId: input.mitarbeiterId },
         create: {
           ...input,
-          id,
         },
         update: {
           ...input,
-          id,
+          Bild1: input.Bild1 ?? null,
+          Bild2: input.Bild2 ?? null,
+          Bild3: input.Bild3 ?? null,
+        },
+      });
+    }),
+  delete: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.horst.einkauf.update({
+        where: { id: input.id },
+        data: {
+          Abgeschickt: null,
+          Bild1: null,
+          Bild2: null,
+          Bild3: null,
+          Bild1Date: null,
+          Bild2Date: null,
+          Bild3Date: null,
+          Dinge: null,
+          Geld: null,
+          Pfand: null,
+          Paypal: false,
+          Abonniert: false,
         },
       });
     }),

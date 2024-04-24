@@ -15,7 +15,7 @@ export const mitarbeiterRouter = createTRPCRouter({
     }),
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.horst.mitarbeiter.findMany({
-      orderBy: { Name: "desc" },
+      orderBy: { Name: "asc" },
     });
   }),
   create: protectedProcedure
