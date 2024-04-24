@@ -7,7 +7,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 export const pdfRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ search: z.string() }))
-    .query(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       return await ctx.horst.pdfs.findMany({
         where: {
           OR: [

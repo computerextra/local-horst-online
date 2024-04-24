@@ -24,7 +24,7 @@ export default function Menu() {
             <NavLink as={Link} href="/Geburtstag">
               Geburtstag
             </NavLink>
-            <NavLink as={Link} href="/">
+            <NavLink as={Link} href="/Archiv">
               Archiv
             </NavLink>
             <NavLink as={Link} href="/">
