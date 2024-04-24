@@ -1,4 +1,4 @@
-import { Mitarbeiter } from "@prisma/client";
+import type { Mitarbeiter } from "@prisma/client";
 import { useEffect, useState } from "react";
 import {
   Button,
