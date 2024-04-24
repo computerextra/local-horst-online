@@ -80,7 +80,13 @@ export default function Home() {
             Mitarbeiter={Mitarbeiter.data}
           />
         )}
-        {showPayPal && <PayPal show={showPayPal} setShow={setShowPayPal} />}
+        {showPayPal && (
+          <PayPal
+            show={showPayPal}
+            setShow={setShowPayPal}
+            Mitarbeiter={Mitarbeiter.data}
+          />
+        )}
       </main>
     </>
   );
