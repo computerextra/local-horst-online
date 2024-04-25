@@ -5,7 +5,7 @@
 - [x] Profil bearbeiten
 - [x] Profile löschen (Als Admin)
 - [ ] RSS Seite?
-- [ ] Werkstatt Seite
+- [x] Werkstatt Seite
 - [ ] Mitarbeiter Telefonliste
 - [ ] Mitarbeiter anlegen
 - [ ] Mitarbeiter bearbeiten
