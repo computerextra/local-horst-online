@@ -1,0 +1,41 @@
+.atp-clock-btn {
+  display: none !important;
+}
+
+.mat-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.atp-time {
+  background-color: black !important;
+  text-align: center !important;
+  font-size: 35px;
+}
+
+.atp-color--primary {
+  background-color: #1890ff;
+}
+
+.atp-clock-cnt {
+  background-color: black !important;
+  border-radius: 50%;
+}
+
+.atp-clock {
+  background-color: black !important;
+  border-radius: 50%;
+}
+
+.atp-face-color {
+  background-color: black !important;
+}
+
+.atp-n {
+  color: white !important;
+}
+
+.atp-h {
+  background-color: #1890ff !important;
+}

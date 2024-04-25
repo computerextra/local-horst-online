@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { Container } from "react-bootstrap";
 import Menu from "~/Layout/Menu";
+import "~/style.css";
 import { api } from "~/utils/api";
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -14,7 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <main>
         <Menu />
-        <Container fluid>
+        <Container fluid className="mt-5">
           <Component {...pageProps} />
         </Container>
       </main>
