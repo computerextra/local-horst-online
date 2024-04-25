@@ -1,6 +1,10 @@
 - [x] Signaturen Seite
 - [x] Signaturen Wiki Seite
 - [x] Zeit Seite
+- [ ] Benutzer Profil Seite
+- [ ] Profil bearbeiten
+- [ ] Profil löschen
+- [ ] Profile löschen (Als Admin)
 - [ ] RSS Seite?
 - [ ] Werkstatt Seite
 - [ ] Mitarbeiter Telefonliste
