@@ -1,5 +1,5 @@
 - [x] Signaturen Seite
-- [ ] Signaturen Wiki Seite
+- [x] Signaturen Wiki Seite
 - [ ] Zeit Seite
 - [ ] RSS Seite?
 - [ ] Werkstatt Seite
