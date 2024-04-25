@@ -12,15 +12,11 @@ export default function index() {
     if (form == null) return;
     const formData = new FormData(form as HTMLFormElement);
     const id = formData.get("id");
-
-    alert(id);
     const ma = Mitarbeiter.data?.find((m) => m.id === id);
     if (ma == null) return;
     if (ma.Email == null) return;
-
     const data = await Download.mutateAsync({ name: ma.Name, mail: ma.Email });
     if (data == null) return;
-
     const link = document.createElement("a");
     link.href = `data:application/bat;base64,${data}`;
     link.download = "install.bat";

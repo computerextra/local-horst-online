@@ -1,4 +1,4 @@
-- [ ] Signaturen Seite
+- [x] Signaturen Seite
 - [ ] Signaturen Wiki Seite
 - [ ] Zeit Seite
 - [ ] RSS Seite?
