@@ -83,7 +83,7 @@ export default function Menu() {
                 Angebote
               </NavDropdown.Item>
             </NavDropdown>
-            <NavLink as={Link} href="/">
+            <NavLink as={Link} href="/Werkstatt">
               Werkstatt
             </NavLink>
           </Nav>
