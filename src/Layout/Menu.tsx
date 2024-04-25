@@ -1,12 +1,20 @@
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import {
+  Button,
   Container,
+  Dropdown,
+  DropdownDivider,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Nav,
   NavDropdown,
   NavLink,
   Navbar,
   NavbarBrand,
   NavbarCollapse,
+  NavbarText,
   NavbarToggle,
 } from "react-bootstrap";
 
@@ -33,9 +41,9 @@ export default function Menu() {
             <NavLink as={Link} href="/Zeit">
               Zeit
             </NavLink>
-            <NavLink as={Link} href="/">
+            {/* <NavLink as={Link} href="/">
               RSS
-            </NavLink>
+            </NavLink> */}
             <NavDropdown title="Telefonlisten" id="TelefonlistenDropdown">
               <NavDropdown.Item as={Link} href="/">
                 Mitarbeiter
@@ -78,8 +86,42 @@ export default function Menu() {
               Werkstatt
             </NavLink>
           </Nav>
+          <div className="d-flex">
+            <Anmeldung />
+          </div>
         </NavbarCollapse>
       </Container>
     </Navbar>
   );
+}
+
+function Anmeldung() {
+  const { data: sessionData } = useSession();
+
+  if (sessionData?.user) {
+    return (
+      <NavbarText>
+        <Dropdown>
+          <DropdownToggle variant="outline-success">
+            {sessionData.user.name
+              ? sessionData.user.name
+              : sessionData.user.email?.split("@")[0]}
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem as={Link} href={"/profile/" + sessionData.user.id}>
+              Profil
+            </DropdownItem>
+            <DropdownDivider />
+            <DropdownItem onClick={() => void signOut()}>Abmelden</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </NavbarText>
+    );
+  } else {
+    return (
+      <Button variant="outline-success" onClick={() => void signIn()}>
+        Login
+      </Button>
+    );
+  }
 }
