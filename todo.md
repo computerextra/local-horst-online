@@ -1,6 +1,6 @@
 - [x] Signaturen Seite
 - [x] Signaturen Wiki Seite
-- [ ] Zeit Seite
+- [x] Zeit Seite
 - [ ] RSS Seite?
 - [ ] Werkstatt Seite
 - [ ] Mitarbeiter Telefonliste
