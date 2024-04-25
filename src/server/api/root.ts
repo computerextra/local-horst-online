@@ -10,6 +10,7 @@ import { lieferantenRouter } from "./routers/Horst/lieferanten";
 import { mitarbeiterRouter } from "./routers/Horst/mitarbeiter";
 import { pdfRouter } from "./routers/Horst/pdf";
 import { shortsRouter } from "./routers/Horst/shorts";
+import { userRouter } from "./routers/Horst/user";
 import { warenlieferungRouter } from "./routers/Horst/warenlieferung";
 import { artikelSucheRouter } from "./routers/Sage/artikelsuche";
 import { kundenSucheRouter } from "./routers/Sage/kundensuche";
@@ -30,6 +31,7 @@ export const appRouter = createTRPCRouter({
   Archiv: pdfRouter,
   Short: shortsRouter,
   Warenlieferung: warenlieferungRouter,
+  User: userRouter,
   // SAGE Routes
   KundenSuche: kundenSucheRouter,
   ArtikelSuche: artikelSucheRouter,

@@ -17,6 +17,7 @@ import {
   NavbarText,
   NavbarToggle,
 } from "react-bootstrap";
+import useAdmin from "~/Hooks/useAdmin";
 
 export default function Menu() {
   return (
@@ -97,6 +98,7 @@ export default function Menu() {
 
 function Anmeldung() {
   const { data: sessionData } = useSession();
+  const { isAdmin } = useAdmin();
 
   if (sessionData?.user) {
     return (
@@ -108,9 +110,18 @@ function Anmeldung() {
               : sessionData.user.email?.split("@")[0]}
           </DropdownToggle>
           <DropdownMenu>
+            {isAdmin && (
+              <>
+                <DropdownItem as={Link} href="/admin">
+                  Admin
+                </DropdownItem>
+                <DropdownDivider />
+              </>
+            )}
             <DropdownItem as={Link} href={"/profile/" + sessionData.user.id}>
               Profil
             </DropdownItem>
+
             <DropdownDivider />
             <DropdownItem onClick={() => void signOut()}>Abmelden</DropdownItem>
           </DropdownMenu>
