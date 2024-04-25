@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { ADMIN_MAILS } from "~/conf";
 
 export default function useAdmin() {
   const { data: sessionData } = useSession();
@@ -10,10 +11,7 @@ export default function useAdmin() {
     if (sessionData.user == null) return;
     if (sessionData.user.email == null) return;
 
-    if (sessionData.user.email === "johannes.kirchner@computer-extra.de")
-      setIsAdmin(true);
-    if (sessionData.user.email === "christoph.salowski@computer-extra.de")
-      setIsAdmin(true);
+    if (ADMIN_MAILS.includes(sessionData.user.email)) setIsAdmin(true);
   }, [sessionData]);
 
   return { isAdmin };
