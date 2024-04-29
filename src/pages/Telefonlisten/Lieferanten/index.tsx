@@ -14,7 +14,28 @@ import { api } from "~/utils/api";
 
 export default function LieferantenPage() {
   const Lieferanten = api.Lieferanten.getAll.useQuery();
+  const Delete = api.Lieferanten.delete.useMutation();
+  const DeleteAp = api.Ansprechpartner.delete.useMutation();
   const { isAdmin } = useAdmin();
+
+  const handleDelete = async (id: string) => {
+    const Aps: string[] = [];
+    const l = Lieferanten.data?.find((x) => x.id === id);
+    if (l == null) return;
+    l.Anschprechpartner.forEach((x) => {
+      Aps.push(x.id);
+    });
+
+    Aps.forEach(async (x) => {
+      await DeleteAp.mutateAsync({ id: x });
+    });
+
+    const res = await Delete.mutateAsync({ id: l.id });
+    if (res) {
+      location.reload();
+    }
+  };
+
   return (
     <Container fluid>
       <Container>
@@ -103,12 +124,18 @@ export default function LieferantenPage() {
                     <DropdownMenu>
                       {isAdmin ? (
                         <>
-                          <DropdownItem as={Link} href="/">
+                          <DropdownItem
+                            as={Link}
+                            href={"/Telefonlisten/Lieferanten/edit/" + e.id}
+                          >
                             Bearbeiten
                           </DropdownItem>
                           <DropdownDivider />
-                          <DropdownItem as={Link} href="/">
-                            Löschen
+                          <DropdownItem
+                            href="#"
+                            onClick={() => void handleDelete(e.id)}
+                          >
+                            Lieferant & Aps Löschen
                           </DropdownItem>
                         </>
                       ) : (

@@ -115,7 +115,7 @@ export default function MitarbeiterEdit() {
     );
   return (
     <Container>
-      <h1></h1>
+      <h1>{Mitarbeiter.data?.Name} bearbeiten</h1>
       <Form onSubmit={(e) => e.preventDefault()}>
         <FloatingLabel controlId="Name" label="Name" className="mb-3">
           <FormControl

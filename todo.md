@@ -11,12 +11,12 @@
 - [x] Mitarbeiter bearbeiten
 - [x] Mitarbeiter löschen
 - [x] Lieferanten Telefonliste
-- [ ] Lieferanten anlegen
-- [ ] Lieferanten bearbeiten
-- [ ] Lieferanten löschen
-- [ ] Ansprechpartner anlegen
-- [ ] Anprechpartner bearbeiten
-- [ ] Ansprechpartner löschen
+- [x] Lieferanten anlegen
+- [x] Lieferanten bearbeiten
+- [x] Lieferanten löschen
+- [x] Ansprechpartner anlegen
+- [x] Anprechpartner bearbeiten
+- [x] Ansprechpartner löschen
 - [ ] Sage Suche Seite
 - [ ] SN Artikel Suche Seite
 - [ ] Info an Kunde Seite

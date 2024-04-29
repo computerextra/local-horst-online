@@ -11,6 +11,9 @@ export const lieferantenRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       return await ctx.horst.lieferanten.findUnique({
         where: { id: input.id },
+        include: {
+          Anschprechpartner: true,
+        },
       });
     }),
   getAll: publicProcedure.query(async ({ ctx }) => {
