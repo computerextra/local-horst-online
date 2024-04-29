@@ -46,10 +46,10 @@ export default function Menu() {
               RSS
             </NavLink> */}
             <NavDropdown title="Telefonlisten" id="TelefonlistenDropdown">
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/Telefonlisten/Mitarbeiter">
                 Mitarbeiter
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/Telefonlisten/Lieferanten">
                 Lieferanten
               </NavDropdown.Item>
               <NavDropdown.Divider />

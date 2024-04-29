@@ -21,9 +21,10 @@ export default function Geburtstage() {
 
     Mitarbeiter.data.forEach((mitarbeiter) => {
       if (mitarbeiter.Geburtstag) {
-        const day = new Date(mitarbeiter.Geburtstag).getDate();
-        const month = new Date(mitarbeiter.Geburtstag).getMonth();
+        const day = mitarbeiter.Geburtstag.getDate();
+        const month = mitarbeiter.Geburtstag.getMonth();
         const bday = new Date(jahr, month, day).toLocaleDateString();
+        console.log(mitarbeiter.Name, bday, today, mitarbeiter.Geburtstag);
         if (bday == today) {
           heute.push(mitarbeiter);
         } else {
@@ -48,14 +49,16 @@ export default function Geburtstage() {
       {Mitarbeiter.isLoading && <LoadingSpinner />}
       <h2>Heute ist der {new Date().toLocaleDateString()}</h2>
       {heute && (
-        <>
+        <div className="rounded border border-success border-4 p-4">
           <h3>Heute ist der Geburtstag von:</h3>
           <ul>
             {heute.map((mitarbeiter) => (
-              <li key={mitarbeiter.id}>{mitarbeiter.Name}</li>
+              <li className="fs-5 fw-bold" key={mitarbeiter.id}>
+                {mitarbeiter.Name}
+              </li>
             ))}
           </ul>
-        </>
+        </div>
       )}
       {andere && (
         <>

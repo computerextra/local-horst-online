@@ -6,11 +6,11 @@
 - [x] Profile löschen (Als Admin)
 - [ ] RSS Seite?
 - [x] Werkstatt Seite
-- [ ] Mitarbeiter Telefonliste
-- [ ] Mitarbeiter anlegen
-- [ ] Mitarbeiter bearbeiten
-- [ ] Mitarbeiter löschen
-- [ ] Lieferanten Telefonliste
+- [x] Mitarbeiter Telefonliste
+- [x] Mitarbeiter anlegen
+- [x] Mitarbeiter bearbeiten
+- [x] Mitarbeiter löschen
+- [x] Lieferanten Telefonliste
 - [ ] Lieferanten anlegen
 - [ ] Lieferanten bearbeiten
 - [ ] Lieferanten löschen

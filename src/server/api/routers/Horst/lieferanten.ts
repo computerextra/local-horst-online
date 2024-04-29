@@ -15,7 +15,10 @@ export const lieferantenRouter = createTRPCRouter({
     }),
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.horst.lieferanten.findMany({
-      orderBy: { Firma: "desc" },
+      orderBy: { Firma: "asc" },
+      include: {
+        Anschprechpartner: true,
+      },
     });
   }),
   create: protectedProcedure
@@ -24,7 +27,7 @@ export const lieferantenRouter = createTRPCRouter({
         Firma: z.string().min(3),
         Kundennummer: z.string().optional(),
         Webseite: z.string().optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.horst.lieferanten.create({
@@ -40,7 +43,7 @@ export const lieferantenRouter = createTRPCRouter({
         Firma: z.string().min(3),
         Kundennummer: z.string().optional(),
         Webseite: z.string().optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.horst.lieferanten.update({
@@ -54,7 +57,7 @@ export const lieferantenRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       return await ctx.horst.lieferanten.delete({
