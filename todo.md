@@ -17,7 +17,7 @@
 - [x] Ansprechpartner anlegen
 - [x] Anprechpartner bearbeiten
 - [x] Ansprechpartner löschen
-- [ ] Sage Suche Seite
+- [x] Sage Suche Seite
 - [ ] SN Artikel Suche Seite
 - [ ] Info an Kunde Seite
 - [ ] Warenlieferung Seite
