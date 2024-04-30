@@ -20,7 +20,9 @@
 - [x] Sage Suche Seite
 - [x] SN Artikel Suche Seite
 - [x] Info an Kunde Seite
-- [ ] Warenlieferung Seite
+- [x] Warenlieferung Seite
+- [ ] Warenlieferung Mail passt der Preis nicht.
+- [ ] Warenlieferung Laden geht nicht weg!
 - [ ] Inventur Seite?
 - [ ] Abteilung Seite für Website
 - [ ] Abteilung anlegen
