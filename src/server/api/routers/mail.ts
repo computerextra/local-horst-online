@@ -1076,6 +1076,12 @@ export const MailRouter = createTRPCRouter({
               lt: new Date(morgen),
             },
           },
+          {
+            Preis: {
+              gte: new Date(heute),
+              lt: new Date(morgen),
+            },
+          },
         ],
       },
     });

@@ -25,6 +25,12 @@ export const warenlieferungRouter = createTRPCRouter({
               lt: new Date(morgen),
             },
           },
+          {
+            Preis: {
+              gte: new Date(heute),
+              lt: new Date(morgen),
+            },
+          },
         ],
       },
     });
@@ -118,6 +124,8 @@ export const warenlieferungRouter = createTRPCRouter({
         data: x,
       });
     }
+
+    return true;
   }),
 });
 

@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import {
   Button,
@@ -13,6 +14,7 @@ import { api } from "~/utils/api";
 
 export default function Info() {
   const { isAdmin } = useAdmin();
+  const { data: sessionData } = useSession();
 
   const [adress, setAdress] = useState("");
   const [order, setOrder] = useState("");
@@ -45,6 +47,12 @@ export default function Info() {
     return (
       <Container>
         <h1>Nicht angemeldet!</h1>
+      </Container>
+    );
+  if (sessionData == null)
+    return (
+      <Container>
+        <h1>Nicht angemeldet</h1>
       </Container>
     );
 

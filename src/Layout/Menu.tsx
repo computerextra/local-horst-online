@@ -65,7 +65,7 @@ export default function Menu() {
                 Info
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/Service/Warenlieferung">
                 WL
               </NavDropdown.Item>
             </NavDropdown>
