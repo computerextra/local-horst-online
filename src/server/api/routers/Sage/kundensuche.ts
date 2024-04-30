@@ -44,7 +44,13 @@ export const kundenSucheRouter = createTRPCRouter({
         `REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(${input}, ' ',''),'/',''),'-',''),'+49','0'),'(',''),')',''),',','')`;
       const query = `SELECT * FROM sg_adressen WHERE ${replaceQuery(
         "Telefon1"
-      )} LIKE '%${search}%' OR ${replaceQuery("Telefon2")} LIKE '%${search}%'`;
+      )} LIKE '%${search}%' OR ${replaceQuery(
+        "Telefon2"
+      )} LIKE '%${search}%' OR ${replaceQuery(
+        "Mobiltelefon1"
+      )} LIKE '%${search}%' OR ${replaceQuery(
+        "Mobiltelefon2"
+      )} LIKE '%${search}%'`;
       return await ctx.sage.$queryRaw<sg_adressen[] | null>(Prisma.raw(query));
     }),
 });

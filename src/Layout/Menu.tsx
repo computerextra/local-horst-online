@@ -53,7 +53,7 @@ export default function Menu() {
                 Lieferanten
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/Telefonlisten/Sage">
                 Sage Suche
               </NavDropdown.Item>
             </NavDropdown>
