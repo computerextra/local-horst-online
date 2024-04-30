@@ -18,7 +18,7 @@
 - [x] Anprechpartner bearbeiten
 - [x] Ansprechpartner löschen
 - [x] Sage Suche Seite
-- [ ] SN Artikel Suche Seite
+- [x] SN Artikel Suche Seite
 - [ ] Info an Kunde Seite
 - [ ] Warenlieferung Seite
 - [ ] Inventur Seite?
