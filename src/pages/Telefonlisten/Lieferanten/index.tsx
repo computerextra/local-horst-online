@@ -1,15 +1,15 @@
+import Link from "next/link";
 import {
   Container,
-  DropdownItem,
-  DropdownToggle,
-  DropdownDivider,
-  DropdownMenu,
   Dropdown,
+  DropdownDivider,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Table,
 } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import useAdmin from "~/Hooks/useAdmin";
-import Link from "next/link";
 import { api } from "~/utils/api";
 
 export default function LieferantenPage() {
@@ -26,9 +26,9 @@ export default function LieferantenPage() {
       Aps.push(x.id);
     });
 
-    Aps.forEach(async (x) => {
+    for (const x of Aps) {
       await DeleteAp.mutateAsync({ id: x });
-    });
+    }
 
     const res = await Delete.mutateAsync({ id: l.id });
     if (res) {
@@ -42,7 +42,9 @@ export default function LieferantenPage() {
         <h1>Lieferanten</h1>
       </Container>
       <Link
-        className={`btn btn-lg btn-outline-primary ${!isAdmin && "disabled"} mb-2`}
+        className={`btn btn-lg btn-outline-primary ${
+          !isAdmin && "disabled"
+        } mb-2`}
         href="/Telefonlisten/Lieferanten/new"
       >
         Neu

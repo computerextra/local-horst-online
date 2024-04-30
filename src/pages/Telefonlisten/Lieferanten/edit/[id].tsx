@@ -3,16 +3,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
-  Container,
   Button,
-  Table,
+  Container,
   Dropdown,
-  DropdownToggle,
-  DropdownMenu,
   DropdownItem,
-  Form,
+  DropdownMenu,
+  DropdownToggle,
   FloatingLabel,
+  Form,
   FormControl,
+  Table,
 } from "react-bootstrap";
 import useAdmin from "~/Hooks/useAdmin";
 import { api } from "~/utils/api";
@@ -29,7 +29,7 @@ export default function LieferantenEdit() {
   // Lieferanten States
   const [Firma, setFirma] = useState<undefined | string>(undefined);
   const [Kundennummer, setKundennummer] = useState<undefined | string>(
-    undefined,
+    undefined
   );
   const [Webseite, setWebseite] = useState<undefined | string>(undefined);
 
@@ -51,7 +51,7 @@ export default function LieferantenEdit() {
       Webseite,
     });
     if (res) {
-      router.push("/Telefonlisten/Lieferanten");
+      await router.push("/Telefonlisten/Lieferanten");
     }
   };
 

@@ -1,15 +1,15 @@
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import {
-  Form,
-  FloatingLabel,
-  FormControl,
   Button,
   Container,
+  FloatingLabel,
+  Form,
+  FormControl,
 } from "react-bootstrap";
-import { useState } from "react";
-import { api } from "~/utils/api";
-import { useRouter } from "next/router";
 import useAdmin from "~/Hooks/useAdmin";
-import { useSession, signIn } from "next-auth/react";
+import { api } from "~/utils/api";
 
 export default function NeuerAnsprechpartner() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function NeuerAnsprechpartner() {
       lieferantenId: lid as string,
     });
     if (res) {
-      router.push("/Telefonlisten/Lieferanten/edit/" + lid);
+      await router.push("/Telefonlisten/Lieferanten/edit/" + lid?.toString());
     }
   };
 

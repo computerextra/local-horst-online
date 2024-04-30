@@ -1,15 +1,15 @@
-import { useSession, signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import useAdmin from "~/Hooks/useAdmin";
-import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import {
-  Container,
   Button,
-  Form,
+  Container,
   FloatingLabel,
+  Form,
   FormControl,
 } from "react-bootstrap";
+import useAdmin from "~/Hooks/useAdmin";
+import { api } from "~/utils/api";
 
 export default function AnsprechpartnerEdit() {
   const router = useRouter();
@@ -39,7 +39,7 @@ export default function AnsprechpartnerEdit() {
       lieferantenId: lid as string,
     });
     if (res) {
-      router.push("/Telefonlisten/Lieferanten/edit/" + lid);
+      await router.push("/Telefonlisten/Lieferanten/edit/" + lid?.toString());
     }
   };
 
