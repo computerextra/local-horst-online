@@ -58,7 +58,7 @@ export default function Menu() {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Service" id="ServiceDropdown">
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/Service/Seriennummer">
                 SN
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} href="/">
