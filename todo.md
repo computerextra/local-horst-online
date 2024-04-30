@@ -19,7 +19,7 @@
 - [x] Ansprechpartner löschen
 - [x] Sage Suche Seite
 - [x] SN Artikel Suche Seite
-- [ ] Info an Kunde Seite
+- [x] Info an Kunde Seite
 - [ ] Warenlieferung Seite
 - [ ] Inventur Seite?
 - [ ] Abteilung Seite für Website
