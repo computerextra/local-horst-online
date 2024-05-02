@@ -60,6 +60,7 @@ export default function WarenlieferungPage() {
     const res = await Mailer.mutateAsync();
     if (res) {
       setSent(true);
+      setLoading(false);
     }
   };
 
@@ -106,6 +107,7 @@ export default function WarenlieferungPage() {
           </Button>
         </>
       )}
+      {sent && !loading && <h2 className="text-success">Mail versendet!</h2>}
       {loading && <LoadingSpinner />}
       {Warenlieferung.isLoading && <LoadingSpinner />}
       {!loading && !Warenlieferung.isLoading && Warenlieferung.data && (

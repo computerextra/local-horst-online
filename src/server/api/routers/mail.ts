@@ -34,7 +34,7 @@ export const MailRouter = createTRPCRouter({
         receiverMail: z.string(),
         receiverName: z.string(),
         Schulden: z.string(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       const PaypalLink = `https://paypal.me/${input.paypalName}/${input.Schulden}`;
@@ -60,7 +60,7 @@ export const MailRouter = createTRPCRouter({
       z.object({
         receiver: z.string(),
         title: z.string(),
-      })
+      }),
     )
     .mutation(async ({ input }) => {
       const transporter = nodemailer.createTransport(Config);
@@ -77,7 +77,7 @@ export const MailRouter = createTRPCRouter({
         xmlns:w="urn:schemas-microsoft-com:office:word"
         xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
         xmlns="http://www.w3.org/TR/REC-html40">
-        
+
         <head>
         <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
         <meta name=ProgId content=Word.Document>
@@ -740,50 +740,50 @@ export const MailRouter = createTRPCRouter({
           <o:idmap v:ext="edit" data="1"/>
          </o:shapelayout></xml><![endif]-->
         </head>
-        
+
         <body lang=DE link="#0563C1" vlink="#954F72" style='tab-interval:35.4pt;
         word-wrap:break-word'>
-        
+
         <div class=WordSection1>
-        
+
         <p class=MsoNormal><span style='font-size:11.0pt;mso-bidi-font-size:12.0pt;
         font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:
         minor-latin;mso-bidi-font-family:Aptos'>Sehr geehrte Kundin, sehr geehrter
         Kunde,<o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:11.0pt;mso-bidi-font-size:12.0pt;
         font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:
         minor-latin;mso-bidi-font-family:Aptos'><o:p>&nbsp;</o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:11.0pt;mso-bidi-font-size:12.0pt;
         font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:
         minor-latin;mso-bidi-font-family:Aptos'>hiermit teilen wir Ihnen mit, dass Ihre
         Bestellung bei uns eingetroffen ist und aktuell unseren Wareneingang
         durchläuft.<o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:11.0pt;mso-bidi-font-size:12.0pt;
         font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:
         minor-latin;mso-bidi-font-family:Aptos'><o:p>&nbsp;</o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:11.0pt;mso-bidi-font-size:12.0pt;
         font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:
         minor-latin;mso-bidi-font-family:Aptos'>Sie können Ihre bestellte Ware ab dem
         nächsten Werktag 9 Uhr abholen.<o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:11.0pt;mso-bidi-font-size:12.0pt;
         font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:
         minor-latin;mso-bidi-font-family:Aptos'><o:p>&nbsp;</o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:11.0pt;mso-bidi-font-size:12.0pt;
         font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:
         minor-latin;mso-bidi-font-family:Aptos'>Unsere Öffnungszeiten:<o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:11.0pt;mso-bidi-font-size:12.0pt;
         font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:
         minor-latin;mso-bidi-font-family:Aptos'>Montag - Freitag: 9:00 - 18:00<o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><o:p>&nbsp;</o:p></p>
-        
+
         <table class=MsoNormalTable border=0 cellpadding=0 width=461 style='width:345.75pt;
          mso-cellspacing:1.5pt;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>
          <thead>
@@ -951,13 +951,13 @@ export const MailRouter = createTRPCRouter({
           </td>
          </tr>
         </table>
-        
+
         <p class=MsoNormal><span style='font-size:8.0pt;font-family:"Calibri",sans-serif;
         mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
         Aptos;color:#A5A5A5;mso-themecolor:accent3;mso-no-proof:yes'>Sitz der
         Gesellschaft: 34130 Kassel<br>
         Geschäftsführer: Christian Krauss - Handelsregister: Kassel, HRB 19697<o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:8.0pt;font-family:"Calibri",sans-serif;
         mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
         Aptos;color:#A5A5A5;mso-themecolor:accent3;mso-no-proof:yes'>USt.-IdNr.:
@@ -983,71 +983,37 @@ export const MailRouter = createTRPCRouter({
         mso-no-proof:yes'><br style='mso-special-character:line-break'>
         <![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
         <![endif]><o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:8.0pt;font-family:"Calibri",sans-serif;
         mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
         Aptos;color:#FF5D5D;mso-no-proof:yes'>Der Inhalt dieser E-Mail und sämtliche
         Anhänge sind vertraulich und ausschließlich für den bezeichneten Empfänger
         bestimmt. <o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:8.0pt;font-family:"Calibri",sans-serif;
         mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
         Aptos;color:#FF5D5D;mso-no-proof:yes'>Sollten Sie nicht der bezeichnete
         Empfänger sein, bitten wir Sie, umgehend den Absender zu benachrichtigen und
         diese E-Mail zu löschen. <o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:8.0pt;font-family:"Calibri",sans-serif;
         mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
         Aptos;color:#FF5D5D;mso-no-proof:yes'>Jede Form der unautorisierten
         Veröffentlichung, Vervielfältigung und Weitergabe des Inhalts dieser E-Mail
         oder auch das Ergreifen von <o:p></o:p></span></p>
-        
+
         <p class=MsoNormal><span style='font-size:8.0pt;font-family:"Calibri",sans-serif;
         mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
         Aptos;color:#FF5D5D;mso-no-proof:yes'>Maßnahmen als Reaktion darauf sind
         unzulässig.</span><span style='font-family:"Calibri",sans-serif;mso-ascii-theme-font:
         minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:Aptos'><o:p></o:p></span></p>
-        
+
         </div>
-        
+
         </body>
-        
+
         </html>
         `,
-        // html:
-        //   "Sehr geehrte Kundin, sehr geehrter Kunde,<br><br>" +
-        //   "Ihre Bestellung ist soeben bei uns eingetroffen. Sie " +
-        //   "durchläuft aktuell unseren Wareneingang. Sie können Ihre " +
-        //   "bestellte Ware ab dem nächsten Werktag 9 Uhr bei uns " +
-        //   "abholen." +
-        //   "<br><br>Unsere Öffnungszeiten:<br>" +
-        //   "Montag - Freitag 09:00 - 18:00 Uhr<br><br>" +
-        //   "Mit freundlichen Grüßen<br>" +
-        //   "<b>Ihr Computer Extra Team</b><br><br>" +
-        //   'Telefon <a href="tel:0561601440">0561 60 144 0</a> <br>' +
-        //   "Fax 0561 60 144 199 <br>" +
-        //   'E-Mail <a href="mailto:info@computer-extra.de">info@computer-extra.de</a> <br>' +
-        //   'Website <a href="https://computer-extra.de">www.computer-extra.de</a> <br> <br>' +
-        //   "<b>Computer Extra GmbH</b><br>" +
-        //   "Harleshäuser Str. 8<br>" +
-        //   "34130 Kassel<br><br>" +
-        //   "Sitz der Gesellschaft: 34637 Schrecksbach <br>" +
-        //   "Geschäftsführer: Christian Krauss - Handelsregister: Marburg, HRB 8151 <br>" +
-        //   "USt.-IdNr.: DE357590630 <br>" +
-        //   '<a href="https://computer-extra.de/Datenschutz">Datenschutzinformationen</a>' +
-        //   " - " +
-        //   '<a href="https://computer-extra.de/AGB">AGB</a>' +
-        //   " - " +
-        //   '<a href="https://computer-extra.de/Impressum">Impressum</a>' +
-        //   '<br><br><font color="#FF0000">' +
-        //   "Der Inhalt dieser E-Mail und sämtliche Anhänge sind " +
-        //   "vertraulich und ausschließlich für den bezeichneten Empfänger " +
-        //   "bestimmt. Sollten Sie nicht der bezeichnete Empfänger sein, " +
-        //   "bitten wir Sie, umgehend den Absender zu benachrichtigen und " +
-        //   "diese E-Mail zu löschen. Jede Form der unautorisierten " +
-        //   "Veröffentlichung, Vervielfältigung und Weitergabe des Inhalts " +
-        //   "dieser E-Mail oder auch das Ergreifen von Maßnahmen als " +
-        //   "Reaktion darauf sind unzulässig.</font>",
       };
       const res = await transporter.sendMail(message);
       if (res.response.includes("Ok")) {
@@ -1059,7 +1025,7 @@ export const MailRouter = createTRPCRouter({
   WarenlieferungsMail: protectedProcedure.mutation(async ({ ctx }) => {
     const heute = new Date().toDateString();
     const morgen = new Date(
-      new Date().setDate(new Date().getDate() + 1)
+      new Date().setDate(new Date().getDate() + 1),
     ).toDateString();
     const Warenlieferung = await ctx.horst.warenlieferung.findMany({
       where: {
@@ -1135,8 +1101,8 @@ export const MailRouter = createTRPCRouter({
       Neu.length > 0 && Alt.length > 0 && Preis.length > 0
         ? "<hr>"
         : Preis.length > 0 && Alt.length < 0 && Neu.length < 0
-        ? "<hr>"
-        : "";
+          ? "<hr>"
+          : "";
 
     if (Preis.length > 0) {
       body += "<h2>Preisänderungen</h2>";
@@ -1154,7 +1120,7 @@ export const MailRouter = createTRPCRouter({
           body += `<b>${element.Artikelnummer}</b>: ${
             element.Name
           } - Alt: ${element.AlterPreis.toPrecision(
-            2
+            2,
           )}€ => Neu: ${element.NeuerPreis.toPrecision(2)}€ <br />`;
       });
     }
