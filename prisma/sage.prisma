@@ -1,7 +1,7 @@
 generator client {
   provider      = "prisma-client-js"
   output        = "./generated/Sage"
-  binaryTargets = ["native", "windows"]
+  binaryTargets = ["native", "windows", "darwin-arm64"]
 }
 
 datasource db {
