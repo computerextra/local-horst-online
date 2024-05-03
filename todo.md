@@ -28,10 +28,10 @@
 - [x] Abteilung anlegen
 - [x] Abteilung bearbeiten
 - [x] Abteilung löschen
-- [ ] Mitarbeiter Seite für Website
-- [ ] Mitarbeiter anlegen
-- [ ] Mitarbeiter bearbeiten
-- [ ] Mitarbeiter löschen
+- [x] Mitarbeiter Seite für Website
+- [x] Mitarbeiter anlegen
+- [X] Mitarbeiter bearbeiten
+- [X] Mitarbeiter löschen
 - [ ] Partner Seite für Website
 - [ ] Partner anlegen
 - [ ] Partner bearbeiten
