@@ -14,6 +14,7 @@ import { userRouter } from "./routers/Horst/user";
 import { warenlieferungRouter } from "./routers/Horst/warenlieferung";
 import { artikelSucheRouter } from "./routers/Sage/artikelsuche";
 import { kundenSucheRouter } from "./routers/Sage/kundensuche";
+import { InventurRouter } from "./routers/inventur";
 import { MailRouter } from "./routers/mail";
 import { SignatureRouter } from "./routers/signatures";
 
@@ -44,6 +45,7 @@ export const appRouter = createTRPCRouter({
   // General Routes
   Mail: MailRouter,
   Signaturen: SignatureRouter,
+  Inventur: InventurRouter,
 });
 
 // export type definition of API

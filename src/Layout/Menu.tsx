@@ -58,6 +58,10 @@ export default function Menu() {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Service" id="ServiceDropdown">
+              <NavDropdown.Item as={Link} href="/Service/Inventur">
+                Inventur
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
               <NavDropdown.Item as={Link} href="/Service/Seriennummer">
                 SN
               </NavDropdown.Item>
