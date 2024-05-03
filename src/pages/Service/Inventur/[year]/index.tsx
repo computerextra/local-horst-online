@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -75,47 +76,56 @@ export default function Jahr() {
     );
 
   return (
-    <Container>
-      <h1>Inventur von {year}</h1>
-      {loading && <LoadingSpinner />}
-      <FloatingLabel
-        controlId="floatingInput"
-        label="Artikelnummer | Suchbegriff"
-        className="mb-3"
-      >
-        <FormControl
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Artikelnummer"
-        />
-      </FloatingLabel>
-      {!loading && entries && entries.length > 0 && (
-        <Table striped hover>
-          <thead>
-            <tr>
-              <th>Artikelnummer</th>
-              <th>Suchbegriff</th>
-              <th>Anzahl</th>
-              <th>Team</th>
-            </tr>
-          </thead>
-          <tbody>
-            {showEntries?.map((x, idx) => (
-              <tr key={idx}>
-                <td>{x.Artikelnummer}</td>
-                <td>{x.Suchbegriff}</td>
-                <td>{x.Anzahl}</td>
-                <td>
-                  <Link href={`/Service/Inventur/${year as string}/${x.Team}`}>
-                    {x.Team}
-                  </Link>
-                </td>
+    <>
+      <Head>
+        <title>Inventur Daten | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container>
+        <h1>Inventur von {year}</h1>
+        {loading && <LoadingSpinner />}
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Artikelnummer | Suchbegriff"
+          className="mb-3"
+        >
+          <FormControl
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Artikelnummer"
+          />
+        </FloatingLabel>
+        {!loading && entries && entries.length > 0 && (
+          <Table striped hover>
+            <thead>
+              <tr>
+                <th>Artikelnummer</th>
+                <th>Suchbegriff</th>
+                <th>Anzahl</th>
+                <th>Team</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </Container>
+            </thead>
+            <tbody>
+              {showEntries?.map((x, idx) => (
+                <tr key={idx}>
+                  <td>{x.Artikelnummer}</td>
+                  <td>{x.Suchbegriff}</td>
+                  <td>{x.Anzahl}</td>
+                  <td>
+                    <Link
+                      href={`/Service/Inventur/${year as string}/${x.Team}`}
+                    >
+                      {x.Team}
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Container>
+    </>
   );
 }

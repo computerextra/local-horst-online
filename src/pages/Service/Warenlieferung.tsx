@@ -1,6 +1,7 @@
 import { type Warenlieferung } from "@prisma/client";
 import type { Decimal } from "@prisma/client/runtime/library";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Button, Container, Table } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
@@ -95,93 +96,100 @@ export default function WarenlieferungPage() {
   };
 
   return (
-    <Container>
-      <h1>Warenlieferung</h1>
-      {!sent && (
-        <>
-          <Button className="me-3" onClick={generate} disabled={loading}>
-            Generate
-          </Button>
-          <Button onClick={sendMail} disabled={loading}>
-            Send Mail
-          </Button>
-        </>
-      )}
-      {sent && !loading && <h2 className="text-success">Mail versendet!</h2>}
-      {loading && <LoadingSpinner />}
-      {Warenlieferung.isLoading && <LoadingSpinner />}
-      {!loading && !Warenlieferung.isLoading && Warenlieferung.data && (
-        <>
-          {neu && neu.length > 0 && (
-            <Table hover className="table-sm caption-top">
-              <caption>Neue Artikel</caption>
-              <thead>
-                <tr>
-                  <th>Artikelnummer</th>
-                  <th>Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                {neu.map((x) => (
-                  <tr key={x.id}>
-                    <td>{x.Artikelnummer}</td>
-                    <td>{x.Name}</td>
+    <>
+      <Head>
+        <title>Warenlieferung | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container>
+        <h1>Warenlieferung</h1>
+        {!sent && (
+          <>
+            <Button className="me-3" onClick={generate} disabled={loading}>
+              Generate
+            </Button>
+            <Button onClick={sendMail} disabled={loading}>
+              Send Mail
+            </Button>
+          </>
+        )}
+        {sent && !loading && <h2 className="text-success">Mail versendet!</h2>}
+        {loading && <LoadingSpinner />}
+        {Warenlieferung.isLoading && <LoadingSpinner />}
+        {!loading && !Warenlieferung.isLoading && Warenlieferung.data && (
+          <>
+            {neu && neu.length > 0 && (
+              <Table hover className="table-sm caption-top">
+                <caption>Neue Artikel</caption>
+                <thead>
+                  <tr>
+                    <th>Artikelnummer</th>
+                    <th>Name</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-          {wieder && wieder.length > 0 && (
-            <Table hover className="table-sm caption-top">
-              <caption>Wieder Lagernde Artikel</caption>
-              <thead>
-                <tr>
-                  <th>Artikelnummer</th>
-                  <th>Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                {wieder.map((x) => (
-                  <tr key={x.id}>
-                    <td>{x.Artikelnummer}</td>
-                    <td>{x.Name}</td>
+                </thead>
+                <tbody>
+                  {neu.map((x) => (
+                    <tr key={x.id}>
+                      <td>{x.Artikelnummer}</td>
+                      <td>{x.Name}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
+            {wieder && wieder.length > 0 && (
+              <Table hover className="table-sm caption-top">
+                <caption>Wieder Lagernde Artikel</caption>
+                <thead>
+                  <tr>
+                    <th>Artikelnummer</th>
+                    <th>Name</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-          {preis && preis.length > 0 && (
-            <Table hover className="table-sm caption-top">
-              <caption>Neue Preise</caption>
-              <thead>
-                <tr>
-                  <th>Artikelnummer</th>
-                  <th>Name</th>
-                  <th>Alter Preis</th>
-                  <th>Neuer Preis</th>
-                  <th>Differenz €</th>
-                  <th>Differenz %</th>
-                </tr>
-              </thead>
-              <tbody>
-                {preis.map((x) => {
-                  if (parseInt(diff(x.AlterPreis, x.NeuerPreis)) > 0)
-                    return (
-                      <tr key={x.id}>
-                        <td>{x.Artikelnummer}</td>
-                        <td>{x.Name}</td>
-                        <td>{x.AlterPreis ? <>{x.AlterPreis}</> : "n/a"}</td>
-                        <td>{x.NeuerPreis ? <>{x.NeuerPreis}</> : "n/a"}</td>
-                        <td>{diff(x.AlterPreis, x.NeuerPreis)}</td>
-                        <td>{diffProzent(x.AlterPreis, x.NeuerPreis)}</td>
-                      </tr>
-                    );
-                })}
-              </tbody>
-            </Table>
-          )}
-        </>
-      )}
-    </Container>
+                </thead>
+                <tbody>
+                  {wieder.map((x) => (
+                    <tr key={x.id}>
+                      <td>{x.Artikelnummer}</td>
+                      <td>{x.Name}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
+            {preis && preis.length > 0 && (
+              <Table hover className="table-sm caption-top">
+                <caption>Neue Preise</caption>
+                <thead>
+                  <tr>
+                    <th>Artikelnummer</th>
+                    <th>Name</th>
+                    <th>Alter Preis</th>
+                    <th>Neuer Preis</th>
+                    <th>Differenz €</th>
+                    <th>Differenz %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {preis.map((x) => {
+                    if (parseInt(diff(x.AlterPreis, x.NeuerPreis)) > 0)
+                      return (
+                        <tr key={x.id}>
+                          <td>{x.Artikelnummer}</td>
+                          <td>{x.Name}</td>
+                          <td>{x.AlterPreis ? <>{x.AlterPreis}</> : "n/a"}</td>
+                          <td>{x.NeuerPreis ? <>{x.NeuerPreis}</> : "n/a"}</td>
+                          <td>{diff(x.AlterPreis, x.NeuerPreis)}</td>
+                          <td>{diffProzent(x.AlterPreis, x.NeuerPreis)}</td>
+                        </tr>
+                      );
+                  })}
+                </tbody>
+              </Table>
+            )}
+          </>
+        )}
+      </Container>
+    </>
   );
 }

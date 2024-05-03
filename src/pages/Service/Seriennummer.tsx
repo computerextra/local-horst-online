@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState } from "react";
 import {
   Button,
@@ -43,33 +44,40 @@ export default function Seriennummer() {
   };
 
   return (
-    <Container>
-      <h1>CE Archiv</h1>
-      <Form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          await handleSearch();
-        }}
-      >
-        <FormGroup className="mb-3 ">
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Suchbegriff"
-            className="mb-3"
-          >
-            <FormControl
-              type="text"
-              required
-              placeholder="Suchbegriff"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </FloatingLabel>
-          <Button type="submit">Suchen</Button>
-        </FormGroup>
-      </Form>
-      {loading && <LoadingSpinner />}
-      {Result && <p>{Result}</p>}
-    </Container>
+    <>
+      <Head>
+        <title>Seriennummer | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container>
+        <h1>CE Archiv</h1>
+        <Form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await handleSearch();
+          }}
+        >
+          <FormGroup className="mb-3 ">
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Suchbegriff"
+              className="mb-3"
+            >
+              <FormControl
+                type="text"
+                required
+                placeholder="Suchbegriff"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </FloatingLabel>
+            <Button type="submit">Suchen</Button>
+          </FormGroup>
+        </Form>
+        {loading && <LoadingSpinner />}
+        {Result && <p>{Result}</p>}
+      </Container>
+    </>
   );
 }

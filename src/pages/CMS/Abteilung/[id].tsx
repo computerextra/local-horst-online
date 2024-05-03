@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Button, Container, FloatingLabel, Form } from "react-bootstrap";
@@ -44,27 +45,33 @@ export default function EditAbteilung() {
     );
 
   return (
-    <Container>
-      <h1>Abteilung: {Abteilung.data?.name} bearbeiten</h1>
-      {loading || Abteilung.isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <Form onSubmit={handleSubmit}>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Name"
-            className="mb-3"
-          >
-            <Form.Control
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="text"
-              placeholder="Name"
-            />
-          </FloatingLabel>
-          <Button type="submit">Speichern</Button>
-        </Form>
-      )}
-    </Container>
+    <>
+      <Head>
+        <title>{Abteilung.data?.name} | CMS | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container>
+        <h1>Abteilung: {Abteilung.data?.name} bearbeiten</h1>
+        {loading || Abteilung.isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <Form onSubmit={handleSubmit}>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Name"
+              className="mb-3"
+            >
+              <Form.Control
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                placeholder="Name"
+              />
+            </FloatingLabel>
+            <Button type="submit">Speichern</Button>
+          </Form>
+        )}
+      </Container>
+    </>
   );
 }

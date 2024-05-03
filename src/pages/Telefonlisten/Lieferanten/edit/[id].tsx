@@ -1,4 +1,5 @@
 import { signIn, useSession } from "next-auth/react";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -86,94 +87,101 @@ export default function LieferantenEdit() {
       </Container>
     );
   return (
-    <Container>
-      <h1>{Lieferant.data?.Firma} bearbeiten</h1>
-      <Form onSubmit={(e) => e.preventDefault()}>
-        <FloatingLabel className="mb-3" label="Firma" controlId="Firma">
-          <FormControl
-            type="text"
-            placeholder="Firma"
-            value={Firma}
-            onChange={(e) => setFirma(e.target.value)}
-          />{" "}
-        </FloatingLabel>
-        <FloatingLabel
-          className="mb-3"
-          label="Kundennummer"
-          controlId="Kundennummer"
+    <>
+      <Head>
+        <title>{Lieferant.data?.Firma} | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container>
+        <h1>{Lieferant.data?.Firma} bearbeiten</h1>
+        <Form onSubmit={(e) => e.preventDefault()}>
+          <FloatingLabel className="mb-3" label="Firma" controlId="Firma">
+            <FormControl
+              type="text"
+              placeholder="Firma"
+              value={Firma}
+              onChange={(e) => setFirma(e.target.value)}
+            />{" "}
+          </FloatingLabel>
+          <FloatingLabel
+            className="mb-3"
+            label="Kundennummer"
+            controlId="Kundennummer"
+          >
+            <FormControl
+              type="text"
+              placeholder="Kundennummer"
+              value={Kundennummer}
+              onChange={(e) => setKundennummer(e.target.value)}
+            />{" "}
+          </FloatingLabel>
+          <FloatingLabel className="mb-3" label="Webseite" controlId="Webseite">
+            <FormControl
+              type="text"
+              placeholder="Webseite"
+              value={Webseite}
+              onChange={(e) => setWebseite(e.target.value)}
+            />{" "}
+          </FloatingLabel>
+          <Button type="submit" onClick={handleUpdate}>
+            Speichern
+          </Button>
+        </Form>
+        <h2>Ansprechpartner</h2>
+        <Link
+          href={"/Telefonlisten/Lieferanten/AP/" + Lieferant.data?.id}
+          className="btn btn-lg btn-outline-primary mb-3"
         >
-          <FormControl
-            type="text"
-            placeholder="Kundennummer"
-            value={Kundennummer}
-            onChange={(e) => setKundennummer(e.target.value)}
-          />{" "}
-        </FloatingLabel>
-        <FloatingLabel className="mb-3" label="Webseite" controlId="Webseite">
-          <FormControl
-            type="text"
-            placeholder="Webseite"
-            value={Webseite}
-            onChange={(e) => setWebseite(e.target.value)}
-          />{" "}
-        </FloatingLabel>
-        <Button type="submit" onClick={handleUpdate}>
-          Speichern
-        </Button>
-      </Form>
-      <h2>Ansprechpartner</h2>
-      <Link
-        href={"/Telefonlisten/Lieferanten/AP/" + Lieferant.data?.id}
-        className="btn btn-lg btn-outline-primary mb-3"
-      >
-        Neuer AP
-      </Link>
-      <Table striped hover bordered>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Mail</th>
-            <th>Mobil</th>
-            <th>Telefon</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Lieferant.data?.Anschprechpartner?.map((x) => (
-            <tr key={x.id}>
-              <td>{x.Name}</td>
-              <td>{x.Mail ?? "-"}</td>
-              <td>{x.Mobil ?? "-"}</td>
-              <td>{x.Telefon ?? "-"}</td>
-              <td>
-                <Dropdown>
-                  <DropdownToggle variant="success" id="dropdown-actions">
-                    Actions
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem
-                      as={Link}
-                      href={
-                        "/Telefonlisten/Lieferanten/AP/edit/" +
-                        Lieferant.data?.id +
-                        "/" +
-                        x.id
-                      }
-                    >
-                      Bearbeiten
-                    </DropdownItem>
-                    <DropdownItem
-                      href="#"
-                      onClick={() => void handleDelete(x.id)}
-                    >
-                      AP Löschen
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </td>
+          Neuer AP
+        </Link>
+        <Table striped hover bordered>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Mail</th>
+              <th>Mobil</th>
+              <th>Telefon</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-    </Container>
+          </thead>
+          <tbody>
+            {Lieferant.data?.Anschprechpartner?.map((x) => (
+              <tr key={x.id}>
+                <td>{x.Name}</td>
+                <td>{x.Mail ?? "-"}</td>
+                <td>{x.Mobil ?? "-"}</td>
+                <td>{x.Telefon ?? "-"}</td>
+                <td>
+                  <Dropdown>
+                    <DropdownToggle variant="success" id="dropdown-actions">
+                      Actions
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem
+                        as={Link}
+                        href={
+                          "/Telefonlisten/Lieferanten/AP/edit/" +
+                          Lieferant.data?.id +
+                          "/" +
+                          x.id
+                        }
+                      >
+                        Bearbeiten
+                      </DropdownItem>
+                      <DropdownItem
+                        href="#"
+                        onClick={() => void handleDelete(x.id)}
+                      >
+                        AP Löschen
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Container>
+    </>
   );
 }

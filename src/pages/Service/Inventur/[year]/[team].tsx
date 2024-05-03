@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
@@ -55,45 +56,51 @@ export default function Team() {
     );
 
   return (
-    <Container>
-      <h1>Team: {team}</h1>
-      {loading && <LoadingSpinner />}
-      {!loading && info && (
-        <Table>
-          <tr>
-            <th>Mitarbeiter</th>
-            <td>{info.Mitarbeiter}</td>
-          </tr>
-          <tr>
-            <th>Farbe</th>
-            <td>{info.Farbe}</td>
-          </tr>
-          <tr>
-            <th>Ort</th>
-            <td>{info.Ort}</td>
-          </tr>
-        </Table>
-      )}
-      {!loading && entries && entries.length > 0 && (
-        <Table striped hover>
-          <thead>
+    <>
+      <Head>
+        <title>Inventur Team | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container>
+        <h1>Team: {team}</h1>
+        {loading && <LoadingSpinner />}
+        {!loading && info && (
+          <Table>
             <tr>
-              <th>Artikelnummer</th>
-              <th>Suchbegriff</th>
-              <th>Anzahl</th>
+              <th>Mitarbeiter</th>
+              <td>{info.Mitarbeiter}</td>
             </tr>
-          </thead>
-          <tbody>
-            {entries.map((e, idx) => (
-              <tr key={idx}>
-                <td>{e.Artikelnummer}</td>
-                <td>{e.Suchbegriff}</td>
-                <td>{e.Anzahl}</td>
+            <tr>
+              <th>Farbe</th>
+              <td>{info.Farbe}</td>
+            </tr>
+            <tr>
+              <th>Ort</th>
+              <td>{info.Ort}</td>
+            </tr>
+          </Table>
+        )}
+        {!loading && entries && entries.length > 0 && (
+          <Table striped hover>
+            <thead>
+              <tr>
+                <th>Artikelnummer</th>
+                <th>Suchbegriff</th>
+                <th>Anzahl</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </Container>
+            </thead>
+            <tbody>
+              {entries.map((e, idx) => (
+                <tr key={idx}>
+                  <td>{e.Artikelnummer}</td>
+                  <td>{e.Suchbegriff}</td>
+                  <td>{e.Anzahl}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Container>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
@@ -43,37 +44,43 @@ export default function UserProfile() {
   };
 
   return (
-    <Container>
-      <h1>Profil {sessionData.user.name} bearbeiten</h1>
-      <Form onSubmit={(e) => e.preventDefault()}>
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="Mail">
-          <Form.Label>Mail</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Mail"
-            value={email}
-            disabled
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={handleSubmit}
-          disabled={Updater.isPending}
-        >
-          Speichern
-        </Button>
-      </Form>
-    </Container>
+    <>
+      <Head>
+        <title>{sessionData.user.name ?? sessionData.user.email} | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container>
+        <h1>Profil {sessionData.user.name} bearbeiten</h1>
+        <Form onSubmit={(e) => e.preventDefault()}>
+          <Form.Group className="mb-3" controlId="name">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="Mail">
+            <Form.Label>Mail</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Mail"
+              value={email}
+              disabled
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={handleSubmit}
+            disabled={Updater.isPending}
+          >
+            Speichern
+          </Button>
+        </Form>
+      </Container>
+    </>
   );
 }

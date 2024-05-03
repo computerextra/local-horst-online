@@ -1,5 +1,6 @@
 import type { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -49,73 +50,79 @@ export default function AdminPage() {
   };
 
   return (
-    <Container>
-      <h1>Admin</h1>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>name</th>
-            <th>email</th>
-            <th>Email Verified</th>
-            <th>Admin</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {User.data.map((u) => {
-            return (
-              <tr key={u.id}>
-                <td>{u.id}</td>
-                <td>{u.name}</td>
-                <td>{u.email}</td>
-                <td>
-                  {u.emailVerified
-                    ? new Date(u.emailVerified).toLocaleDateString()
-                    : "No"}
-                </td>
-                <td>{ADMIN_MAILS.includes(u.email ?? "") ? "Yes" : "No"}</td>
-                <td>
-                  <Dropdown>
-                    <DropdownToggle variant="success" id="dropdown-basic">
-                      Actions
-                    </DropdownToggle>
+    <>
+      <Head>
+        <title>ADMIN | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container>
+        <h1>Admin</h1>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>name</th>
+              <th>email</th>
+              <th>Email Verified</th>
+              <th>Admin</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {User.data.map((u) => {
+              return (
+                <tr key={u.id}>
+                  <td>{u.id}</td>
+                  <td>{u.name}</td>
+                  <td>{u.email}</td>
+                  <td>
+                    {u.emailVerified
+                      ? new Date(u.emailVerified).toLocaleDateString()
+                      : "No"}
+                  </td>
+                  <td>{ADMIN_MAILS.includes(u.email ?? "") ? "Yes" : "No"}</td>
+                  <td>
+                    <Dropdown>
+                      <DropdownToggle variant="success" id="dropdown-basic">
+                        Actions
+                      </DropdownToggle>
 
-                    <DropdownMenu>
-                      <DropdownItem
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedUser(u);
-                          setShowEdit(true);
-                        }}
-                      >
-                        Bearbeiten
-                      </DropdownItem>
-                      <DropdownDivider />
-                      <DropdownItem
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          void handleDelete(u.id);
-                        }}
-                      >
-                        Löschen
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-      <AdminBearbeiten
-        show={showEdit}
-        setShow={setShowEdit}
-        User={selectedUser}
-      />
-    </Container>
+                      <DropdownMenu>
+                        <DropdownItem
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedUser(u);
+                            setShowEdit(true);
+                          }}
+                        >
+                          Bearbeiten
+                        </DropdownItem>
+                        <DropdownDivider />
+                        <DropdownItem
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            void handleDelete(u.id);
+                          }}
+                        >
+                          Löschen
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+        <AdminBearbeiten
+          show={showEdit}
+          setShow={setShowEdit}
+          User={selectedUser}
+        />
+      </Container>
+    </>
   );
 }
 

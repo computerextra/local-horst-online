@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import {
@@ -61,89 +62,96 @@ export default function NewAngebot() {
     );
 
   return (
-    <Container>
-      <h1>Neues Angebot</h1>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <Form onSubmit={handleSubmit}>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Title"
-            className="mb-3"
-          >
-            <Form.Control
-              value={title}
-              required
-              onChange={(e) => setTitle(e.target.value)}
-              type="text"
-              placeholder="Title"
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Subtitle"
-            className="mb-3"
-          >
-            <Form.Control
-              value={subtitle}
-              onChange={(e) => setSubTitle(e.target.value)}
-              type="text"
-              placeholder="Subtitle"
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Bild"
-            className="mb-3"
-          >
-            <Form.Control
-              value={Bild}
-              required
-              onChange={(e) => setBild(e.target.value)}
-              type="text"
-              placeholder="Bild"
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Link"
-            className="mb-3"
-          >
-            <Form.Control
-              value={Link}
-              required
-              onChange={(e) => setLink(e.target.value)}
-              type="url"
-              placeholder="Link"
-            />
-          </FloatingLabel>
-          <FormGroup className="mb-3">
-            <ReactDatePicker
-              dateFormat={"dd.MM.yyyy"}
-              selected={Start}
-              onChange={(date: Date) => setStart(date)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <ReactDatePicker
-              dateFormat={"dd.MM.yyyy"}
-              selected={End}
-              onChange={(date: Date) => setEnd(date)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormCheck
-              type="switch"
-              id="Aktiv"
-              label="Aktiv"
-              checked={Active}
-              onChange={() => setActive((prev) => !prev)}
-            />
-          </FormGroup>
-          <Button type="submit">Speichern</Button>
-        </Form>
-      )}
-    </Container>
+    <>
+      <Head>
+        <title>Neues Angebot | CMS | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container>
+        <h1>Neues Angebot</h1>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <Form onSubmit={handleSubmit}>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Title"
+              className="mb-3"
+            >
+              <Form.Control
+                value={title}
+                required
+                onChange={(e) => setTitle(e.target.value)}
+                type="text"
+                placeholder="Title"
+              />
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Subtitle"
+              className="mb-3"
+            >
+              <Form.Control
+                value={subtitle}
+                onChange={(e) => setSubTitle(e.target.value)}
+                type="text"
+                placeholder="Subtitle"
+              />
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Bild"
+              className="mb-3"
+            >
+              <Form.Control
+                value={Bild}
+                required
+                onChange={(e) => setBild(e.target.value)}
+                type="text"
+                placeholder="Bild"
+              />
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Link"
+              className="mb-3"
+            >
+              <Form.Control
+                value={Link}
+                required
+                onChange={(e) => setLink(e.target.value)}
+                type="url"
+                placeholder="Link"
+              />
+            </FloatingLabel>
+            <FormGroup className="mb-3">
+              <ReactDatePicker
+                dateFormat={"dd.MM.yyyy"}
+                selected={Start}
+                onChange={(date: Date) => setStart(date)}
+              />
+            </FormGroup>
+            <FormGroup className="mb-3">
+              <ReactDatePicker
+                dateFormat={"dd.MM.yyyy"}
+                selected={End}
+                onChange={(date: Date) => setEnd(date)}
+              />
+            </FormGroup>
+            <FormGroup className="mb-3">
+              <FormCheck
+                type="switch"
+                id="Aktiv"
+                label="Aktiv"
+                checked={Active}
+                onChange={() => setActive((prev) => !prev)}
+              />
+            </FormGroup>
+            <Button type="submit">Speichern</Button>
+          </Form>
+        )}
+      </Container>
+    </>
   );
 }

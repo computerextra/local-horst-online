@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import {
@@ -65,101 +66,108 @@ export default function NeuerMitarbeiter() {
     );
 
   return (
-    <Container>
-      <h1>Neuer Mitarbeiter</h1>
-      {isLoading || (Abteilungen.isLoading && <LoadingSpinner />)}
-      {!isLoading && !Abteilungen.isLoading && (
-        <Form onSubmit={handleSubmit}>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Name"
-            className="mb-3"
-          >
-            <FormControl
-              value={name}
+    <>
+      <Head>
+        <title>Neuer Mitarbeiter | CMS | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container>
+        <h1>Neuer Mitarbeiter</h1>
+        {isLoading || (Abteilungen.isLoading && <LoadingSpinner />)}
+        {!isLoading && !Abteilungen.isLoading && (
+          <Form onSubmit={handleSubmit}>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Name"
+              className="mb-3"
+            >
+              <FormControl
+                value={name}
+                required
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                placeholder="Name"
+              />
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Short"
+              className="mb-3"
+            >
+              <FormControl
+                value={short}
+                required
+                onChange={(e) => setShort(e.target.value)}
+                type="text"
+                placeholder="Name"
+              />
+            </FloatingLabel>
+            <FormSelect
+              className="mb-3"
+              value={sex}
               required
-              onChange={(e) => setName(e.target.value)}
-              type="text"
-              placeholder="Name"
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Short"
-            className="mb-3"
-          >
-            <FormControl
-              value={short}
-              required
-              onChange={(e) => setShort(e.target.value)}
-              type="text"
-              placeholder="Name"
-            />
-          </FloatingLabel>
-          <FormSelect
-            className="mb-3"
-            value={sex}
-            required
-            defaultValue="none"
-            onChange={(e) => setSex(e.target.value)}
-          >
-            <option disabled value="none">
-              Geschlecht...
-            </option>
-            <option value="m">Männlich</option>
-            <option value="w">Weiblich</option>
-          </FormSelect>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Tags Komma getrennt"
-            className="mb-3"
-          >
-            <FormControl
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              type="text"
-              placeholder="Tags Komma getrennt"
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Focus Komma getrennt"
-            className="mb-3"
-          >
-            <FormControl
-              value={focus}
-              onChange={(e) => setfocus(e.target.value)}
-              type="text"
-              placeholder="Focus Komma getrennt"
-            />
-          </FloatingLabel>
-          <FormSelect
-            className="mb-3"
-            required
-            value={abteilungId}
-            defaultValue="none"
-            onChange={(e) => setAbteilungId(e.target.value)}
-          >
-            <option value="none" disabled>
-              Abteilung...
-            </option>
-            {Abteilungen.data?.map((abteilung) => (
-              <option key={abteilung.id} value={abteilung.id}>
-                {abteilung.name}
+              defaultValue="none"
+              onChange={(e) => setSex(e.target.value)}
+            >
+              <option disabled value="none">
+                Geschlecht...
               </option>
-            ))}
-          </FormSelect>
-          <FormCheck
-            className="mb-3"
-            type="switch"
-            id="image"
-            label="Bild?"
-            value={image ? 1 : 0}
-            onChange={() => setImage((prev) => !prev)}
-          />
-          <Button type="submit">Speichern</Button>
-        </Form>
-      )}
-    </Container>
+              <option value="m">Männlich</option>
+              <option value="w">Weiblich</option>
+            </FormSelect>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Tags Komma getrennt"
+              className="mb-3"
+            >
+              <FormControl
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                type="text"
+                placeholder="Tags Komma getrennt"
+              />
+            </FloatingLabel>
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Focus Komma getrennt"
+              className="mb-3"
+            >
+              <FormControl
+                value={focus}
+                onChange={(e) => setfocus(e.target.value)}
+                type="text"
+                placeholder="Focus Komma getrennt"
+              />
+            </FloatingLabel>
+            <FormSelect
+              className="mb-3"
+              required
+              value={abteilungId}
+              defaultValue="none"
+              onChange={(e) => setAbteilungId(e.target.value)}
+            >
+              <option value="none" disabled>
+                Abteilung...
+              </option>
+              {Abteilungen.data?.map((abteilung) => (
+                <option key={abteilung.id} value={abteilung.id}>
+                  {abteilung.name}
+                </option>
+              ))}
+            </FormSelect>
+            <FormCheck
+              className="mb-3"
+              type="switch"
+              id="image"
+              label="Bild?"
+              value={image ? 1 : 0}
+              onChange={() => setImage((prev) => !prev)}
+            />
+            <Button type="submit">Speichern</Button>
+          </Form>
+        )}
+      </Container>
+    </>
   );
 }

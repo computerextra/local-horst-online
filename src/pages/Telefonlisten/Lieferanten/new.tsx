@@ -1,4 +1,5 @@
 import { signIn, useSession } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import {
@@ -53,41 +54,48 @@ export default function NeuerLieferant() {
     );
 
   return (
-    <Container>
-      <h1>Neuen Lieferant anlegen</h1>
-      <Form onSubmit={(e) => e.preventDefault()}>
-        <FloatingLabel className="mb-3" label="Firma" controlId="Firma">
-          <FormControl
-            type="text"
-            placeholder="Firma"
-            value={Firma}
-            onChange={(e) => setFirma(e.target.value)}
-          />{" "}
-        </FloatingLabel>
-        <FloatingLabel
-          className="mb-3"
-          label="Kundennummer"
-          controlId="Kundennummer"
-        >
-          <FormControl
-            type="text"
-            placeholder="Kundennummer"
-            value={Kundennummer}
-            onChange={(e) => setKundennummer(e.target.value)}
-          />{" "}
-        </FloatingLabel>
-        <FloatingLabel className="mb-3" label="Webseite" controlId="Webseite">
-          <FormControl
-            type="text"
-            placeholder="Webseite"
-            value={Webseite}
-            onChange={(e) => setWebseite(e.target.value)}
-          />{" "}
-        </FloatingLabel>
-        <Button type="submit" onClick={handleSave}>
-          Speichern
-        </Button>
-      </Form>
-    </Container>
+    <>
+      <Head>
+        <title>Neuer Lieferanten | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container>
+        <h1>Neuen Lieferant anlegen</h1>
+        <Form onSubmit={(e) => e.preventDefault()}>
+          <FloatingLabel className="mb-3" label="Firma" controlId="Firma">
+            <FormControl
+              type="text"
+              placeholder="Firma"
+              value={Firma}
+              onChange={(e) => setFirma(e.target.value)}
+            />{" "}
+          </FloatingLabel>
+          <FloatingLabel
+            className="mb-3"
+            label="Kundennummer"
+            controlId="Kundennummer"
+          >
+            <FormControl
+              type="text"
+              placeholder="Kundennummer"
+              value={Kundennummer}
+              onChange={(e) => setKundennummer(e.target.value)}
+            />{" "}
+          </FloatingLabel>
+          <FloatingLabel className="mb-3" label="Webseite" controlId="Webseite">
+            <FormControl
+              type="text"
+              placeholder="Webseite"
+              value={Webseite}
+              onChange={(e) => setWebseite(e.target.value)}
+            />{" "}
+          </FloatingLabel>
+          <Button type="submit" onClick={handleSave}>
+            Speichern
+          </Button>
+        </Form>
+      </Container>
+    </>
   );
 }

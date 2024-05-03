@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useState } from "react";
 import {
   Button,
@@ -57,51 +58,58 @@ export default function Info() {
     );
 
   return (
-    <Container>
-      <h1>Info an KD</h1>
-      <Form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          await handleSubmit();
-        }}
-      >
-        <FormGroup className="mb-3 ">
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Adresse"
-            className="mb-3"
-          >
-            <FormControl
-              type="text"
-              required
-              placeholder="Adresse"
-              value={adress}
-              onChange={(e) => setAdress(e.target.value)}
-            />
-          </FloatingLabel>
-        </FormGroup>
-        <FormGroup className="mb-3 ">
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Ufftrag"
-            className="mb-3"
-          >
-            <FormControl
-              type="text"
-              required
-              placeholder="Ufftrag"
-              value={order}
-              onChange={(e) => setOrder(e.target.value)}
-            />
-          </FloatingLabel>
-        </FormGroup>
-        <Button type="submit">Senden</Button>
-      </Form>
-      {loading && <LoadingSpinner />}
-      {success === 1 && <p className="text-success fs-2">Mail verschickt!</p>}
-      {success === 2 && (
-        <p className="text-danger fs-2">FEHLER!!!!! JUNGE!!!</p>
-      )}
-    </Container>
+    <>
+      <Head>
+        <title>Info an KD | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Container>
+        <h1>Info an KD</h1>
+        <Form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await handleSubmit();
+          }}
+        >
+          <FormGroup className="mb-3 ">
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Adresse"
+              className="mb-3"
+            >
+              <FormControl
+                type="text"
+                required
+                placeholder="Adresse"
+                value={adress}
+                onChange={(e) => setAdress(e.target.value)}
+              />
+            </FloatingLabel>
+          </FormGroup>
+          <FormGroup className="mb-3 ">
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Ufftrag"
+              className="mb-3"
+            >
+              <FormControl
+                type="text"
+                required
+                placeholder="Ufftrag"
+                value={order}
+                onChange={(e) => setOrder(e.target.value)}
+              />
+            </FloatingLabel>
+          </FormGroup>
+          <Button type="submit">Senden</Button>
+        </Form>
+        {loading && <LoadingSpinner />}
+        {success === 1 && <p className="text-success fs-2">Mail verschickt!</p>}
+        {success === 2 && (
+          <p className="text-danger fs-2">FEHLER!!!!! JUNGE!!!</p>
+        )}
+      </Container>
+    </>
   );
 }

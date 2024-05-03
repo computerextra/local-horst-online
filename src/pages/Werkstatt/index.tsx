@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState } from "react";
 import {
   Button,
@@ -56,6 +57,10 @@ export default function Werkstatt() {
 
   return (
     <>
+      <Head>
+        <title>Formular Gen für Faule! | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Container>
         <h1>Formular Gen für Faule!</h1>
         <Form.Check

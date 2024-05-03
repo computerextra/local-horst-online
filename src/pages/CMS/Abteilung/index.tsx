@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import {
   Container,
@@ -28,60 +29,66 @@ export default function AbteilungPage() {
   };
 
   return (
-    <Container>
-      <h1>Abteilungen</h1>
-      {Abteilungen.isLoading && <LoadingSpinner />}
-      {isAdmin && (
-        <Link
-          className="btn btn-lg btn-outline-primary"
-          href="/CMS/Abteilung/new"
-        >
-          Neu
-        </Link>
-      )}
-      {Abteilungen.data && (
-        <Table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Abteilungen.data.map((item) => (
-              <tr key={item.id}>
-                <td>{item.name}</td>
-                <td>
-                  <Dropdown>
-                    <DropdownToggle variant="success" id="AbteilungsActions">
-                      Actions
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {isAdmin ? (
-                        <>
-                          <DropdownItem
-                            as={Link}
-                            href={"/CMS/Abteilung/" + item.id}
-                          >
-                            Bearbeiten
-                          </DropdownItem>
-                          <DropdownItem
-                            onClick={() => void handleDelete(item.id)}
-                          >
-                            Löschen
-                          </DropdownItem>
-                        </>
-                      ) : (
-                        <DropdownItem>Nur für Admins</DropdownItem>
-                      )}
-                    </DropdownMenu>
-                  </Dropdown>
-                </td>
+    <>
+      <Head>
+        <title>Abteilungen | CMS | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container>
+        <h1>Abteilungen</h1>
+        {Abteilungen.isLoading && <LoadingSpinner />}
+        {isAdmin && (
+          <Link
+            className="btn btn-lg btn-outline-primary"
+            href="/CMS/Abteilung/new"
+          >
+            Neu
+          </Link>
+        )}
+        {Abteilungen.data && (
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </Container>
+            </thead>
+            <tbody>
+              {Abteilungen.data.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.name}</td>
+                  <td>
+                    <Dropdown>
+                      <DropdownToggle variant="success" id="AbteilungsActions">
+                        Actions
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        {isAdmin ? (
+                          <>
+                            <DropdownItem
+                              as={Link}
+                              href={"/CMS/Abteilung/" + item.id}
+                            >
+                              Bearbeiten
+                            </DropdownItem>
+                            <DropdownItem
+                              onClick={() => void handleDelete(item.id)}
+                            >
+                              Löschen
+                            </DropdownItem>
+                          </>
+                        ) : (
+                          <DropdownItem>Nur für Admins</DropdownItem>
+                        )}
+                      </DropdownMenu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Container>
+    </>
   );
 }

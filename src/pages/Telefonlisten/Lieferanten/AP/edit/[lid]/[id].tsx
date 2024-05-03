@@ -1,4 +1,5 @@
 import { signIn, useSession } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
@@ -68,46 +69,53 @@ export default function AnsprechpartnerEdit() {
     );
 
   return (
-    <Container>
-      <h1>{Ansprechpartner.data?.Name} bearbeiten</h1>
+    <>
+      <Head>
+        <title>{Ansprechpartner.data?.Name} | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-      <Form onSubmit={(e) => e.preventDefault()}>
-        <FloatingLabel className="mb-3" label="Name" controlId="Name">
-          <FormControl
-            type="text"
-            placeholder="Name"
-            value={Name}
-            onChange={(e) => setName(e.target.value)}
-          />{" "}
-        </FloatingLabel>
-        <FloatingLabel className="mb-3" label="Telefon" controlId="Telefon">
-          <FormControl
-            type="text"
-            placeholder="Telefon"
-            value={Telefon}
-            onChange={(e) => setTelefon(e.target.value)}
-          />
-        </FloatingLabel>
-        <FloatingLabel className="mb-3" label="Mobil" controlId="Mobil">
-          <FormControl
-            type="text"
-            placeholder="Mobil"
-            value={Mobil}
-            onChange={(e) => setMobil(e.target.value)}
-          />
-        </FloatingLabel>
-        <FloatingLabel className="mb-3" label="Mail" controlId="Mail">
-          <FormControl
-            type="text"
-            placeholder="Mail"
-            value={Mail}
-            onChange={(e) => setMail(e.target.value)}
-          />{" "}
-        </FloatingLabel>
-        <Button type="submit" onClick={handleSave}>
-          Speichern
-        </Button>
-      </Form>
-    </Container>
+      <Container>
+        <h1>{Ansprechpartner.data?.Name} bearbeiten</h1>
+
+        <Form onSubmit={(e) => e.preventDefault()}>
+          <FloatingLabel className="mb-3" label="Name" controlId="Name">
+            <FormControl
+              type="text"
+              placeholder="Name"
+              value={Name}
+              onChange={(e) => setName(e.target.value)}
+            />{" "}
+          </FloatingLabel>
+          <FloatingLabel className="mb-3" label="Telefon" controlId="Telefon">
+            <FormControl
+              type="text"
+              placeholder="Telefon"
+              value={Telefon}
+              onChange={(e) => setTelefon(e.target.value)}
+            />
+          </FloatingLabel>
+          <FloatingLabel className="mb-3" label="Mobil" controlId="Mobil">
+            <FormControl
+              type="text"
+              placeholder="Mobil"
+              value={Mobil}
+              onChange={(e) => setMobil(e.target.value)}
+            />
+          </FloatingLabel>
+          <FloatingLabel className="mb-3" label="Mail" controlId="Mail">
+            <FormControl
+              type="text"
+              placeholder="Mail"
+              value={Mail}
+              onChange={(e) => setMail(e.target.value)}
+            />{" "}
+          </FloatingLabel>
+          <Button type="submit" onClick={handleSave}>
+            Speichern
+          </Button>
+        </Form>
+      </Container>
+    </>
   );
 }

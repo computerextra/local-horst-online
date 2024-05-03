@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState } from "react";
 import {
   Container,
@@ -45,43 +46,49 @@ export default function Archive() {
   };
 
   return (
-    <Container>
-      <h1>CE Archiv</h1>
-      <Form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          await handleSearch();
-        }}
-      >
-        <FormGroup className="mb-3 ">
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Suchbegriff"
-            className="mb-3"
-          >
-            <FormControl
-              type="text"
-              placeholder="Suchbegriff"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </FloatingLabel>
-        </FormGroup>
-      </Form>
-      {loading && <LoadingSpinner />}
-      {Results && (
-        <ListGroup>
-          {Results.map((e) => (
-            <ListGroupItem
-              action
-              key={e.id}
-              onClick={() => handleDownload(e.id)}
+    <>
+      <Head>
+        <title>Archiv | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container>
+        <h1>CE Archiv</h1>
+        <Form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await handleSearch();
+          }}
+        >
+          <FormGroup className="mb-3 ">
+            <FloatingLabel
+              controlId="floatingInput"
+              label="Suchbegriff"
+              className="mb-3"
             >
-              {e.title}
-            </ListGroupItem>
-          ))}
-        </ListGroup>
-      )}
-    </Container>
+              <FormControl
+                type="text"
+                placeholder="Suchbegriff"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </FloatingLabel>
+          </FormGroup>
+        </Form>
+        {loading && <LoadingSpinner />}
+        {Results && (
+          <ListGroup>
+            {Results.map((e) => (
+              <ListGroupItem
+                action
+                key={e.id}
+                onClick={() => handleDownload(e.id)}
+              >
+                {e.title}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        )}
+      </Container>
+    </>
   );
 }
