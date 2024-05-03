@@ -74,16 +74,16 @@ export default function Menu() {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="CMS" id="CmsDropdown">
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/CMS/Abteilung">
                 Abteilung
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/CMS/Mitarbeiter">
                 Mitarbeiter
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/CMS/Partner">
                 Partner
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} href="/">
+              <NavDropdown.Item as={Link} href="/CMS/Angebote">
                 Angebote
               </NavDropdown.Item>
             </NavDropdown>
