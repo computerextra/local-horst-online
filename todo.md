@@ -23,7 +23,7 @@
 - [x] Warenlieferung Seite
 - [x] Warenlieferung Mail passt der Preis nicht.
 - [x] Warenlieferung Laden geht nicht weg!
-- [ ] Inventur Seite?
+- [x] Inventur Seite?
 - [ ] Abteilung Seite für Website
 - [ ] Abteilung anlegen
 - [ ] Abteilung bearbeiten
