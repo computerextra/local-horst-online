@@ -15,7 +15,7 @@ export const abteilungsRouter = createTRPCRouter({
     }),
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.cms.abteilung.findMany({
-      orderBy: { name: "desc" },
+      orderBy: { name: "asc" },
     });
   }),
   create: protectedProcedure

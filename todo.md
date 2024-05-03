@@ -36,7 +36,11 @@
 - [ ] Partner anlegen
 - [ ] Partner bearbeiten
 - [ ] Partner löschen
-- [ ] Angebote Seite für Website
-- [ ] Angebote anlegen
-- [ ] Angebote bearbeiten
-- [ ] Angebote löschen
+- [ ] Jobs Seite für Website
+- [ ] Jobs anlegen
+- [ ] Jobs bearbeiten
+- [ ] Jobs löschen
+- [x] Angebote Seite für Website
+- [x] Angebote anlegen
+- [x] Angebote bearbeiten
+- [X] Angebote löschen
