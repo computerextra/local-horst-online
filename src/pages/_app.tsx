@@ -3,6 +3,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { Container } from "react-bootstrap";
+import "react-datepicker/dist/react-datepicker.css";
 import Menu from "~/Layout/Menu";
 import "~/style.css";
 import { api } from "~/utils/api";

@@ -24,10 +24,10 @@
 - [x] Warenlieferung Mail passt der Preis nicht.
 - [x] Warenlieferung Laden geht nicht weg!
 - [x] Inventur Seite?
-- [ ] Abteilung Seite für Website
-- [ ] Abteilung anlegen
-- [ ] Abteilung bearbeiten
-- [ ] Abteilung löschen
+- [x] Abteilung Seite für Website
+- [x] Abteilung anlegen
+- [x] Abteilung bearbeiten
+- [x] Abteilung löschen
 - [ ] Mitarbeiter Seite für Website
 - [ ] Mitarbeiter anlegen
 - [ ] Mitarbeiter bearbeiten

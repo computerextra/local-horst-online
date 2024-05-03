@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Container,
@@ -9,6 +9,7 @@ import {
   FormControl,
   FormGroup,
 } from "react-bootstrap";
+import ReactDatePicker from "react-datepicker";
 import useAdmin from "~/Hooks/useAdmin";
 import { api } from "~/utils/api";
 
@@ -21,20 +22,20 @@ export default function NeuerMitarbeiter() {
   const [Short, setShort] = useState<undefined | string>(undefined);
   const [Gruppenwahl, setGruppenwahl] = useState<undefined | string>(undefined);
   const [InternTelefon1, setInternTelefon1] = useState<undefined | string>(
-    undefined,
+    undefined
   );
   const [InternTelefon2, setInternTelefon2] = useState<undefined | string>(
-    undefined,
+    undefined
   );
   const [FestnetzPrivat, setFestnetzPrivat] = useState<undefined | string>(
-    undefined,
+    undefined
   );
   const [FestnetzAlternativ, setFestnetzAlternativ] = useState<
     undefined | string
   >(undefined);
   const [HomeOffice, setHomeOffice] = useState<undefined | string>(undefined);
   const [MobilBusiness, setMobilBusiness] = useState<undefined | string>(
-    undefined,
+    undefined
   );
   const [MobilPrivat, setMobilPrivat] = useState<undefined | string>(undefined);
   const [Email, setEmail] = useState<undefined | string>(undefined);
@@ -61,7 +62,7 @@ export default function NeuerMitarbeiter() {
     });
 
     if (res) {
-      router.push("/Telefonlisten/Mitarbeiter");
+      await router.push("/Telefonlisten/Mitarbeiter");
     }
   };
 
@@ -209,25 +210,10 @@ export default function NeuerMitarbeiter() {
           />
         </FormGroup>
         <FormGroup className="mb-3">
-          <FormControl
-            type="date"
-            value={
-              Geburtstag
-                ? `${Geburtstag.getFullYear()}-${Geburtstag.getMonth() < 10 ? "0" + Geburtstag.getMonth() : Geburtstag.getMonth()}-${Geburtstag.getDate() < 10 ? "0" + Geburtstag.getDate() : Geburtstag.getDate()}`
-                : `${new Date().getFullYear()}-${new Date().getMonth() < 10 ? "0" + +new Date().getMonth() : new Date().getMonth()}-${new Date().getDate() < 10 ? "0" + new Date().getDate() : new Date().getDate()}`
-            }
-            onChange={(e) => {
-              const date = e.target.value.split("-");
-              const y = date[0];
-              const m = date[1];
-              const d = date[2];
-              if (y == null || m == null || d == null) return;
-              const yI = parseInt(y);
-              const mI = parseInt(m);
-              const dI = parseInt(d);
-              const bday = new Date(yI, mI, dI);
-              setGeburtstag(bday);
-            }}
+          <ReactDatePicker
+            dateFormat={"dd.MM.yyyy"}
+            selected={Geburtstag}
+            onChange={(date: Date) => setGeburtstag(date)}
           />
         </FormGroup>
         <Button type="submit" onClick={handleSubmit}>

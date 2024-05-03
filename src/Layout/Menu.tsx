@@ -86,6 +86,9 @@ export default function Menu() {
               <NavDropdown.Item as={Link} href="/CMS/Angebote">
                 Angebote
               </NavDropdown.Item>
+              <NavDropdown.Item as={Link} href="/CMS/Jobs">
+                Jobs
+              </NavDropdown.Item>
             </NavDropdown>
             <NavLink as={Link} href="/Werkstatt">
               Werkstatt
