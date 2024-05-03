@@ -1,3 +1,4 @@
+import type { Decimal } from "@prisma/client/runtime/library";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 import { env } from "~/env";
@@ -34,7 +35,7 @@ export const MailRouter = createTRPCRouter({
         receiverMail: z.string(),
         receiverName: z.string(),
         Schulden: z.string(),
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const PaypalLink = `https://paypal.me/${input.paypalName}/${input.Schulden}`;
@@ -60,7 +61,7 @@ export const MailRouter = createTRPCRouter({
       z.object({
         receiver: z.string(),
         title: z.string(),
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const transporter = nodemailer.createTransport(Config);
@@ -1025,7 +1026,7 @@ export const MailRouter = createTRPCRouter({
   WarenlieferungsMail: protectedProcedure.mutation(async ({ ctx }) => {
     const heute = new Date().toDateString();
     const morgen = new Date(
-      new Date().setDate(new Date().getDate() + 1),
+      new Date().setDate(new Date().getDate() + 1)
     ).toDateString();
     const Warenlieferung = await ctx.horst.warenlieferung.findMany({
       where: {
@@ -1101,8 +1102,24 @@ export const MailRouter = createTRPCRouter({
       Neu.length > 0 && Alt.length > 0 && Preis.length > 0
         ? "<hr>"
         : Preis.length > 0 && Alt.length < 0 && Neu.length < 0
-          ? "<hr>"
-          : "";
+        ? "<hr>"
+        : "";
+
+    const diff = (a: Decimal | null, b: Decimal | null): string => {
+      if (a == null || b == null) return "0";
+      // @ts-expect-error Prisma Decimal ist noch nicht so wirklich nutzbar.
+      const diff = a - b;
+      return diff.toFixed(2);
+    };
+
+    const diffProzent = (a: Decimal | null, b: Decimal | null): string => {
+      if (a == null || b == null) return "0";
+      // @ts-expect-error Prisma Decimal ist noch nicht so wirklich nutzbar.
+      const percent = (diff(a, b) / a) * 100;
+      return percent < 0
+        ? (percent * -1).toFixed(2) + "% Teurer"
+        : percent.toFixed(2) + "% Billiger";
+    };
 
     if (Preis.length > 0) {
       body += "<h2>Preisänderungen</h2>";
@@ -1115,13 +1132,20 @@ export const MailRouter = createTRPCRouter({
           element.AlterPreis &&
           element.NeuerPreis &&
           element.AlterPreis != element.NeuerPreis &&
-          element.AlterPreis.toPrecision(2) != element.NeuerPreis.toPrecision(2)
-        )
+          element.AlterPreis.toFixed(2) != element.NeuerPreis.toFixed(2)
+        ) {
           body += `<b>${element.Artikelnummer}</b>: ${
             element.Name
-          } - Alt: ${element.AlterPreis.toPrecision(
-            2,
-          )}€ => Neu: ${element.NeuerPreis.toPrecision(2)}€ <br />`;
+          } - Alt: ${element.AlterPreis.toFixed(
+            2
+          )}€ => Neu: ${element.NeuerPreis.toFixed(2)}€ (${diff(
+            element.AlterPreis,
+            element.NeuerPreis
+          )}€ differenz = ${diffProzent(
+            element.AlterPreis,
+            element.NeuerPreis
+          )}) <br />`;
+        }
       });
     }
 

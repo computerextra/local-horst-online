@@ -15,14 +15,14 @@
 - [x] Lieferanten bearbeiten
 - [x] Lieferanten löschen
 - [x] Ansprechpartner anlegen
-- [x] Anprechpartner bearbeiten
+- [x] Ansprechpartner bearbeiten
 - [x] Ansprechpartner löschen
 - [x] Sage Suche Seite
 - [x] SN Artikel Suche Seite
 - [x] Info an Kunde Seite
 - [x] Warenlieferung Seite
-- [ ] Warenlieferung Mail passt der Preis nicht.
-- [ ] Warenlieferung Laden geht nicht weg!
+- [x] Warenlieferung Mail passt der Preis nicht.
+- [x] Warenlieferung Laden geht nicht weg!
 - [ ] Inventur Seite?
 - [ ] Abteilung Seite für Website
 - [ ] Abteilung anlegen
