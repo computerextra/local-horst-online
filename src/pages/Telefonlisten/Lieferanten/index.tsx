@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   Container,
   Dropdown,
@@ -7,6 +8,8 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  FloatingLabel,
+  FormControl,
   Table,
 } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
@@ -18,6 +21,50 @@ export default function LieferantenPage() {
   const Delete = api.Lieferanten.delete.useMutation();
   const DeleteAp = api.Ansprechpartner.delete.useMutation();
   const { isAdmin } = useAdmin();
+
+  const [search, setSearch] = useState("");
+  const [shown, setShown] = useState<
+    typeof Lieferanten.data | undefined | null
+  >(undefined);
+
+  useEffect(() => {
+    if (Lieferanten.data == null) return;
+    if (search == "" || search.trim().length <= 0) {
+      setShown(Lieferanten.data);
+    } else {
+      const tmp: typeof Lieferanten.data = [];
+      Lieferanten.data.forEach((l) => {
+        if (l.Firma.toLowerCase().includes(search.toLowerCase())) {
+          tmp.push(l);
+        }
+        if (l.Kundennummer?.includes(search.toLowerCase())) {
+          tmp.push(l);
+        }
+        if (l.Anschprechpartner.length > 0) {
+          l.Anschprechpartner.forEach((a) => {
+            if (a.Name.toLowerCase().includes(search.toLowerCase())) {
+              tmp.push(l);
+            }
+            if (a.Mail?.toLowerCase().includes(search.toLowerCase())) {
+              tmp.push(l);
+            }
+            if (a.Telefon?.toLowerCase().includes(search.toLowerCase())) {
+              tmp.push(l);
+            }
+          });
+        }
+      });
+      // Only Unique Values
+      const unique: typeof Lieferanten.data = [];
+      for (const i of tmp) {
+        if (unique.indexOf(i) === -1) {
+          unique.push(i);
+        }
+      }
+      setShown(unique);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, Lieferanten.data]);
 
   const handleDelete = async (id: string) => {
     const Aps: string[] = [];
@@ -48,15 +95,29 @@ export default function LieferantenPage() {
         <Container>
           <h1>Lieferanten</h1>
         </Container>
-        <Link
-          className={`btn btn-lg btn-outline-primary ${
-            !isAdmin && "disabled"
-          } mb-2`}
-          href="/Telefonlisten/Lieferanten/new"
-        >
-          Neu
-        </Link>
-
+        {isAdmin && (
+          <Link
+            className={`btn btn-lg btn-outline-primary ${
+              !isAdmin && "disabled"
+            } mb-2`}
+            href="/Telefonlisten/Lieferanten/new"
+          >
+            Neu
+          </Link>
+        )}
+        {!Lieferanten.isLoading && Lieferanten.data && (
+          <FloatingLabel
+            className="mb-3"
+            label="Suche nach Lieferanten, Kundennummer oder Ansprechpartner"
+          >
+            <FormControl
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Suche nach Lieferanten, Kundennummer oder Ansprechpartner"
+            />
+          </FloatingLabel>
+        )}
         {Lieferanten.isLoading ? (
           <LoadingSpinner />
         ) : (
@@ -71,7 +132,7 @@ export default function LieferantenPage() {
               </tr>
             </thead>
             <tbody>
-              {Lieferanten.data?.map((e) => (
+              {shown?.map((e) => (
                 <tr key={e.id}>
                   <td>{e.Firma}</td>
                   <td>{e.Kundennummer}</td>
