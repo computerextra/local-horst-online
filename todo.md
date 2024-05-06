@@ -44,4 +44,4 @@
 - [x] Angebote anlegen
 - [x] Angebote bearbeiten
 - [x] Angebote löschen
-- [ ] User Edit macht Probleme, da "isAdmin" nicht mitgegeben wird.
+- [x] User Edit macht Probleme, da "isAdmin" nicht mitgegeben wird.
