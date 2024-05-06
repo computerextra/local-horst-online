@@ -1,5 +1,7 @@
+import type { Mitarbeiter } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   Container,
   Dropdown,
@@ -7,6 +9,8 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  FloatingLabel,
+  FormControl,
   Table,
 } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
@@ -17,6 +21,27 @@ export default function MitarbeiterPage() {
   const Mitarbeiter = api.Mitarbeiter.getAll.useQuery();
   const Deleter = api.Mitarbeiter.delete.useMutation();
   const { isAdmin } = useAdmin();
+
+  const [shown, setShown] = useState<
+    typeof Mitarbeiter.data | null | undefined
+  >(undefined);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (Mitarbeiter.data == null) return;
+
+    if (search == "" || search.length <= 0) {
+      setShown(Mitarbeiter.data);
+    } else {
+      const tmp: Mitarbeiter[] = [];
+      Mitarbeiter.data.forEach((ma) => {
+        if (ma.Name.toLowerCase().includes(search.toLowerCase())) {
+          tmp.push(ma);
+        }
+      });
+      setShown(tmp);
+    }
+  }, [search, Mitarbeiter.data]);
 
   const handleDelete = async (id: string) => {
     const res = await Deleter.mutateAsync({
@@ -49,6 +74,16 @@ export default function MitarbeiterPage() {
           </Link>
         )}
         {Mitarbeiter.isLoading && <LoadingSpinner />}
+        {!Mitarbeiter.isLoading && Mitarbeiter.data && (
+          <FloatingLabel label="Suche nach Namen" className="mb-3">
+            <FormControl
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Suche nach Namen"
+            />
+          </FloatingLabel>
+        )}
         {!Mitarbeiter.isLoading && (
           <Table striped bordered hover>
             <thead>
@@ -68,7 +103,7 @@ export default function MitarbeiterPage() {
               </tr>
             </thead>
             <tbody>
-              {Mitarbeiter.data?.map((e) => (
+              {shown?.map((e) => (
                 <tr key={e.id}>
                   <td>{e.Name}</td>
                   <td>{e.Gruppenwahl ?? "-"}</td>
