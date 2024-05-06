@@ -37,6 +37,7 @@ export default function UserProfile() {
       id: sessionData.user.id,
       name: name,
       email: email,
+      isAdmin: sessionData.user.isAdmin,
     });
     if (res) {
       location.reload();
@@ -46,7 +47,9 @@ export default function UserProfile() {
   return (
     <>
       <Head>
-        <title>{sessionData.user.name ?? sessionData.user.email} | LocalHorst v9</title>
+        <title>
+          {sessionData.user.name ?? sessionData.user.email} | LocalHorst v9
+        </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>

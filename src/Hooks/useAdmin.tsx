@@ -9,20 +9,14 @@ export default function useAdmin() {
   const User = api.User.get.useMutation();
 
   useEffect(() => {
-    async function x() {
-      if (sessionData == null) return;
-      if (sessionData.user == null) return;
-      if (sessionData.user.email == null) return;
-      const x = await User.mutateAsync({
-        id: sessionData.user.id,
-      });
-      if (x == null) return;
-      if (x.isAdmin) {
-        setIsAdmin(true);
-      }
-    }
+    if (sessionData == null) return;
+    if (sessionData.user == null) return;
+    if (sessionData.user.email == null) return;
 
-    void x();
+    if (User == null) return;
+    if (User.data?.isAdmin) {
+      setIsAdmin(true);
+    }
   }, [sessionData]);
 
   return { isAdmin };
