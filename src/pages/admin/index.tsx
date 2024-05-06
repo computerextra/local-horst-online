@@ -11,6 +11,8 @@ import {
   DropdownMenu,
   DropdownToggle,
   Form,
+  FormCheck,
+  FormLabel,
   Modal,
   ModalBody,
   ModalFooter,
@@ -136,6 +138,7 @@ function AdminBearbeiten({
 }) {
   const [name, setName] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const Updater = api.User.update.useMutation();
   const handleSave = async () => {
@@ -144,7 +147,7 @@ function AdminBearbeiten({
       id: User.id,
       name: name,
       email: email,
-      isAdmin: User.isAdmin,
+      isAdmin: isAdmin,
     });
     if (res) {
       location.reload();
@@ -155,6 +158,7 @@ function AdminBearbeiten({
     if (User == null) return;
     setName(User.name ?? undefined);
     setEmail(User.email ?? undefined);
+    setIsAdmin(User.isAdmin ?? false);
   }, [User]);
 
   return (
@@ -181,6 +185,16 @@ function AdminBearbeiten({
               value={email}
               disabled
               onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="Mail">
+            <FormLabel>Admin</FormLabel>
+            <FormCheck
+              type="switch"
+              id="admin"
+              label="Is Admin"
+              checked={isAdmin}
+              onChange={() => setIsAdmin((prev) => !prev)}
             />
           </Form.Group>
         </Form>
