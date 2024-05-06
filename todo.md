@@ -36,10 +36,10 @@
 - [x] Partner anlegen
 - [x] Partner bearbeiten
 - [x] Partner löschen
-- [ ] Jobs Seite für Website
-- [ ] Jobs anlegen
-- [ ] Jobs bearbeiten
-- [ ] Jobs löschen
+- [x] Jobs Seite für Website
+- [ ] Jobs anlegen (Wird erstmal nicht gebraucht)
+- [ ] Jobs bearbeiten (Wird erstmal nicht gebraucht)
+- [ ] Jobs löschen (Wird erstmal nicht gebraucht.)
 - [x] Angebote Seite für Website
 - [x] Angebote anlegen
 - [x] Angebote bearbeiten
