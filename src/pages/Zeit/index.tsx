@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Container, FormControl, InputGroup, Row } from "react-bootstrap";
-import InputGroupText from "react-bootstrap/esm/InputGroupText";
 
 export default function Zeit() {
   const [hourStart, setHourStart] = useState(9);
@@ -52,7 +51,7 @@ export default function Zeit() {
         </h2>
         <Row md={4}>
           <InputGroup className="mb-3 w-25">
-            <InputGroupText>Start</InputGroupText>
+            <InputGroup.Text>Start</InputGroup.Text>
             <FormControl
               type="time"
               min={"00:00"}
@@ -71,7 +70,7 @@ export default function Zeit() {
             />
           </InputGroup>
           <InputGroup className="mb-3 w-25">
-            <InputGroupText>Ende</InputGroupText>
+            <InputGroup.Text>Ende</InputGroup.Text>
             <FormControl
               type="time"
               min={"00:00"}
@@ -90,7 +89,7 @@ export default function Zeit() {
             />
           </InputGroup>
           <InputGroup className="mb-3 w-25">
-            <InputGroupText>Pause Start</InputGroupText>
+            <InputGroup.Text>Pause Start</InputGroup.Text>
             <FormControl
               type="time"
               min={"00:00"}
@@ -111,7 +110,7 @@ export default function Zeit() {
             />
           </InputGroup>
           <InputGroup className="mb-3 w-25">
-            <InputGroupText>Pause Ende</InputGroupText>
+            <InputGroup.Text>Pause Ende</InputGroup.Text>
             <FormControl
               type="time"
               min={"00:00"}
