@@ -30,12 +30,12 @@
 - [x] Abteilung löschen
 - [x] Mitarbeiter Seite für Website
 - [x] Mitarbeiter anlegen
-- [X] Mitarbeiter bearbeiten
-- [X] Mitarbeiter löschen
-- [ ] Partner Seite für Website
-- [ ] Partner anlegen
-- [ ] Partner bearbeiten
-- [ ] Partner löschen
+- [x] Mitarbeiter bearbeiten
+- [x] Mitarbeiter löschen
+- [x] Partner Seite für Website
+- [x] Partner anlegen
+- [x] Partner bearbeiten
+- [x] Partner löschen
 - [ ] Jobs Seite für Website
 - [ ] Jobs anlegen
 - [ ] Jobs bearbeiten
@@ -43,4 +43,4 @@
 - [x] Angebote Seite für Website
 - [x] Angebote anlegen
 - [x] Angebote bearbeiten
-- [X] Angebote löschen
+- [x] Angebote löschen
