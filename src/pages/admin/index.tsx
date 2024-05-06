@@ -21,7 +21,6 @@ import {
 import Error from "~/Components/Error";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import useAdmin from "~/Hooks/useAdmin";
-import { ADMIN_MAILS } from "~/conf";
 import { api } from "~/utils/api";
 
 export default function AdminPage() {
@@ -80,7 +79,7 @@ export default function AdminPage() {
                       ? new Date(u.emailVerified).toLocaleDateString()
                       : "No"}
                   </td>
-                  <td>{ADMIN_MAILS.includes(u.email ?? "") ? "Yes" : "No"}</td>
+                  <td>{u.isAdmin ? "Yes" : "No"}</td>
                   <td>
                     <Dropdown>
                       <DropdownToggle variant="success" id="dropdown-basic">
@@ -145,6 +144,7 @@ function AdminBearbeiten({
       id: User.id,
       name: name,
       email: email,
+      isAdmin: User.isAdmin,
     });
     if (res) {
       location.reload();

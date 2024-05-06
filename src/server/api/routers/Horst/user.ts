@@ -11,7 +11,7 @@ export const userRouter = createTRPCRouter({
     }),
   getAll: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.horst.user.findMany({
-      orderBy: { id: "desc" },
+      orderBy: { id: "asc" },
     });
   }),
   update: protectedProcedure
@@ -20,6 +20,7 @@ export const userRouter = createTRPCRouter({
         id: z.string(),
         name: z.string().optional(),
         email: z.string().optional(),
+        isAdmin: z.boolean(),
       })
     )
     .mutation(async ({ ctx, input }) => {

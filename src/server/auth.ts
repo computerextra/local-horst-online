@@ -7,7 +7,6 @@ import {
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import EmailProvider from "next-auth/providers/email";
-
 import { env } from "~/env";
 import { horst } from "~/server/db";
 
