@@ -12,16 +12,26 @@ export default function UserProfile() {
   const { id } = router.query;
 
   const Updater = api.User.update.useMutation();
+  const User = api.User.get.useMutation();
 
   const [name, setName] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    if (sessionData == null) return;
-    if (sessionData.user.id != id) return;
-
-    setName(sessionData.user.name ?? undefined);
-    setEmail(sessionData.user.email ?? undefined);
+    async function x() {
+      if (sessionData == null) return;
+      if (sessionData.user.id != id) return;
+      const y = await User.mutateAsync({
+        id: sessionData.user.id,
+      });
+      if (y == null) return;
+      setName(y.name ?? undefined);
+      setEmail(y.email ?? undefined);
+      setIsAdmin(y.isAdmin);
+    }
+    void x();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, sessionData]);
 
   if (sessionData == null)
@@ -35,9 +45,9 @@ export default function UserProfile() {
 
     const res = await Updater.mutateAsync({
       id: sessionData.user.id,
-      name: name,
-      email: email,
-      isAdmin: sessionData.user.isAdmin,
+      name,
+      email,
+      isAdmin,
     });
     if (res) {
       location.reload();
