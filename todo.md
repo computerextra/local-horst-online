@@ -45,3 +45,6 @@
 - [x] Angebote bearbeiten
 - [x] Angebote löschen
 - [x] User Edit macht Probleme, da "isAdmin" nicht mitgegeben wird.
+- [ ] Bilder Upload im Einkauf geht nicht!
+- [ ] Uploadthing veraltet?
+- [ ] Zeitanzeige in Zeit muss auch dezimal für die Uhrzeiten anzeigen
