@@ -19,15 +19,32 @@ export default function Home() {
 
     const Window = window.open("", "PRINT", "height=1000,width=1200");
     if (Window == null) return;
-    Window.document.write("<html><body style='white-space: pre-line;'>");
+    Window.document.write("<html><body>");
     Window.document.write("<h1>Einkaufsliste</h1>");
     Window.document.write("<h2>POST MITNEHMEN!</h2>");
+    // Window.document.write("<p style='line-break: anywhere'>");
     Window.document.write(Liste.innerHTML);
+    // Window.document.write("</p>");
     Window.document.write("</body></html>");
     Window.document.close();
-    Window.focus();
-    Window.print();
-    setTimeout(() => Window.close(), 2000);
+    setTimeout(function () {
+      Window.print();
+    }, 500);
+    Window.onfocus = function () {
+      setTimeout(function () {
+        Window.close();
+      }, 500);
+    };
+
+    // Window.focus();
+    // Window.print();
+    // Window.close();
+    // Window.onfocus = () => {
+    //   setTimeout(() => {
+    //     Window.close();
+    //   }, 2000);
+    // };
+    // setTimeout(() => , 2000);
   };
 
   return (

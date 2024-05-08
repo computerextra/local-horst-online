@@ -134,11 +134,13 @@ export default function Zeit() {
           <>
             <p>
               Arbeitsbeginn: {hourStart < 10 ? "0" + hourStart : hourStart}:
-              {minuteStart < 10 ? "0" + minuteStart : minuteStart}
+              {minuteStart < 10 ? "0" + minuteStart : minuteStart} (
+              {((60 * hourStart + minuteStart) / 60).toFixed(2)})
             </p>
             <p>
               Arbeitsende: {hourEnd < 10 ? "0" + hourEnd : hourEnd}:
-              {minuteEnd < 10 ? "0" + minuteEnd : minuteEnd}
+              {minuteEnd < 10 ? "0" + minuteEnd : minuteEnd} (
+              {((60 * hourEnd + minuteEnd) / 60).toFixed(2)})
             </p>
             <p>
               Pause von{" "}
@@ -148,7 +150,7 @@ export default function Zeit() {
                 : minutePauseStart}{" "}
               bis {hourPauseEnd < 10 ? "0" + hourPauseEnd : hourPauseEnd}:
               {minutePauseEnd < 10 ? "0" + minutePauseEnd : minutePauseEnd} (
-              {pause} {pause < 2 ? "Stunde" : "Stunden"})
+              {pause.toFixed(2)} {pause < 2 ? "Stunde" : "Stunden"})
             </p>
             <p>
               Zeit an der Arbeit:{" "}

@@ -45,8 +45,8 @@
 - [x] Angebote bearbeiten
 - [x] Angebote löschen
 - [x] User Edit macht Probleme, da "isAdmin" nicht mitgegeben wird.
-- [ ] Bilder Upload im Einkauf geht nicht!
-- [ ] Uploadthing veraltet?
-- [ ] Zeitanzeige in Zeit muss auch dezimal für die Uhrzeiten anzeigen
+- [x] Bilder Upload im Einkauf geht nicht!
+- [x] Uploadthing veraltet?
+- [x] Zeitanzeige in Zeit muss auch dezimal für die Uhrzeiten anzeige
 - [x] Einkaufsliste ist zu kurz, das Format in DB muss angepasst werden!
-- [ ] Es gibt keine Zeilenumbrüche in der Bestellliste, wenn Text zu lang, wird er nicht gedruckt.
+- [x] Es gibt keine Zeilenumbrüche in der Bestellliste, wenn Text zu lang, wird er nicht gedruckt.
