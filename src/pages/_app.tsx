@@ -1,3 +1,4 @@
+import "@uploadthing/react/styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";

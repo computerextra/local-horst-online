@@ -3,4 +3,7 @@ import { ourFileRouter } from "~/server/uploadthing";
 
 export default createRouteHandler({
   router: ourFileRouter,
+  config: {
+    isDev: true,
+  },
 });
