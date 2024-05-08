@@ -49,3 +49,4 @@
 - [ ] Uploadthing veraltet?
 - [ ] Zeitanzeige in Zeit muss auch dezimal für die Uhrzeiten anzeigen
 - [x] Einkaufsliste ist zu kurz, das Format in DB muss angepasst werden!
+- [ ] Es gibt keine Zeilenumbrüche in der Bestellliste, wenn Text zu lang, wird er nicht gedruckt.
