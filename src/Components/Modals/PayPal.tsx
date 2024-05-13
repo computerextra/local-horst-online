@@ -72,12 +72,7 @@ export default function PayPal({
     if (Mitarbeiter == null) return;
     const x: Mitarbeiter[] = [];
     Mitarbeiter.forEach((m) => {
-      console.log("Check ma: ", m.Name);
-      console.log("Mail: ", m.Email);
-      if (Liste.data?.find((e) => e.mitarbeiterId == m.id)?.Paypal) {
-        x.push(m);
-        console.log(`${m.Name} hat Paxpal`);
-      }
+      if (Liste.data?.find((e) => e.mitarbeiterId == m.id)?.Paypal) x.push(m);
     });
     setPayPalBezahlung(x);
   }, [Mitarbeiter, Liste.data]);
