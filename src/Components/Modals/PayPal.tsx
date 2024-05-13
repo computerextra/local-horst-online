@@ -72,7 +72,12 @@ export default function PayPal({
     if (Mitarbeiter == null) return;
     const x: Mitarbeiter[] = [];
     Mitarbeiter.forEach((m) => {
-      if (Liste.data?.find((e) => e.mitarbeiterId == m.id)?.Paypal) x.push(m);
+      console.log("Check ma: ", m.Name);
+      console.log("Mail: ", m.Email);
+      if (Liste.data?.find((e) => e.mitarbeiterId == m.id)?.Paypal) {
+        x.push(m);
+        console.log(`${m.Name} hat Paxpal`);
+      }
     });
     setPayPalBezahlung(x);
   }, [Mitarbeiter, Liste.data]);
@@ -104,8 +109,9 @@ export default function PayPal({
             if (
               e.Paypal &&
               e.Abgeschickt &&
-              new Date(e.Abgeschickt).toDateString() ==
-                new Date().toDateString()
+              (new Date(e.Abgeschickt).toDateString() ==
+                new Date().toDateString() ||
+                e.Abonniert)
             )
               return (
                 <option key={m.id} value={m.id}>
