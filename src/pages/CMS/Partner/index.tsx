@@ -35,7 +35,7 @@ export default function PartnergPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
-        <h1>Abteilungen</h1>
+        <h1>Partner</h1>
         {Partner.isLoading && <LoadingSpinner />}
         {isAdmin && (
           <Link

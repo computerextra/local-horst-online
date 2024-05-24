@@ -77,7 +77,7 @@ model Dokumente {
   filename      String
   extension     String
   date_modified DateTime
-  data          Bytes
+  data          String
   downloads     Int      @default(0)
 }
 

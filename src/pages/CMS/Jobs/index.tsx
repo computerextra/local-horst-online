@@ -47,7 +47,7 @@ export default function AbteilungPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
-        <h1>Abteilungen</h1>
+        <h1>Jobs</h1>
         {Jobs.isLoading && <LoadingSpinner />}
         {Jobs.data && (
           <Table>

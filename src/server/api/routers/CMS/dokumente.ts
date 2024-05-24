@@ -15,6 +15,15 @@ export const dokumentenRouter = createTRPCRouter({
         },
       });
     }),
+  getOne: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.cms.dokumente.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
   getAll: publicProcedure.query(async ({ ctx }) => {
     return await ctx.cms.dokumente.findMany({
       orderBy: { filename: "asc" },
@@ -24,7 +33,7 @@ export const dokumentenRouter = createTRPCRouter({
     .input(
       z.object({
         filename: z.string(),
-        data: z.instanceof(Buffer),
+        data: z.string(), // base64
         date_modified: z.date(),
       })
     )
@@ -47,7 +56,7 @@ export const dokumentenRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         filename: z.string(),
-        data: z.instanceof(Buffer),
+        data: z.string(), // base64
         date_modified: z.date(),
       })
     )

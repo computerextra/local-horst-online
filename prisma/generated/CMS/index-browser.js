@@ -266,7 +266,8 @@ exports.Prisma.PartnerOrderByRelevanceFieldEnum = {
 exports.Prisma.DokumenteOrderByRelevanceFieldEnum = {
   id: 'id',
   filename: 'filename',
-  extension: 'extension'
+  extension: 'extension',
+  data: 'data'
 };
 
 exports.Prisma.SessionOrderByRelevanceFieldEnum = {

@@ -7125,7 +7125,7 @@ export namespace Prisma {
     filename: string | null
     extension: string | null
     date_modified: Date | null
-    data: Buffer | null
+    data: string | null
     downloads: number | null
   }
 
@@ -7134,7 +7134,7 @@ export namespace Prisma {
     filename: string | null
     extension: string | null
     date_modified: Date | null
-    data: Buffer | null
+    data: string | null
     downloads: number | null
   }
 
@@ -7276,7 +7276,7 @@ export namespace Prisma {
     filename: string
     extension: string
     date_modified: Date
-    data: Buffer
+    data: string
     downloads: number
     _count: DokumenteCountAggregateOutputType | null
     _avg: DokumenteAvgAggregateOutputType | null
@@ -7327,7 +7327,7 @@ export namespace Prisma {
       filename: string
       extension: string
       date_modified: Date
-      data: Buffer
+      data: string
       downloads: number
     }, ExtArgs["result"]["dokumente"]>
     composites: {}
@@ -7727,7 +7727,7 @@ export namespace Prisma {
     readonly filename: FieldRef<"Dokumente", 'String'>
     readonly extension: FieldRef<"Dokumente", 'String'>
     readonly date_modified: FieldRef<"Dokumente", 'DateTime'>
-    readonly data: FieldRef<"Dokumente", 'Bytes'>
+    readonly data: FieldRef<"Dokumente", 'String'>
     readonly downloads: FieldRef<"Dokumente", 'Int'>
   }
     
@@ -10898,7 +10898,8 @@ export namespace Prisma {
   export const DokumenteOrderByRelevanceFieldEnum: {
     id: 'id',
     filename: 'filename',
-    extension: 'extension'
+    extension: 'extension',
+    data: 'data'
   };
 
   export type DokumenteOrderByRelevanceFieldEnum = (typeof DokumenteOrderByRelevanceFieldEnum)[keyof typeof DokumenteOrderByRelevanceFieldEnum]
@@ -10961,13 +10962,6 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
-   * Reference to a field of type 'Bytes'
-   */
-  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
     
 
 
@@ -11354,7 +11348,7 @@ export namespace Prisma {
     filename?: StringFilter<"Dokumente"> | string
     extension?: StringFilter<"Dokumente"> | string
     date_modified?: DateTimeFilter<"Dokumente"> | Date | string
-    data?: BytesFilter<"Dokumente"> | Buffer
+    data?: StringFilter<"Dokumente"> | string
     downloads?: IntFilter<"Dokumente"> | number
   }
 
@@ -11376,7 +11370,7 @@ export namespace Prisma {
     filename?: StringFilter<"Dokumente"> | string
     extension?: StringFilter<"Dokumente"> | string
     date_modified?: DateTimeFilter<"Dokumente"> | Date | string
-    data?: BytesFilter<"Dokumente"> | Buffer
+    data?: StringFilter<"Dokumente"> | string
     downloads?: IntFilter<"Dokumente"> | number
   }, "id">
 
@@ -11402,7 +11396,7 @@ export namespace Prisma {
     filename?: StringWithAggregatesFilter<"Dokumente"> | string
     extension?: StringWithAggregatesFilter<"Dokumente"> | string
     date_modified?: DateTimeWithAggregatesFilter<"Dokumente"> | Date | string
-    data?: BytesWithAggregatesFilter<"Dokumente"> | Buffer
+    data?: StringWithAggregatesFilter<"Dokumente"> | string
     downloads?: IntWithAggregatesFilter<"Dokumente"> | number
   }
 
@@ -11952,7 +11946,7 @@ export namespace Prisma {
     filename: string
     extension: string
     date_modified: Date | string
-    data: Buffer
+    data: string
     downloads?: number
   }
 
@@ -11961,7 +11955,7 @@ export namespace Prisma {
     filename: string
     extension: string
     date_modified: Date | string
-    data: Buffer
+    data: string
     downloads?: number
   }
 
@@ -11970,7 +11964,7 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     extension?: StringFieldUpdateOperationsInput | string
     date_modified?: DateTimeFieldUpdateOperationsInput | Date | string
-    data?: BytesFieldUpdateOperationsInput | Buffer
+    data?: StringFieldUpdateOperationsInput | string
     downloads?: IntFieldUpdateOperationsInput | number
   }
 
@@ -11979,7 +11973,7 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     extension?: StringFieldUpdateOperationsInput | string
     date_modified?: DateTimeFieldUpdateOperationsInput | Date | string
-    data?: BytesFieldUpdateOperationsInput | Buffer
+    data?: StringFieldUpdateOperationsInput | string
     downloads?: IntFieldUpdateOperationsInput | number
   }
 
@@ -11988,7 +11982,7 @@ export namespace Prisma {
     filename: string
     extension: string
     date_modified: Date | string
-    data: Buffer
+    data: string
     downloads?: number
   }
 
@@ -11997,7 +11991,7 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     extension?: StringFieldUpdateOperationsInput | string
     date_modified?: DateTimeFieldUpdateOperationsInput | Date | string
-    data?: BytesFieldUpdateOperationsInput | Buffer
+    data?: StringFieldUpdateOperationsInput | string
     downloads?: IntFieldUpdateOperationsInput | number
   }
 
@@ -12006,7 +12000,7 @@ export namespace Prisma {
     filename?: StringFieldUpdateOperationsInput | string
     extension?: StringFieldUpdateOperationsInput | string
     date_modified?: DateTimeFieldUpdateOperationsInput | Date | string
-    data?: BytesFieldUpdateOperationsInput | Buffer
+    data?: StringFieldUpdateOperationsInput | string
     downloads?: IntFieldUpdateOperationsInput | number
   }
 
@@ -12547,13 +12541,6 @@ export namespace Prisma {
     image?: SortOrder
   }
 
-  export type BytesFilter<$PrismaModel = never> = {
-    equals?: Buffer | BytesFieldRefInput<$PrismaModel>
-    in?: Buffer[]
-    notIn?: Buffer[]
-    not?: NestedBytesFilter<$PrismaModel> | Buffer
-  }
-
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -12604,16 +12591,6 @@ export namespace Prisma {
 
   export type DokumenteSumOrderByAggregateInput = {
     downloads?: SortOrder
-  }
-
-  export type BytesWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Buffer | BytesFieldRefInput<$PrismaModel>
-    in?: Buffer[]
-    notIn?: Buffer[]
-    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Buffer
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBytesFilter<$PrismaModel>
-    _max?: NestedBytesFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -12859,10 +12836,6 @@ export namespace Prisma {
     upsert?: AbteilungUpsertWithoutMitarbeiterInput
     connect?: AbteilungWhereUniqueInput
     update?: XOR<XOR<AbteilungUpdateToOneWithWhereWithoutMitarbeiterInput, AbteilungUpdateWithoutMitarbeiterInput>, AbteilungUncheckedUpdateWithoutMitarbeiterInput>
-  }
-
-  export type BytesFieldUpdateOperationsInput = {
-    set?: Buffer
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -13139,23 +13112,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedBytesFilter<$PrismaModel = never> = {
-    equals?: Buffer | BytesFieldRefInput<$PrismaModel>
-    in?: Buffer[]
-    notIn?: Buffer[]
-    not?: NestedBytesFilter<$PrismaModel> | Buffer
-  }
-
-  export type NestedBytesWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Buffer | BytesFieldRefInput<$PrismaModel>
-    in?: Buffer[]
-    notIn?: Buffer[]
-    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Buffer
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBytesFilter<$PrismaModel>
-    _max?: NestedBytesFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
