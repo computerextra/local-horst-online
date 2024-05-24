@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { abteilungsRouter } from "./routers/CMS/abteilung";
 import { angeboteRouter } from "./routers/CMS/angebot";
+import { dokumentenRouter } from "./routers/CMS/dokumente";
 import { jobRouter } from "./routers/CMS/jobs";
 import { mitarbeiterCmsRouter } from "./routers/CMS/mitarbeiter";
 import { partnerRouter } from "./routers/CMS/partner";
@@ -42,6 +43,7 @@ export const appRouter = createTRPCRouter({
   Jobs: jobRouter,
   OnlineMitarbeiter: mitarbeiterCmsRouter,
   Partner: partnerRouter,
+  Dokumente: dokumentenRouter,
   // General Routes
   Mail: MailRouter,
   Signaturen: SignatureRouter,

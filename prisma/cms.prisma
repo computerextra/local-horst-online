@@ -72,6 +72,15 @@ model Partner {
   image String
 }
 
+model Dokumente {
+  id            String   @id @default(cuid())
+  filename      String
+  extension     String
+  date_modified DateTime
+  data          Bytes
+  downloads     Int      @default(0)
+}
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique

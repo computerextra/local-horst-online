@@ -44,6 +44,11 @@ export type Mitarbeiter = $Result.DefaultSelection<Prisma.$MitarbeiterPayload>
  */
 export type Partner = $Result.DefaultSelection<Prisma.$PartnerPayload>
 /**
+ * Model Dokumente
+ * 
+ */
+export type Dokumente = $Result.DefaultSelection<Prisma.$DokumentePayload>
+/**
  * Model Session
  * 
  */
@@ -242,6 +247,16 @@ export class PrismaClient<
   get partner(): Prisma.PartnerDelegate<ExtArgs>;
 
   /**
+   * `prisma.dokumente`: Exposes CRUD operations for the **Dokumente** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Dokumentes
+    * const dokumentes = await prisma.dokumente.findMany()
+    * ```
+    */
+  get dokumente(): Prisma.DokumenteDelegate<ExtArgs>;
+
+  /**
    * `prisma.session`: Exposes CRUD operations for the **Session** model.
     * Example usage:
     * ```ts
@@ -327,8 +342,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 5.12.1
-   * Query Engine version: 473ed3124229e22d881cb7addf559799debae1ab
+   * Prisma Client JS version: 5.13.0
+   * Query Engine version: b9a39a7ee606c28e3455d0fd60e78c3ba82b1a2b
    */
   export type PrismaVersion = {
     client: string
@@ -455,6 +470,11 @@ export namespace Prisma {
     include: any
   }
 
+  type SelectAndOmit = {
+    select: any
+    omit: any
+  }
+
   /**
    * Get the type of the value, that the Promise holds.
    */
@@ -503,7 +523,9 @@ export namespace Prisma {
   } &
     (T extends SelectAndInclude
       ? 'Please either choose `select` or `include`.'
-      : {})
+      : T extends SelectAndOmit
+        ? 'Please either choose `select` or `omit`.'
+        : {})
 
   /**
    * Subset + Intersection
@@ -746,6 +768,7 @@ export namespace Prisma {
     Jobs: 'Jobs',
     Mitarbeiter: 'Mitarbeiter',
     Partner: 'Partner',
+    Dokumente: 'Dokumente',
     Session: 'Session',
     User: 'User',
     VerificationToken: 'VerificationToken'
@@ -765,7 +788,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'abteilung' | 'account' | 'angebot' | 'jobs' | 'mitarbeiter' | 'partner' | 'session' | 'user' | 'verificationToken'
+      modelProps: 'abteilung' | 'account' | 'angebot' | 'jobs' | 'mitarbeiter' | 'partner' | 'dokumente' | 'session' | 'user' | 'verificationToken'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -1165,6 +1188,72 @@ export namespace Prisma {
           }
         }
       }
+      Dokumente: {
+        payload: Prisma.$DokumentePayload<ExtArgs>
+        fields: Prisma.DokumenteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DokumenteFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DokumenteFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload>
+          }
+          findFirst: {
+            args: Prisma.DokumenteFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DokumenteFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload>
+          }
+          findMany: {
+            args: Prisma.DokumenteFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload>[]
+          }
+          create: {
+            args: Prisma.DokumenteCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload>
+          }
+          createMany: {
+            args: Prisma.DokumenteCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.DokumenteDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload>
+          }
+          update: {
+            args: Prisma.DokumenteUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload>
+          }
+          deleteMany: {
+            args: Prisma.DokumenteDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DokumenteUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.DokumenteUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$DokumentePayload>
+          }
+          aggregate: {
+            args: Prisma.DokumenteAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateDokumente>
+          }
+          groupBy: {
+            args: Prisma.DokumenteGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<DokumenteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DokumenteCountArgs<ExtArgs>,
+            result: $Utils.Optional<DokumenteCountAggregateOutputType> | number
+          }
+        }
+      }
       Session: {
         payload: Prisma.$SessionPayload<ExtArgs>
         fields: Prisma.SessionFieldRefs
@@ -1530,7 +1619,6 @@ export namespace Prisma {
   }
 
   // Custom InputTypes
-
   /**
    * AbteilungCountOutputType without action
    */
@@ -1541,14 +1629,12 @@ export namespace Prisma {
     select?: AbteilungCountOutputTypeSelect<ExtArgs> | null
   }
 
-
   /**
    * AbteilungCountOutputType without action
    */
   export type AbteilungCountOutputTypeCountMitarbeiterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MitarbeiterWhereInput
   }
-
 
 
   /**
@@ -1566,7 +1652,6 @@ export namespace Prisma {
   }
 
   // Custom InputTypes
-
   /**
    * UserCountOutputType without action
    */
@@ -1577,7 +1662,6 @@ export namespace Prisma {
     select?: UserCountOutputTypeSelect<ExtArgs> | null
   }
 
-
   /**
    * UserCountOutputType without action
    */
@@ -1585,14 +1669,12 @@ export namespace Prisma {
     where?: AccountWhereInput
   }
 
-
   /**
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionWhereInput
   }
-
 
 
   /**
@@ -1747,6 +1829,7 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
   }
+
 
   export type AbteilungInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Mitarbeiter?: boolean | Abteilung$MitarbeiterArgs<ExtArgs>
@@ -2163,7 +2246,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * Abteilung findUnique
    */
@@ -2173,7 +2255,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2181,7 +2263,6 @@ export namespace Prisma {
      */
     where: AbteilungWhereUniqueInput
   }
-
 
   /**
    * Abteilung findUniqueOrThrow
@@ -2192,7 +2273,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2200,7 +2281,6 @@ export namespace Prisma {
      */
     where: AbteilungWhereUniqueInput
   }
-
 
   /**
    * Abteilung findFirst
@@ -2211,7 +2291,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2249,7 +2329,6 @@ export namespace Prisma {
      */
     distinct?: AbteilungScalarFieldEnum | AbteilungScalarFieldEnum[]
   }
-
 
   /**
    * Abteilung findFirstOrThrow
@@ -2260,7 +2339,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2299,7 +2378,6 @@ export namespace Prisma {
     distinct?: AbteilungScalarFieldEnum | AbteilungScalarFieldEnum[]
   }
 
-
   /**
    * Abteilung findMany
    */
@@ -2309,7 +2387,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2343,7 +2421,6 @@ export namespace Prisma {
     distinct?: AbteilungScalarFieldEnum | AbteilungScalarFieldEnum[]
   }
 
-
   /**
    * Abteilung create
    */
@@ -2353,7 +2430,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2361,7 +2438,6 @@ export namespace Prisma {
      */
     data: XOR<AbteilungCreateInput, AbteilungUncheckedCreateInput>
   }
-
 
   /**
    * Abteilung createMany
@@ -2374,7 +2450,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-
   /**
    * Abteilung update
    */
@@ -2384,7 +2459,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2396,7 +2471,6 @@ export namespace Prisma {
      */
     where: AbteilungWhereUniqueInput
   }
-
 
   /**
    * Abteilung updateMany
@@ -2412,7 +2486,6 @@ export namespace Prisma {
     where?: AbteilungWhereInput
   }
 
-
   /**
    * Abteilung upsert
    */
@@ -2422,7 +2495,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2439,7 +2512,6 @@ export namespace Prisma {
     update: XOR<AbteilungUpdateInput, AbteilungUncheckedUpdateInput>
   }
 
-
   /**
    * Abteilung delete
    */
@@ -2449,7 +2521,7 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
     /**
@@ -2457,7 +2529,6 @@ export namespace Prisma {
      */
     where: AbteilungWhereUniqueInput
   }
-
 
   /**
    * Abteilung deleteMany
@@ -2469,7 +2540,6 @@ export namespace Prisma {
     where?: AbteilungWhereInput
   }
 
-
   /**
    * Abteilung.Mitarbeiter
    */
@@ -2479,7 +2549,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     where?: MitarbeiterWhereInput
@@ -2490,7 +2560,6 @@ export namespace Prisma {
     distinct?: MitarbeiterScalarFieldEnum | MitarbeiterScalarFieldEnum[]
   }
 
-
   /**
    * Abteilung without action
    */
@@ -2500,11 +2569,10 @@ export namespace Prisma {
      */
     select?: AbteilungSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AbteilungInclude<ExtArgs> | null
   }
-
 
 
   /**
@@ -2778,6 +2846,7 @@ export namespace Prisma {
     id_token?: boolean
     session_state?: boolean
   }
+
 
   export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     User?: boolean | UserDefaultArgs<ExtArgs>
@@ -3213,7 +3282,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * Account findUnique
    */
@@ -3223,7 +3291,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3231,7 +3299,6 @@ export namespace Prisma {
      */
     where: AccountWhereUniqueInput
   }
-
 
   /**
    * Account findUniqueOrThrow
@@ -3242,7 +3309,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3250,7 +3317,6 @@ export namespace Prisma {
      */
     where: AccountWhereUniqueInput
   }
-
 
   /**
    * Account findFirst
@@ -3261,7 +3327,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3299,7 +3365,6 @@ export namespace Prisma {
      */
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
   }
-
 
   /**
    * Account findFirstOrThrow
@@ -3310,7 +3375,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3349,7 +3414,6 @@ export namespace Prisma {
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
   }
 
-
   /**
    * Account findMany
    */
@@ -3359,7 +3423,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3393,7 +3457,6 @@ export namespace Prisma {
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
   }
 
-
   /**
    * Account create
    */
@@ -3403,7 +3466,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3411,7 +3474,6 @@ export namespace Prisma {
      */
     data: XOR<AccountCreateInput, AccountUncheckedCreateInput>
   }
-
 
   /**
    * Account createMany
@@ -3424,7 +3486,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-
   /**
    * Account update
    */
@@ -3434,7 +3495,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3446,7 +3507,6 @@ export namespace Prisma {
      */
     where: AccountWhereUniqueInput
   }
-
 
   /**
    * Account updateMany
@@ -3462,7 +3522,6 @@ export namespace Prisma {
     where?: AccountWhereInput
   }
 
-
   /**
    * Account upsert
    */
@@ -3472,7 +3531,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3489,7 +3548,6 @@ export namespace Prisma {
     update: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
   }
 
-
   /**
    * Account delete
    */
@@ -3499,7 +3557,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     /**
@@ -3507,7 +3565,6 @@ export namespace Prisma {
      */
     where: AccountWhereUniqueInput
   }
-
 
   /**
    * Account deleteMany
@@ -3519,7 +3576,6 @@ export namespace Prisma {
     where?: AccountWhereInput
   }
 
-
   /**
    * Account without action
    */
@@ -3529,11 +3585,10 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
   }
-
 
 
   /**
@@ -3736,6 +3791,7 @@ export namespace Prisma {
     image?: boolean
     anzeigen?: boolean
   }
+
 
 
   export type $AngebotPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4156,7 +4212,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * Angebot findUnique
    */
@@ -4171,7 +4226,6 @@ export namespace Prisma {
     where: AngebotWhereUniqueInput
   }
 
-
   /**
    * Angebot findUniqueOrThrow
    */
@@ -4185,7 +4239,6 @@ export namespace Prisma {
      */
     where: AngebotWhereUniqueInput
   }
-
 
   /**
    * Angebot findFirst
@@ -4231,7 +4284,6 @@ export namespace Prisma {
     distinct?: AngebotScalarFieldEnum | AngebotScalarFieldEnum[]
   }
 
-
   /**
    * Angebot findFirstOrThrow
    */
@@ -4276,7 +4328,6 @@ export namespace Prisma {
     distinct?: AngebotScalarFieldEnum | AngebotScalarFieldEnum[]
   }
 
-
   /**
    * Angebot findMany
    */
@@ -4316,7 +4367,6 @@ export namespace Prisma {
     distinct?: AngebotScalarFieldEnum | AngebotScalarFieldEnum[]
   }
 
-
   /**
    * Angebot create
    */
@@ -4331,7 +4381,6 @@ export namespace Prisma {
     data: XOR<AngebotCreateInput, AngebotUncheckedCreateInput>
   }
 
-
   /**
    * Angebot createMany
    */
@@ -4342,7 +4391,6 @@ export namespace Prisma {
     data: AngebotCreateManyInput | AngebotCreateManyInput[]
     skipDuplicates?: boolean
   }
-
 
   /**
    * Angebot update
@@ -4362,7 +4410,6 @@ export namespace Prisma {
     where: AngebotWhereUniqueInput
   }
 
-
   /**
    * Angebot updateMany
    */
@@ -4376,7 +4423,6 @@ export namespace Prisma {
      */
     where?: AngebotWhereInput
   }
-
 
   /**
    * Angebot upsert
@@ -4400,7 +4446,6 @@ export namespace Prisma {
     update: XOR<AngebotUpdateInput, AngebotUncheckedUpdateInput>
   }
 
-
   /**
    * Angebot delete
    */
@@ -4415,7 +4460,6 @@ export namespace Prisma {
     where: AngebotWhereUniqueInput
   }
 
-
   /**
    * Angebot deleteMany
    */
@@ -4426,7 +4470,6 @@ export namespace Prisma {
     where?: AngebotWhereInput
   }
 
-
   /**
    * Angebot without action
    */
@@ -4436,7 +4479,6 @@ export namespace Prisma {
      */
     select?: AngebotSelect<ExtArgs> | null
   }
-
 
 
   /**
@@ -4594,6 +4636,7 @@ export namespace Prisma {
     name?: boolean
     online?: boolean
   }
+
 
 
   export type $JobsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5004,7 +5047,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * Jobs findUnique
    */
@@ -5019,7 +5061,6 @@ export namespace Prisma {
     where: JobsWhereUniqueInput
   }
 
-
   /**
    * Jobs findUniqueOrThrow
    */
@@ -5033,7 +5074,6 @@ export namespace Prisma {
      */
     where: JobsWhereUniqueInput
   }
-
 
   /**
    * Jobs findFirst
@@ -5079,7 +5119,6 @@ export namespace Prisma {
     distinct?: JobsScalarFieldEnum | JobsScalarFieldEnum[]
   }
 
-
   /**
    * Jobs findFirstOrThrow
    */
@@ -5124,7 +5163,6 @@ export namespace Prisma {
     distinct?: JobsScalarFieldEnum | JobsScalarFieldEnum[]
   }
 
-
   /**
    * Jobs findMany
    */
@@ -5164,7 +5202,6 @@ export namespace Prisma {
     distinct?: JobsScalarFieldEnum | JobsScalarFieldEnum[]
   }
 
-
   /**
    * Jobs create
    */
@@ -5179,7 +5216,6 @@ export namespace Prisma {
     data: XOR<JobsCreateInput, JobsUncheckedCreateInput>
   }
 
-
   /**
    * Jobs createMany
    */
@@ -5190,7 +5226,6 @@ export namespace Prisma {
     data: JobsCreateManyInput | JobsCreateManyInput[]
     skipDuplicates?: boolean
   }
-
 
   /**
    * Jobs update
@@ -5210,7 +5245,6 @@ export namespace Prisma {
     where: JobsWhereUniqueInput
   }
 
-
   /**
    * Jobs updateMany
    */
@@ -5224,7 +5258,6 @@ export namespace Prisma {
      */
     where?: JobsWhereInput
   }
-
 
   /**
    * Jobs upsert
@@ -5248,7 +5281,6 @@ export namespace Prisma {
     update: XOR<JobsUpdateInput, JobsUncheckedUpdateInput>
   }
 
-
   /**
    * Jobs delete
    */
@@ -5263,7 +5295,6 @@ export namespace Prisma {
     where: JobsWhereUniqueInput
   }
 
-
   /**
    * Jobs deleteMany
    */
@@ -5274,7 +5305,6 @@ export namespace Prisma {
     where?: JobsWhereInput
   }
 
-
   /**
    * Jobs without action
    */
@@ -5284,7 +5314,6 @@ export namespace Prisma {
      */
     select?: JobsSelect<ExtArgs> | null
   }
-
 
 
   /**
@@ -5488,6 +5517,7 @@ export namespace Prisma {
     focus?: boolean
     abteilungId?: boolean
   }
+
 
   export type MitarbeiterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Abteilung?: boolean | AbteilungDefaultArgs<ExtArgs>
@@ -5915,7 +5945,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * Mitarbeiter findUnique
    */
@@ -5925,7 +5954,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -5933,7 +5962,6 @@ export namespace Prisma {
      */
     where: MitarbeiterWhereUniqueInput
   }
-
 
   /**
    * Mitarbeiter findUniqueOrThrow
@@ -5944,7 +5972,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -5952,7 +5980,6 @@ export namespace Prisma {
      */
     where: MitarbeiterWhereUniqueInput
   }
-
 
   /**
    * Mitarbeiter findFirst
@@ -5963,7 +5990,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -6001,7 +6028,6 @@ export namespace Prisma {
      */
     distinct?: MitarbeiterScalarFieldEnum | MitarbeiterScalarFieldEnum[]
   }
-
 
   /**
    * Mitarbeiter findFirstOrThrow
@@ -6012,7 +6038,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -6051,7 +6077,6 @@ export namespace Prisma {
     distinct?: MitarbeiterScalarFieldEnum | MitarbeiterScalarFieldEnum[]
   }
 
-
   /**
    * Mitarbeiter findMany
    */
@@ -6061,7 +6086,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -6095,7 +6120,6 @@ export namespace Prisma {
     distinct?: MitarbeiterScalarFieldEnum | MitarbeiterScalarFieldEnum[]
   }
 
-
   /**
    * Mitarbeiter create
    */
@@ -6105,7 +6129,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -6113,7 +6137,6 @@ export namespace Prisma {
      */
     data: XOR<MitarbeiterCreateInput, MitarbeiterUncheckedCreateInput>
   }
-
 
   /**
    * Mitarbeiter createMany
@@ -6126,7 +6149,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-
   /**
    * Mitarbeiter update
    */
@@ -6136,7 +6158,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -6148,7 +6170,6 @@ export namespace Prisma {
      */
     where: MitarbeiterWhereUniqueInput
   }
-
 
   /**
    * Mitarbeiter updateMany
@@ -6164,7 +6185,6 @@ export namespace Prisma {
     where?: MitarbeiterWhereInput
   }
 
-
   /**
    * Mitarbeiter upsert
    */
@@ -6174,7 +6194,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -6191,7 +6211,6 @@ export namespace Prisma {
     update: XOR<MitarbeiterUpdateInput, MitarbeiterUncheckedUpdateInput>
   }
 
-
   /**
    * Mitarbeiter delete
    */
@@ -6201,7 +6220,7 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
     /**
@@ -6209,7 +6228,6 @@ export namespace Prisma {
      */
     where: MitarbeiterWhereUniqueInput
   }
-
 
   /**
    * Mitarbeiter deleteMany
@@ -6221,7 +6239,6 @@ export namespace Prisma {
     where?: MitarbeiterWhereInput
   }
 
-
   /**
    * Mitarbeiter without action
    */
@@ -6231,11 +6248,10 @@ export namespace Prisma {
      */
     select?: MitarbeiterSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: MitarbeiterInclude<ExtArgs> | null
   }
-
 
 
   /**
@@ -6402,6 +6418,7 @@ export namespace Prisma {
     link?: boolean
     image?: boolean
   }
+
 
 
   export type $PartnerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6814,7 +6831,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * Partner findUnique
    */
@@ -6829,7 +6845,6 @@ export namespace Prisma {
     where: PartnerWhereUniqueInput
   }
 
-
   /**
    * Partner findUniqueOrThrow
    */
@@ -6843,7 +6858,6 @@ export namespace Prisma {
      */
     where: PartnerWhereUniqueInput
   }
-
 
   /**
    * Partner findFirst
@@ -6889,7 +6903,6 @@ export namespace Prisma {
     distinct?: PartnerScalarFieldEnum | PartnerScalarFieldEnum[]
   }
 
-
   /**
    * Partner findFirstOrThrow
    */
@@ -6934,7 +6947,6 @@ export namespace Prisma {
     distinct?: PartnerScalarFieldEnum | PartnerScalarFieldEnum[]
   }
 
-
   /**
    * Partner findMany
    */
@@ -6974,7 +6986,6 @@ export namespace Prisma {
     distinct?: PartnerScalarFieldEnum | PartnerScalarFieldEnum[]
   }
 
-
   /**
    * Partner create
    */
@@ -6989,7 +7000,6 @@ export namespace Prisma {
     data: XOR<PartnerCreateInput, PartnerUncheckedCreateInput>
   }
 
-
   /**
    * Partner createMany
    */
@@ -7000,7 +7010,6 @@ export namespace Prisma {
     data: PartnerCreateManyInput | PartnerCreateManyInput[]
     skipDuplicates?: boolean
   }
-
 
   /**
    * Partner update
@@ -7020,7 +7029,6 @@ export namespace Prisma {
     where: PartnerWhereUniqueInput
   }
 
-
   /**
    * Partner updateMany
    */
@@ -7034,7 +7042,6 @@ export namespace Prisma {
      */
     where?: PartnerWhereInput
   }
-
 
   /**
    * Partner upsert
@@ -7058,7 +7065,6 @@ export namespace Prisma {
     update: XOR<PartnerUpdateInput, PartnerUncheckedUpdateInput>
   }
 
-
   /**
    * Partner delete
    */
@@ -7073,7 +7079,6 @@ export namespace Prisma {
     where: PartnerWhereUniqueInput
   }
 
-
   /**
    * Partner deleteMany
    */
@@ -7083,7 +7088,6 @@ export namespace Prisma {
      */
     where?: PartnerWhereInput
   }
-
 
   /**
    * Partner without action
@@ -7095,6 +7099,907 @@ export namespace Prisma {
     select?: PartnerSelect<ExtArgs> | null
   }
 
+
+  /**
+   * Model Dokumente
+   */
+
+  export type AggregateDokumente = {
+    _count: DokumenteCountAggregateOutputType | null
+    _avg: DokumenteAvgAggregateOutputType | null
+    _sum: DokumenteSumAggregateOutputType | null
+    _min: DokumenteMinAggregateOutputType | null
+    _max: DokumenteMaxAggregateOutputType | null
+  }
+
+  export type DokumenteAvgAggregateOutputType = {
+    downloads: number | null
+  }
+
+  export type DokumenteSumAggregateOutputType = {
+    downloads: number | null
+  }
+
+  export type DokumenteMinAggregateOutputType = {
+    id: string | null
+    filename: string | null
+    extension: string | null
+    date_modified: Date | null
+    data: Buffer | null
+    downloads: number | null
+  }
+
+  export type DokumenteMaxAggregateOutputType = {
+    id: string | null
+    filename: string | null
+    extension: string | null
+    date_modified: Date | null
+    data: Buffer | null
+    downloads: number | null
+  }
+
+  export type DokumenteCountAggregateOutputType = {
+    id: number
+    filename: number
+    extension: number
+    date_modified: number
+    data: number
+    downloads: number
+    _all: number
+  }
+
+
+  export type DokumenteAvgAggregateInputType = {
+    downloads?: true
+  }
+
+  export type DokumenteSumAggregateInputType = {
+    downloads?: true
+  }
+
+  export type DokumenteMinAggregateInputType = {
+    id?: true
+    filename?: true
+    extension?: true
+    date_modified?: true
+    data?: true
+    downloads?: true
+  }
+
+  export type DokumenteMaxAggregateInputType = {
+    id?: true
+    filename?: true
+    extension?: true
+    date_modified?: true
+    data?: true
+    downloads?: true
+  }
+
+  export type DokumenteCountAggregateInputType = {
+    id?: true
+    filename?: true
+    extension?: true
+    date_modified?: true
+    data?: true
+    downloads?: true
+    _all?: true
+  }
+
+  export type DokumenteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dokumente to aggregate.
+     */
+    where?: DokumenteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dokumentes to fetch.
+     */
+    orderBy?: DokumenteOrderByWithRelationAndSearchRelevanceInput | DokumenteOrderByWithRelationAndSearchRelevanceInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DokumenteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dokumentes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dokumentes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Dokumentes
+    **/
+    _count?: true | DokumenteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DokumenteAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DokumenteSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DokumenteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DokumenteMaxAggregateInputType
+  }
+
+  export type GetDokumenteAggregateType<T extends DokumenteAggregateArgs> = {
+        [P in keyof T & keyof AggregateDokumente]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDokumente[P]>
+      : GetScalarType<T[P], AggregateDokumente[P]>
+  }
+
+
+
+
+  export type DokumenteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DokumenteWhereInput
+    orderBy?: DokumenteOrderByWithAggregationInput | DokumenteOrderByWithAggregationInput[]
+    by: DokumenteScalarFieldEnum[] | DokumenteScalarFieldEnum
+    having?: DokumenteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DokumenteCountAggregateInputType | true
+    _avg?: DokumenteAvgAggregateInputType
+    _sum?: DokumenteSumAggregateInputType
+    _min?: DokumenteMinAggregateInputType
+    _max?: DokumenteMaxAggregateInputType
+  }
+
+  export type DokumenteGroupByOutputType = {
+    id: string
+    filename: string
+    extension: string
+    date_modified: Date
+    data: Buffer
+    downloads: number
+    _count: DokumenteCountAggregateOutputType | null
+    _avg: DokumenteAvgAggregateOutputType | null
+    _sum: DokumenteSumAggregateOutputType | null
+    _min: DokumenteMinAggregateOutputType | null
+    _max: DokumenteMaxAggregateOutputType | null
+  }
+
+  type GetDokumenteGroupByPayload<T extends DokumenteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DokumenteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DokumenteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DokumenteGroupByOutputType[P]>
+            : GetScalarType<T[P], DokumenteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DokumenteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    filename?: boolean
+    extension?: boolean
+    date_modified?: boolean
+    data?: boolean
+    downloads?: boolean
+  }, ExtArgs["result"]["dokumente"]>
+
+  export type DokumenteSelectScalar = {
+    id?: boolean
+    filename?: boolean
+    extension?: boolean
+    date_modified?: boolean
+    data?: boolean
+    downloads?: boolean
+  }
+
+
+
+  export type $DokumentePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Dokumente"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      filename: string
+      extension: string
+      date_modified: Date
+      data: Buffer
+      downloads: number
+    }, ExtArgs["result"]["dokumente"]>
+    composites: {}
+  }
+
+
+  type DokumenteGetPayload<S extends boolean | null | undefined | DokumenteDefaultArgs> = $Result.GetResult<Prisma.$DokumentePayload, S>
+
+  type DokumenteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<DokumenteFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: DokumenteCountAggregateInputType | true
+    }
+
+  export interface DokumenteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Dokumente'], meta: { name: 'Dokumente' } }
+    /**
+     * Find zero or one Dokumente that matches the filter.
+     * @param {DokumenteFindUniqueArgs} args - Arguments to find a Dokumente
+     * @example
+     * // Get one Dokumente
+     * const dokumente = await prisma.dokumente.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends DokumenteFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, DokumenteFindUniqueArgs<ExtArgs>>
+    ): Prisma__DokumenteClient<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Dokumente that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {DokumenteFindUniqueOrThrowArgs} args - Arguments to find a Dokumente
+     * @example
+     * // Get one Dokumente
+     * const dokumente = await prisma.dokumente.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends DokumenteFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, DokumenteFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__DokumenteClient<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Dokumente that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DokumenteFindFirstArgs} args - Arguments to find a Dokumente
+     * @example
+     * // Get one Dokumente
+     * const dokumente = await prisma.dokumente.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends DokumenteFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, DokumenteFindFirstArgs<ExtArgs>>
+    ): Prisma__DokumenteClient<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Dokumente that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DokumenteFindFirstOrThrowArgs} args - Arguments to find a Dokumente
+     * @example
+     * // Get one Dokumente
+     * const dokumente = await prisma.dokumente.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends DokumenteFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, DokumenteFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__DokumenteClient<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Dokumentes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DokumenteFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Dokumentes
+     * const dokumentes = await prisma.dokumente.findMany()
+     * 
+     * // Get first 10 Dokumentes
+     * const dokumentes = await prisma.dokumente.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dokumenteWithIdOnly = await prisma.dokumente.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends DokumenteFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DokumenteFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Dokumente.
+     * @param {DokumenteCreateArgs} args - Arguments to create a Dokumente.
+     * @example
+     * // Create one Dokumente
+     * const Dokumente = await prisma.dokumente.create({
+     *   data: {
+     *     // ... data to create a Dokumente
+     *   }
+     * })
+     * 
+    **/
+    create<T extends DokumenteCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, DokumenteCreateArgs<ExtArgs>>
+    ): Prisma__DokumenteClient<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Dokumentes.
+     *     @param {DokumenteCreateManyArgs} args - Arguments to create many Dokumentes.
+     *     @example
+     *     // Create many Dokumentes
+     *     const dokumente = await prisma.dokumente.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends DokumenteCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DokumenteCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Dokumente.
+     * @param {DokumenteDeleteArgs} args - Arguments to delete one Dokumente.
+     * @example
+     * // Delete one Dokumente
+     * const Dokumente = await prisma.dokumente.delete({
+     *   where: {
+     *     // ... filter to delete one Dokumente
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends DokumenteDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, DokumenteDeleteArgs<ExtArgs>>
+    ): Prisma__DokumenteClient<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Dokumente.
+     * @param {DokumenteUpdateArgs} args - Arguments to update one Dokumente.
+     * @example
+     * // Update one Dokumente
+     * const dokumente = await prisma.dokumente.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends DokumenteUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, DokumenteUpdateArgs<ExtArgs>>
+    ): Prisma__DokumenteClient<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Dokumentes.
+     * @param {DokumenteDeleteManyArgs} args - Arguments to filter Dokumentes to delete.
+     * @example
+     * // Delete a few Dokumentes
+     * const { count } = await prisma.dokumente.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends DokumenteDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DokumenteDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dokumentes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DokumenteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Dokumentes
+     * const dokumente = await prisma.dokumente.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends DokumenteUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, DokumenteUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Dokumente.
+     * @param {DokumenteUpsertArgs} args - Arguments to update or create a Dokumente.
+     * @example
+     * // Update or create a Dokumente
+     * const dokumente = await prisma.dokumente.upsert({
+     *   create: {
+     *     // ... data to create a Dokumente
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Dokumente we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends DokumenteUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, DokumenteUpsertArgs<ExtArgs>>
+    ): Prisma__DokumenteClient<$Result.GetResult<Prisma.$DokumentePayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Count the number of Dokumentes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DokumenteCountArgs} args - Arguments to filter Dokumentes to count.
+     * @example
+     * // Count the number of Dokumentes
+     * const count = await prisma.dokumente.count({
+     *   where: {
+     *     // ... the filter for the Dokumentes we want to count
+     *   }
+     * })
+    **/
+    count<T extends DokumenteCountArgs>(
+      args?: Subset<T, DokumenteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DokumenteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Dokumente.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DokumenteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DokumenteAggregateArgs>(args: Subset<T, DokumenteAggregateArgs>): Prisma.PrismaPromise<GetDokumenteAggregateType<T>>
+
+    /**
+     * Group by Dokumente.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DokumenteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DokumenteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DokumenteGroupByArgs['orderBy'] }
+        : { orderBy?: DokumenteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DokumenteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDokumenteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Dokumente model
+   */
+  readonly fields: DokumenteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Dokumente.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DokumenteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the Dokumente model
+   */ 
+  interface DokumenteFieldRefs {
+    readonly id: FieldRef<"Dokumente", 'String'>
+    readonly filename: FieldRef<"Dokumente", 'String'>
+    readonly extension: FieldRef<"Dokumente", 'String'>
+    readonly date_modified: FieldRef<"Dokumente", 'DateTime'>
+    readonly data: FieldRef<"Dokumente", 'Bytes'>
+    readonly downloads: FieldRef<"Dokumente", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Dokumente findUnique
+   */
+  export type DokumenteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * Filter, which Dokumente to fetch.
+     */
+    where: DokumenteWhereUniqueInput
+  }
+
+  /**
+   * Dokumente findUniqueOrThrow
+   */
+  export type DokumenteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * Filter, which Dokumente to fetch.
+     */
+    where: DokumenteWhereUniqueInput
+  }
+
+  /**
+   * Dokumente findFirst
+   */
+  export type DokumenteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * Filter, which Dokumente to fetch.
+     */
+    where?: DokumenteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dokumentes to fetch.
+     */
+    orderBy?: DokumenteOrderByWithRelationAndSearchRelevanceInput | DokumenteOrderByWithRelationAndSearchRelevanceInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dokumentes.
+     */
+    cursor?: DokumenteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dokumentes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dokumentes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dokumentes.
+     */
+    distinct?: DokumenteScalarFieldEnum | DokumenteScalarFieldEnum[]
+  }
+
+  /**
+   * Dokumente findFirstOrThrow
+   */
+  export type DokumenteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * Filter, which Dokumente to fetch.
+     */
+    where?: DokumenteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dokumentes to fetch.
+     */
+    orderBy?: DokumenteOrderByWithRelationAndSearchRelevanceInput | DokumenteOrderByWithRelationAndSearchRelevanceInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dokumentes.
+     */
+    cursor?: DokumenteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dokumentes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dokumentes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dokumentes.
+     */
+    distinct?: DokumenteScalarFieldEnum | DokumenteScalarFieldEnum[]
+  }
+
+  /**
+   * Dokumente findMany
+   */
+  export type DokumenteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * Filter, which Dokumentes to fetch.
+     */
+    where?: DokumenteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dokumentes to fetch.
+     */
+    orderBy?: DokumenteOrderByWithRelationAndSearchRelevanceInput | DokumenteOrderByWithRelationAndSearchRelevanceInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Dokumentes.
+     */
+    cursor?: DokumenteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dokumentes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dokumentes.
+     */
+    skip?: number
+    distinct?: DokumenteScalarFieldEnum | DokumenteScalarFieldEnum[]
+  }
+
+  /**
+   * Dokumente create
+   */
+  export type DokumenteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * The data needed to create a Dokumente.
+     */
+    data: XOR<DokumenteCreateInput, DokumenteUncheckedCreateInput>
+  }
+
+  /**
+   * Dokumente createMany
+   */
+  export type DokumenteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Dokumentes.
+     */
+    data: DokumenteCreateManyInput | DokumenteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Dokumente update
+   */
+  export type DokumenteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * The data needed to update a Dokumente.
+     */
+    data: XOR<DokumenteUpdateInput, DokumenteUncheckedUpdateInput>
+    /**
+     * Choose, which Dokumente to update.
+     */
+    where: DokumenteWhereUniqueInput
+  }
+
+  /**
+   * Dokumente updateMany
+   */
+  export type DokumenteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Dokumentes.
+     */
+    data: XOR<DokumenteUpdateManyMutationInput, DokumenteUncheckedUpdateManyInput>
+    /**
+     * Filter which Dokumentes to update
+     */
+    where?: DokumenteWhereInput
+  }
+
+  /**
+   * Dokumente upsert
+   */
+  export type DokumenteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * The filter to search for the Dokumente to update in case it exists.
+     */
+    where: DokumenteWhereUniqueInput
+    /**
+     * In case the Dokumente found by the `where` argument doesn't exist, create a new Dokumente with this data.
+     */
+    create: XOR<DokumenteCreateInput, DokumenteUncheckedCreateInput>
+    /**
+     * In case the Dokumente was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DokumenteUpdateInput, DokumenteUncheckedUpdateInput>
+  }
+
+  /**
+   * Dokumente delete
+   */
+  export type DokumenteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+    /**
+     * Filter which Dokumente to delete.
+     */
+    where: DokumenteWhereUniqueInput
+  }
+
+  /**
+   * Dokumente deleteMany
+   */
+  export type DokumenteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Dokumentes to delete
+     */
+    where?: DokumenteWhereInput
+  }
+
+  /**
+   * Dokumente without action
+   */
+  export type DokumenteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Dokumente
+     */
+    select?: DokumenteSelect<ExtArgs> | null
+  }
 
 
   /**
@@ -7262,6 +8167,7 @@ export namespace Prisma {
     userId?: boolean
     expires?: boolean
   }
+
 
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     User?: boolean | UserDefaultArgs<ExtArgs>
@@ -7681,7 +8587,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * Session findUnique
    */
@@ -7691,7 +8596,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7699,7 +8604,6 @@ export namespace Prisma {
      */
     where: SessionWhereUniqueInput
   }
-
 
   /**
    * Session findUniqueOrThrow
@@ -7710,7 +8614,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7718,7 +8622,6 @@ export namespace Prisma {
      */
     where: SessionWhereUniqueInput
   }
-
 
   /**
    * Session findFirst
@@ -7729,7 +8632,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7767,7 +8670,6 @@ export namespace Prisma {
      */
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
-
 
   /**
    * Session findFirstOrThrow
@@ -7778,7 +8680,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7817,7 +8719,6 @@ export namespace Prisma {
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
-
   /**
    * Session findMany
    */
@@ -7827,7 +8728,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7861,7 +8762,6 @@ export namespace Prisma {
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
-
   /**
    * Session create
    */
@@ -7871,7 +8771,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7879,7 +8779,6 @@ export namespace Prisma {
      */
     data: XOR<SessionCreateInput, SessionUncheckedCreateInput>
   }
-
 
   /**
    * Session createMany
@@ -7892,7 +8791,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-
   /**
    * Session update
    */
@@ -7902,7 +8800,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7914,7 +8812,6 @@ export namespace Prisma {
      */
     where: SessionWhereUniqueInput
   }
-
 
   /**
    * Session updateMany
@@ -7930,7 +8827,6 @@ export namespace Prisma {
     where?: SessionWhereInput
   }
 
-
   /**
    * Session upsert
    */
@@ -7940,7 +8836,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7957,7 +8853,6 @@ export namespace Prisma {
     update: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
   }
 
-
   /**
    * Session delete
    */
@@ -7967,7 +8862,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     /**
@@ -7975,7 +8870,6 @@ export namespace Prisma {
      */
     where: SessionWhereUniqueInput
   }
-
 
   /**
    * Session deleteMany
@@ -7987,7 +8881,6 @@ export namespace Prisma {
     where?: SessionWhereInput
   }
 
-
   /**
    * Session without action
    */
@@ -7997,11 +8890,10 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
   }
-
 
 
   /**
@@ -8180,6 +9072,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
   }
+
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Account?: boolean | User$AccountArgs<ExtArgs>
@@ -8606,7 +9499,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * User findUnique
    */
@@ -8616,7 +9508,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8624,7 +9516,6 @@ export namespace Prisma {
      */
     where: UserWhereUniqueInput
   }
-
 
   /**
    * User findUniqueOrThrow
@@ -8635,7 +9526,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8643,7 +9534,6 @@ export namespace Prisma {
      */
     where: UserWhereUniqueInput
   }
-
 
   /**
    * User findFirst
@@ -8654,7 +9544,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8692,7 +9582,6 @@ export namespace Prisma {
      */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
-
 
   /**
    * User findFirstOrThrow
@@ -8703,7 +9592,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8742,7 +9631,6 @@ export namespace Prisma {
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
-
   /**
    * User findMany
    */
@@ -8752,7 +9640,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8786,7 +9674,6 @@ export namespace Prisma {
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
-
   /**
    * User create
    */
@@ -8796,7 +9683,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8804,7 +9691,6 @@ export namespace Prisma {
      */
     data?: XOR<UserCreateInput, UserUncheckedCreateInput>
   }
-
 
   /**
    * User createMany
@@ -8817,7 +9703,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-
   /**
    * User update
    */
@@ -8827,7 +9712,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8839,7 +9724,6 @@ export namespace Prisma {
      */
     where: UserWhereUniqueInput
   }
-
 
   /**
    * User updateMany
@@ -8855,7 +9739,6 @@ export namespace Prisma {
     where?: UserWhereInput
   }
 
-
   /**
    * User upsert
    */
@@ -8865,7 +9748,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8882,7 +9765,6 @@ export namespace Prisma {
     update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
   }
 
-
   /**
    * User delete
    */
@@ -8892,7 +9774,7 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
     /**
@@ -8900,7 +9782,6 @@ export namespace Prisma {
      */
     where: UserWhereUniqueInput
   }
-
 
   /**
    * User deleteMany
@@ -8912,7 +9793,6 @@ export namespace Prisma {
     where?: UserWhereInput
   }
 
-
   /**
    * User.Account
    */
@@ -8922,7 +9802,7 @@ export namespace Prisma {
      */
     select?: AccountSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: AccountInclude<ExtArgs> | null
     where?: AccountWhereInput
@@ -8933,7 +9813,6 @@ export namespace Prisma {
     distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
   }
 
-
   /**
    * User.Session
    */
@@ -8943,7 +9822,7 @@ export namespace Prisma {
      */
     select?: SessionSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: SessionInclude<ExtArgs> | null
     where?: SessionWhereInput
@@ -8954,7 +9833,6 @@ export namespace Prisma {
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
-
   /**
    * User without action
    */
@@ -8964,11 +9842,10 @@ export namespace Prisma {
      */
     select?: UserSelect<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well.
+     * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
   }
-
 
 
   /**
@@ -9126,6 +10003,7 @@ export namespace Prisma {
     token?: boolean
     expires?: boolean
   }
+
 
 
   export type $VerificationTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9536,7 +10414,6 @@ export namespace Prisma {
     
 
   // Custom InputTypes
-
   /**
    * VerificationToken findUnique
    */
@@ -9551,7 +10428,6 @@ export namespace Prisma {
     where: VerificationTokenWhereUniqueInput
   }
 
-
   /**
    * VerificationToken findUniqueOrThrow
    */
@@ -9565,7 +10441,6 @@ export namespace Prisma {
      */
     where: VerificationTokenWhereUniqueInput
   }
-
 
   /**
    * VerificationToken findFirst
@@ -9611,7 +10486,6 @@ export namespace Prisma {
     distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
   }
 
-
   /**
    * VerificationToken findFirstOrThrow
    */
@@ -9656,7 +10530,6 @@ export namespace Prisma {
     distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
   }
 
-
   /**
    * VerificationToken findMany
    */
@@ -9696,7 +10569,6 @@ export namespace Prisma {
     distinct?: VerificationTokenScalarFieldEnum | VerificationTokenScalarFieldEnum[]
   }
 
-
   /**
    * VerificationToken create
    */
@@ -9711,7 +10583,6 @@ export namespace Prisma {
     data: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
   }
 
-
   /**
    * VerificationToken createMany
    */
@@ -9722,7 +10593,6 @@ export namespace Prisma {
     data: VerificationTokenCreateManyInput | VerificationTokenCreateManyInput[]
     skipDuplicates?: boolean
   }
-
 
   /**
    * VerificationToken update
@@ -9742,7 +10612,6 @@ export namespace Prisma {
     where: VerificationTokenWhereUniqueInput
   }
 
-
   /**
    * VerificationToken updateMany
    */
@@ -9756,7 +10625,6 @@ export namespace Prisma {
      */
     where?: VerificationTokenWhereInput
   }
-
 
   /**
    * VerificationToken upsert
@@ -9780,7 +10648,6 @@ export namespace Prisma {
     update: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
   }
 
-
   /**
    * VerificationToken delete
    */
@@ -9795,7 +10662,6 @@ export namespace Prisma {
     where: VerificationTokenWhereUniqueInput
   }
 
-
   /**
    * VerificationToken deleteMany
    */
@@ -9806,7 +10672,6 @@ export namespace Prisma {
     where?: VerificationTokenWhereInput
   }
 
-
   /**
    * VerificationToken without action
    */
@@ -9816,7 +10681,6 @@ export namespace Prisma {
      */
     select?: VerificationTokenSelect<ExtArgs> | null
   }
-
 
 
   /**
@@ -9904,6 +10768,18 @@ export namespace Prisma {
   };
 
   export type PartnerScalarFieldEnum = (typeof PartnerScalarFieldEnum)[keyof typeof PartnerScalarFieldEnum]
+
+
+  export const DokumenteScalarFieldEnum: {
+    id: 'id',
+    filename: 'filename',
+    extension: 'extension',
+    date_modified: 'date_modified',
+    data: 'data',
+    downloads: 'downloads'
+  };
+
+  export type DokumenteScalarFieldEnum = (typeof DokumenteScalarFieldEnum)[keyof typeof DokumenteScalarFieldEnum]
 
 
   export const SessionScalarFieldEnum: {
@@ -10019,6 +10895,15 @@ export namespace Prisma {
   export type PartnerOrderByRelevanceFieldEnum = (typeof PartnerOrderByRelevanceFieldEnum)[keyof typeof PartnerOrderByRelevanceFieldEnum]
 
 
+  export const DokumenteOrderByRelevanceFieldEnum: {
+    id: 'id',
+    filename: 'filename',
+    extension: 'extension'
+  };
+
+  export type DokumenteOrderByRelevanceFieldEnum = (typeof DokumenteOrderByRelevanceFieldEnum)[keyof typeof DokumenteOrderByRelevanceFieldEnum]
+
+
   export const SessionOrderByRelevanceFieldEnum: {
     id: 'id',
     sessionToken: 'sessionToken',
@@ -10076,6 +10961,13 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'Bytes'
+   */
+  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
     
 
 
@@ -10452,6 +11344,66 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Partner"> | string
     link?: StringWithAggregatesFilter<"Partner"> | string
     image?: StringWithAggregatesFilter<"Partner"> | string
+  }
+
+  export type DokumenteWhereInput = {
+    AND?: DokumenteWhereInput | DokumenteWhereInput[]
+    OR?: DokumenteWhereInput[]
+    NOT?: DokumenteWhereInput | DokumenteWhereInput[]
+    id?: StringFilter<"Dokumente"> | string
+    filename?: StringFilter<"Dokumente"> | string
+    extension?: StringFilter<"Dokumente"> | string
+    date_modified?: DateTimeFilter<"Dokumente"> | Date | string
+    data?: BytesFilter<"Dokumente"> | Buffer
+    downloads?: IntFilter<"Dokumente"> | number
+  }
+
+  export type DokumenteOrderByWithRelationAndSearchRelevanceInput = {
+    id?: SortOrder
+    filename?: SortOrder
+    extension?: SortOrder
+    date_modified?: SortOrder
+    data?: SortOrder
+    downloads?: SortOrder
+    _relevance?: DokumenteOrderByRelevanceInput
+  }
+
+  export type DokumenteWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DokumenteWhereInput | DokumenteWhereInput[]
+    OR?: DokumenteWhereInput[]
+    NOT?: DokumenteWhereInput | DokumenteWhereInput[]
+    filename?: StringFilter<"Dokumente"> | string
+    extension?: StringFilter<"Dokumente"> | string
+    date_modified?: DateTimeFilter<"Dokumente"> | Date | string
+    data?: BytesFilter<"Dokumente"> | Buffer
+    downloads?: IntFilter<"Dokumente"> | number
+  }, "id">
+
+  export type DokumenteOrderByWithAggregationInput = {
+    id?: SortOrder
+    filename?: SortOrder
+    extension?: SortOrder
+    date_modified?: SortOrder
+    data?: SortOrder
+    downloads?: SortOrder
+    _count?: DokumenteCountOrderByAggregateInput
+    _avg?: DokumenteAvgOrderByAggregateInput
+    _max?: DokumenteMaxOrderByAggregateInput
+    _min?: DokumenteMinOrderByAggregateInput
+    _sum?: DokumenteSumOrderByAggregateInput
+  }
+
+  export type DokumenteScalarWhereWithAggregatesInput = {
+    AND?: DokumenteScalarWhereWithAggregatesInput | DokumenteScalarWhereWithAggregatesInput[]
+    OR?: DokumenteScalarWhereWithAggregatesInput[]
+    NOT?: DokumenteScalarWhereWithAggregatesInput | DokumenteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Dokumente"> | string
+    filename?: StringWithAggregatesFilter<"Dokumente"> | string
+    extension?: StringWithAggregatesFilter<"Dokumente"> | string
+    date_modified?: DateTimeWithAggregatesFilter<"Dokumente"> | Date | string
+    data?: BytesWithAggregatesFilter<"Dokumente"> | Buffer
+    downloads?: IntWithAggregatesFilter<"Dokumente"> | number
   }
 
   export type SessionWhereInput = {
@@ -10995,6 +11947,69 @@ export namespace Prisma {
     image?: StringFieldUpdateOperationsInput | string
   }
 
+  export type DokumenteCreateInput = {
+    id?: string
+    filename: string
+    extension: string
+    date_modified: Date | string
+    data: Buffer
+    downloads?: number
+  }
+
+  export type DokumenteUncheckedCreateInput = {
+    id?: string
+    filename: string
+    extension: string
+    date_modified: Date | string
+    data: Buffer
+    downloads?: number
+  }
+
+  export type DokumenteUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    date_modified?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: BytesFieldUpdateOperationsInput | Buffer
+    downloads?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DokumenteUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    date_modified?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: BytesFieldUpdateOperationsInput | Buffer
+    downloads?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DokumenteCreateManyInput = {
+    id?: string
+    filename: string
+    extension: string
+    date_modified: Date | string
+    data: Buffer
+    downloads?: number
+  }
+
+  export type DokumenteUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    date_modified?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: BytesFieldUpdateOperationsInput | Buffer
+    downloads?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DokumenteUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    date_modified?: DateTimeFieldUpdateOperationsInput | Date | string
+    data?: BytesFieldUpdateOperationsInput | Buffer
+    downloads?: IntFieldUpdateOperationsInput | number
+  }
+
   export type SessionCreateInput = {
     id?: string
     sessionToken: string
@@ -11532,6 +12547,91 @@ export namespace Prisma {
     image?: SortOrder
   }
 
+  export type BytesFilter<$PrismaModel = never> = {
+    equals?: Buffer | BytesFieldRefInput<$PrismaModel>
+    in?: Buffer[]
+    notIn?: Buffer[]
+    not?: NestedBytesFilter<$PrismaModel> | Buffer
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type DokumenteOrderByRelevanceInput = {
+    fields: DokumenteOrderByRelevanceFieldEnum | DokumenteOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type DokumenteCountOrderByAggregateInput = {
+    id?: SortOrder
+    filename?: SortOrder
+    extension?: SortOrder
+    date_modified?: SortOrder
+    data?: SortOrder
+    downloads?: SortOrder
+  }
+
+  export type DokumenteAvgOrderByAggregateInput = {
+    downloads?: SortOrder
+  }
+
+  export type DokumenteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    filename?: SortOrder
+    extension?: SortOrder
+    date_modified?: SortOrder
+    data?: SortOrder
+    downloads?: SortOrder
+  }
+
+  export type DokumenteMinOrderByAggregateInput = {
+    id?: SortOrder
+    filename?: SortOrder
+    extension?: SortOrder
+    date_modified?: SortOrder
+    data?: SortOrder
+    downloads?: SortOrder
+  }
+
+  export type DokumenteSumOrderByAggregateInput = {
+    downloads?: SortOrder
+  }
+
+  export type BytesWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Buffer | BytesFieldRefInput<$PrismaModel>
+    in?: Buffer[]
+    notIn?: Buffer[]
+    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Buffer
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBytesFilter<$PrismaModel>
+    _max?: NestedBytesFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type SessionOrderByRelevanceInput = {
     fields: SessionOrderByRelevanceFieldEnum | SessionOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -11759,6 +12859,18 @@ export namespace Prisma {
     upsert?: AbteilungUpsertWithoutMitarbeiterInput
     connect?: AbteilungWhereUniqueInput
     update?: XOR<XOR<AbteilungUpdateToOneWithWhereWithoutMitarbeiterInput, AbteilungUpdateWithoutMitarbeiterInput>, AbteilungUncheckedUpdateWithoutMitarbeiterInput>
+  }
+
+  export type BytesFieldUpdateOperationsInput = {
+    set?: Buffer
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type UserCreateNestedOneWithoutSessionInput = {
@@ -12027,6 +13139,50 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedBytesFilter<$PrismaModel = never> = {
+    equals?: Buffer | BytesFieldRefInput<$PrismaModel>
+    in?: Buffer[]
+    notIn?: Buffer[]
+    not?: NestedBytesFilter<$PrismaModel> | Buffer
+  }
+
+  export type NestedBytesWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Buffer | BytesFieldRefInput<$PrismaModel>
+    in?: Buffer[]
+    notIn?: Buffer[]
+    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Buffer
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBytesFilter<$PrismaModel>
+    _max?: NestedBytesFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -12531,6 +13687,10 @@ export namespace Prisma {
      * @deprecated Use PartnerDefaultArgs instead
      */
     export type PartnerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = PartnerDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use DokumenteDefaultArgs instead
+     */
+    export type DokumenteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = DokumenteDefaultArgs<ExtArgs>
     /**
      * @deprecated Use SessionDefaultArgs instead
      */
