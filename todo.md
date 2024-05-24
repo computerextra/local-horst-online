@@ -52,3 +52,4 @@
 - [x] Es gibt keine Zeilenumbrüche in der Bestellliste, wenn Text zu lang, wird er nicht gedruckt.
 - [ ] CMS: Upload und Anpassung von den aktuellen PDFs für den AVV,
 - [ ] CMS: Änderung des Datums für den "aktuellen Stand"
+- [x] Preisänderungen sind immer die selben..

@@ -27,6 +27,22 @@ const Config = MailConfig.parse({
 });
 type MailConfig = z.infer<typeof MailConfig>;
 
+const diff = (a: Decimal | null, b: Decimal | null): string => {
+  if (a == null || b == null) return "0";
+  // @ts-expect-error Prisma Decimal ist noch nicht so wirklich nutzbar.
+  const diff = a - b;
+  return diff.toFixed(2);
+};
+
+const diffProzent = (a: Decimal | null, b: Decimal | null): string => {
+  if (a == null || b == null) return "0";
+  // @ts-expect-error Prisma Decimal ist noch nicht so wirklich nutzbar.
+  const percent = (diff(a, b) / a) * 100;
+  return percent < 0
+    ? (percent * -1).toFixed(2) + "% Teurer"
+    : percent.toFixed(2) + "% Billiger";
+};
+
 export const MailRouter = createTRPCRouter({
   paypalMail: publicProcedure
     .input(
@@ -1028,126 +1044,79 @@ export const MailRouter = createTRPCRouter({
     const morgen = new Date(
       new Date().setDate(new Date().getDate() + 1)
     ).toDateString();
-    const Warenlieferung = await ctx.horst.warenlieferung.findMany({
+    const NeueArtikel = await ctx.horst.warenlieferung.findMany({
       where: {
-        OR: [
-          {
-            geliefert: {
-              gte: new Date(heute),
-              lt: new Date(morgen),
-            },
-          },
-          {
-            angelegt: {
-              gte: new Date(heute),
-              lt: new Date(morgen),
-            },
-          },
-          {
-            Preis: {
-              gte: new Date(heute),
-              lt: new Date(morgen),
-            },
-          },
-        ],
+        angelegt: {
+          gte: new Date(heute),
+          lt: new Date(morgen),
+        },
       },
     });
-    if (Warenlieferung == null) return false;
-
-    const Neu: typeof Warenlieferung = [];
-    const Alt: typeof Warenlieferung = [];
-    const Preis: typeof Warenlieferung = [];
-
-    Warenlieferung.forEach((element) => {
-      if (
-        element.angelegt &&
-        new Date(element.angelegt).toDateString() == heute
-      )
-        Neu.push(element);
-      if (
-        element.geliefert &&
-        new Date(element.geliefert).toDateString() == heute &&
-        element.angelegt &&
-        new Date(element.angelegt).toDateString() != heute
-      )
-        Alt.push(element);
-      if (
-        element.Preis &&
-        new Date(element.Preis).toDateString() == heute &&
-        element.angelegt &&
-        new Date(element.angelegt).toDateString() != heute
-      )
-        Preis.push(element);
+    const GelieferteArtikel = await ctx.horst.warenlieferung.findMany({
+      where: {
+        geliefert: {
+          gte: new Date(heute),
+          lt: new Date(morgen),
+        },
+      },
     });
+    const NeuePreise = await ctx.horst.warenlieferung.findMany({
+      where: {
+        Preis: {
+          gte: new Date(heute),
+          lt: new Date(morgen),
+        },
+      },
+    });
+
     let body = "";
-    if (Neu.length > 0) {
-      body += "<h2>Neue Artikel:</h2>";
-      Neu.forEach((element) => {
-        if (element.Artikelnummer != null && element.Name != null)
-          body += `<b>${element.Artikelnummer}</b>: ${element.Name}<br>`;
-      });
-    }
+    if (NeueArtikel.length > 0) body += "<h2>Neue Artikel:</h2>";
+    NeueArtikel.forEach((elem) => {
+      if (elem.Artikelnummer != null && elem.Name != null)
+        body += `<b>${elem.Artikelnummer}</b>: ${elem.Name}<br>`;
+    });
 
-    body += Neu.length > 0 && Alt.length > 0 ? "<hr>" : "";
+    if (NeueArtikel.length > 0 && GelieferteArtikel.length > 0) body += "<hr>";
 
-    if (Alt.length > 0) {
-      body += "<h2>Gelieferte Artikel:</h2>";
-      Alt.forEach((element) => {
-        if (element.Artikelnummer != null && element.Name != null)
-          body += `<b>${element.Artikelnummer}</b>: ${element.Name}<br>`;
-      });
-    }
+    if (GelieferteArtikel.length > 0) body += "<h2>Gelieferte Artikel:</h2>";
+    GelieferteArtikel.forEach((elem) => {
+      if (elem.Artikelnummer != null && elem.Name != null)
+        body += `<b>${elem.Artikelnummer}</b>: ${elem.Name}<br>`;
+    });
 
-    body +=
-      Neu.length > 0 && Alt.length > 0 && Preis.length > 0
-        ? "<hr>"
-        : Preis.length > 0 && Alt.length < 0 && Neu.length < 0
-        ? "<hr>"
-        : "";
+    if (
+      NeueArtikel.length > 0 &&
+      GelieferteArtikel.length <= 0 &&
+      NeuePreise.length > 0
+    )
+      body += "<hr>";
+    if (GelieferteArtikel.length > 0 && NeuePreise.length > 0) body += "<hr>";
 
-    const diff = (a: Decimal | null, b: Decimal | null): string => {
-      if (a == null || b == null) return "0";
-      // @ts-expect-error Prisma Decimal ist noch nicht so wirklich nutzbar.
-      const diff = a - b;
-      return diff.toFixed(2);
-    };
-
-    const diffProzent = (a: Decimal | null, b: Decimal | null): string => {
-      if (a == null || b == null) return "0";
-      // @ts-expect-error Prisma Decimal ist noch nicht so wirklich nutzbar.
-      const percent = (diff(a, b) / a) * 100;
-      return percent < 0
-        ? (percent * -1).toFixed(2) + "% Teurer"
-        : percent.toFixed(2) + "% Billiger";
-    };
-
-    if (Preis.length > 0) {
-      body += "<h2>Preisänderungen</h2>";
-      Preis.forEach((element) => {
-        if (
-          element.Preis &&
-          new Date(element.Preis).toDateString() == new Date().toDateString() &&
-          new Date(element.angelegt).toDateString() !=
-            new Date(element.Preis).toDateString() &&
-          element.AlterPreis &&
-          element.NeuerPreis &&
-          element.AlterPreis != element.NeuerPreis &&
-          element.AlterPreis.toFixed(2) != element.NeuerPreis.toFixed(2)
-        ) {
-          body += `<b>${element.Artikelnummer}</b>: ${
-            element.Name
-          } - Alt: ${element.AlterPreis.toFixed(
-            2
-          )}€ => Neu: ${element.NeuerPreis.toFixed(2)}€ (${diff(
-            element.AlterPreis,
-            element.NeuerPreis
-          )}€ differenz = ${diffProzent(
-            element.AlterPreis,
-            element.NeuerPreis
-          )}) <br />`;
-        }
-      });
-    }
+    if (NeuePreise.length > 0) body += "<h2>Preisänderungen</h2>";
+    NeuePreise.forEach((elem) => {
+      if (
+        elem.Preis &&
+        new Date(elem.Preis).toDateString() == new Date().toDateString() &&
+        new Date(elem.angelegt).toDateString() !=
+          new Date(elem.Preis).toDateString() &&
+        elem.AlterPreis &&
+        elem.NeuerPreis &&
+        elem.AlterPreis != elem.NeuerPreis &&
+        elem.AlterPreis.toFixed(2) != elem.NeuerPreis.toFixed(2)
+      ) {
+        body += `<b>${elem.Artikelnummer}</b>: ${
+          elem.Name
+        } - Alt: ${elem.AlterPreis.toFixed(
+          2
+        )}€ => Neu: ${elem.NeuerPreis.toFixed(2)}€ (${diff(
+          elem.AlterPreis,
+          elem.NeuerPreis
+        )}€ differenz = ${diffProzent(
+          elem.AlterPreis,
+          elem.NeuerPreis
+        )}) <br />`;
+      }
+    });
 
     const transporter = nodemailer.createTransport(Config);
     const message = {

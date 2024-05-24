@@ -9,29 +9,33 @@ const morgen = new Date(
 ).toDateString();
 
 export const warenlieferungRouter = createTRPCRouter({
-  get: protectedProcedure.query(async ({ ctx }) => {
+  getNeu: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.horst.warenlieferung.findMany({
       where: {
-        OR: [
-          {
-            geliefert: {
-              gte: new Date(heute),
-              lt: new Date(morgen),
-            },
-          },
-          {
-            angelegt: {
-              gte: new Date(heute),
-              lt: new Date(morgen),
-            },
-          },
-          {
-            Preis: {
-              gte: new Date(heute),
-              lt: new Date(morgen),
-            },
-          },
-        ],
+        angelegt: {
+          gte: new Date(heute),
+          lt: new Date(morgen),
+        },
+      },
+    });
+  }),
+  getGeliefert: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.horst.warenlieferung.findMany({
+      where: {
+        geliefert: {
+          gte: new Date(heute),
+          lt: new Date(morgen),
+        },
+      },
+    });
+  }),
+  getPreise: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.horst.warenlieferung.findMany({
+      where: {
+        Preis: {
+          gte: new Date(heute),
+          lt: new Date(morgen),
+        },
       },
     });
   }),

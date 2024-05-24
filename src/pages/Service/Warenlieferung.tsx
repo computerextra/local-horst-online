@@ -12,7 +12,9 @@ export default function WarenlieferungPage() {
   const { isAdmin } = useAdmin();
   const { data: sessionData } = useSession();
 
-  const Warenlieferung = api.Warenlieferung.get.useQuery();
+  const NeueArtikel = api.Warenlieferung.getNeu.useQuery();
+  const GelieferteArtikel = api.Warenlieferung.getGeliefert.useQuery();
+  const NeuePreise = api.Warenlieferung.getPreise.useQuery();
   const Generator = api.Warenlieferung.generate.useMutation();
   const Mailer = api.Mail.WarenlieferungsMail.useMutation();
 
@@ -24,29 +26,15 @@ export default function WarenlieferungPage() {
   const [preis, setPreis] = useState<undefined | Warenlieferung[]>(undefined);
 
   useEffect(() => {
-    if (Warenlieferung.data) {
-      setLoading(true);
-      const heute = new Date().toDateString();
-      const neueArtikel: Warenlieferung[] = [];
-      const wiederLagernd: Warenlieferung[] = [];
-      const neuerPreis: Warenlieferung[] = [];
-      Warenlieferung.data.forEach((x) => {
-        if (x.angelegt.toDateString() == heute) {
-          neueArtikel.push(x);
-        } else if (x.geliefert?.toDateString() == heute) {
-          wiederLagernd.push(x);
-        }
+    setLoading(true);
+    if (NeueArtikel.data) setNeu(NeueArtikel.data);
 
-        if (x.Preis?.toDateString() == heute) {
-          neuerPreis.push(x);
-        }
-      });
-      setNeu(neueArtikel);
-      setWieder(wiederLagernd);
-      setPreis(neuerPreis);
-      setLoading(false);
-    }
-  }, [Warenlieferung.data]);
+    if (GelieferteArtikel.data) setWieder(GelieferteArtikel.data);
+
+    if (NeuePreise.data) setPreis(NeuePreise.data);
+
+    setLoading(false);
+  }, [NeueArtikel.data, GelieferteArtikel.data, NeuePreise.data]);
 
   const generate = async () => {
     setLoading(true);
@@ -100,6 +88,10 @@ export default function WarenlieferungPage() {
       <Head>
         <title>Warenlieferung | LocalHorst v9</title>
         <link rel="icon" href="/favicon.ico" />
+        {/* Set No Caching */}
+        <meta http-equiv="Cache-control" content="no-cache" />
+        {/* Set Cache to expire immediately */}
+        <meta http-equiv="Expires" content="-1" />
       </Head>
 
       <Container>
@@ -115,80 +107,90 @@ export default function WarenlieferungPage() {
           </>
         )}
         {sent && !loading && <h2 className="text-success">Mail versendet!</h2>}
-        {loading && <LoadingSpinner />}
-        {Warenlieferung.isLoading && <LoadingSpinner />}
-        {!loading && !Warenlieferung.isLoading && Warenlieferung.data && (
-          <>
-            {neu && neu.length > 0 && (
-              <Table hover className="table-sm caption-top">
-                <caption>Neue Artikel</caption>
-                <thead>
-                  <tr>
-                    <th>Artikelnummer</th>
-                    <th>Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {neu.map((x) => (
-                    <tr key={x.id}>
-                      <td>{x.Artikelnummer}</td>
-                      <td>{x.Name}</td>
+        {(loading ||
+          NeueArtikel.isLoading ||
+          NeuePreise.isLoading ||
+          GelieferteArtikel.isLoading) && <LoadingSpinner />}
+
+        {!loading &&
+          !NeueArtikel.isLoading &&
+          !NeuePreise.isLoading &&
+          !GelieferteArtikel.isLoading && (
+            <>
+              {neu && neu.length > 0 && (
+                <Table hover className="table-sm caption-top">
+                  <caption>Neue Artikel</caption>
+                  <thead>
+                    <tr>
+                      <th>Artikelnummer</th>
+                      <th>Name</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            )}
-            {wieder && wieder.length > 0 && (
-              <Table hover className="table-sm caption-top">
-                <caption>Wieder Lagernde Artikel</caption>
-                <thead>
-                  <tr>
-                    <th>Artikelnummer</th>
-                    <th>Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {wieder.map((x) => (
-                    <tr key={x.id}>
-                      <td>{x.Artikelnummer}</td>
-                      <td>{x.Name}</td>
+                  </thead>
+                  <tbody>
+                    {neu.map((x) => (
+                      <tr key={x.id}>
+                        <td>{x.Artikelnummer}</td>
+                        <td>{x.Name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+              {wieder && wieder.length > 0 && (
+                <Table hover className="table-sm caption-top">
+                  <caption>Wieder Lagernde Artikel</caption>
+                  <thead>
+                    <tr>
+                      <th>Artikelnummer</th>
+                      <th>Name</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            )}
-            {preis && preis.length > 0 && (
-              <Table hover className="table-sm caption-top">
-                <caption>Neue Preise</caption>
-                <thead>
-                  <tr>
-                    <th>Artikelnummer</th>
-                    <th>Name</th>
-                    <th>Alter Preis</th>
-                    <th>Neuer Preis</th>
-                    <th>Differenz €</th>
-                    <th>Differenz %</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {preis.map((x) => {
-                    if (parseInt(diff(x.AlterPreis, x.NeuerPreis)) > 0)
-                      return (
-                        <tr key={x.id}>
-                          <td>{x.Artikelnummer}</td>
-                          <td>{x.Name}</td>
-                          <td>{x.AlterPreis ? <>{x.AlterPreis}</> : "n/a"}</td>
-                          <td>{x.NeuerPreis ? <>{x.NeuerPreis}</> : "n/a"}</td>
-                          <td>{diff(x.AlterPreis, x.NeuerPreis)}</td>
-                          <td>{diffProzent(x.AlterPreis, x.NeuerPreis)}</td>
-                        </tr>
-                      );
-                  })}
-                </tbody>
-              </Table>
-            )}
-          </>
-        )}
+                  </thead>
+                  <tbody>
+                    {wieder.map((x) => (
+                      <tr key={x.id}>
+                        <td>{x.Artikelnummer}</td>
+                        <td>{x.Name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+              {preis && preis.length > 0 && (
+                <Table hover className="table-sm caption-top">
+                  <caption>Neue Preise</caption>
+                  <thead>
+                    <tr>
+                      <th>Artikelnummer</th>
+                      <th>Name</th>
+                      <th>Alter Preis</th>
+                      <th>Neuer Preis</th>
+                      <th>Differenz €</th>
+                      <th>Differenz %</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {preis.map((x) => {
+                      if (parseFloat(diff(x.AlterPreis, x.NeuerPreis)) != 0)
+                        return (
+                          <tr key={x.id}>
+                            <td>{x.Artikelnummer}</td>
+                            <td>{x.Name}</td>
+                            <td>
+                              {x.AlterPreis ? <>{x.AlterPreis}</> : "n/a"}
+                            </td>
+                            <td>
+                              {x.NeuerPreis ? <>{x.NeuerPreis}</> : "n/a"}
+                            </td>
+                            <td>{diff(x.AlterPreis, x.NeuerPreis)}</td>
+                            <td>{diffProzent(x.AlterPreis, x.NeuerPreis)}</td>
+                          </tr>
+                        );
+                    })}
+                  </tbody>
+                </Table>
+              )}
+            </>
+          )}
       </Container>
     </>
   );
