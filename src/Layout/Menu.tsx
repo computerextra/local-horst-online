@@ -72,6 +72,13 @@ export default function Menu() {
               <NavDropdown.Item as={Link} href="/Service/Warenlieferung">
                 WL
               </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item as={Link} target="_blank" href="https://dsgvo3.ds-manager.net/computerextra/home.html">
+                DSGVO CompEx
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} target="_blank" href="https://dsgvo1.ds-manager.net/aemcommunication/login.html">
+                DSGVO AEM
+              </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="CMS" id="CmsDropdown">
               <NavDropdown.Item as={Link} href="/CMS/Abteilung">
