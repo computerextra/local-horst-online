@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/Sage"
+  provider      = "prisma-client-js"
+  output        = "./generated/Sage"
+  binaryTargets = ["native", "windows", "darwin-arm64"]
 }
 
 datasource db {
@@ -60,6 +61,7 @@ model sg_adr_bankverb {
   AbrufUmsaetze          Int?
   last_modification_time DateTime? @default(now(), map: "DF__sg_adr_ba__last___12BEA5E7") @db.DateTime
   AnonymisiertAm         DateTime? @db.DateTime
+  StatementType          Int?
 
   @@index([SG_Adressen_FK], map: "sg_adr_bankverb2")
   @@index([SG_Sys_Waehrungen_FK], map: "sg_adr_bankverb3")
@@ -124,6 +126,7 @@ model sg_adr_bankverb_history {
   BatchBooking               Int?
   AbrufUmsaetze              Int?
   AnonymisiertAm             DateTime? @db.DateTime
+  StatementType              Int?
 }
 
 model sg_adr_bemerkung {
@@ -316,7 +319,7 @@ model sg_adr_selektionen {
   Herkunft              Bytes?  @db.Image
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model sg_adr_telefone {
   SG_Adressen_FK Int
   Telefon        String? @db.VarChar(40)
@@ -752,8 +755,8 @@ model sg_adressen_prot {
   Mobiltelefon1                String?   @db.VarChar(40)
   Mobiltelefon2                String?   @db.VarChar(40)
   VoIp                         String?   @db.VarChar(40)
-  EMail1                       String?   @db.VarChar(60)
-  EMail2                       String?   @db.VarChar(60)
+  EMail1                       String?   @db.VarChar(100)
+  EMail2                       String?   @db.VarChar(100)
   Bemerkung                    String?   @db.Text
   Familienstand                String?   @db.VarChar(1)
   NamePartner                  String?   @db.VarChar(60)
@@ -939,7 +942,7 @@ model sg_auf_ansch {
   TELEFON                    String?   @db.VarChar(30)
   FAX                        String?   @db.VarChar(30)
   MOBIL                      String?   @db.VarChar(30)
-  EMAIL                      String?   @db.VarChar(60)
+  EMAIL                      String?   @db.VarChar(100)
   Standard                   Int?
   last_modification_time     DateTime? @default(now(), map: "DF__sg_auf_an__last___1E305893") @db.DateTime
   AnonymisiertAm             DateTime? @db.DateTime
@@ -1165,6 +1168,8 @@ model sg_auf_artikel {
   TmpReserviert                          Float?
   BelegSeitenAnzahl                      Int?
   epgmaxbestellmenge                     Float?
+  AKTDATEK                               DateTime? @db.DateTime
+  B_VERSTECKT                            Int?
 
   @@index([SUCHBEGRIFF, SG_AUF_ARTIKEL_PK], map: "sg_auf_artikel10")
   @@index([ARTNR], map: "sg_auf_artikel2")
@@ -1407,6 +1412,8 @@ model sg_auf_artikel_history {
   TmpReserviert                          Float?
   BelegSeitenAnzahl                      Int?
   epgmaxbestellmenge                     Float?
+  AKTDATEK                               DateTime? @db.DateTime
+  B_VERSTECKT                            Int?
 }
 
 model sg_auf_barverkaufprotokoll {
@@ -1556,6 +1563,11 @@ model sg_auf_charge {
   gesperrt               Int?
   last_modification_time DateTime? @default(now(), map: "DF__sg_auf_ch__last___23E931E9") @db.DateTime
   BelegSeitenAnzahl      Int?
+  ChargenGUID            String?   @db.VarChar(50)
+
+  @@index([SG_AUF_ARTIKEL_FK], map: "sg_auf_charge2")
+  @@index([SG_AUF_FPOS_WE_FK], map: "sg_auf_charge3")
+  @@index([SG_AUF_LAGER_WE_FK], map: "sg_auf_charge4")
 }
 
 model sg_auf_charge_bewegung {
@@ -1571,6 +1583,11 @@ model sg_auf_charge_bewegung {
   ADRSuchbegriff            String?   @db.VarChar(64)
   SG_AUF_LAGGRUP_FK         Int?
   LAGER                     String?   @db.VarChar(30)
+
+  @@index([sg_auf_charge_Fk], map: "sg_auf_charge_bewegung2")
+  @@index([SG_AUF_FPOS_FK], map: "sg_auf_charge_bewegung3")
+  @@index([SG_AUF_LAGER_FK], map: "sg_auf_charge_bewegung4")
+  @@index([SG_AUF_LAGGRUP_FK], map: "sg_auf_charge_bewegung5")
 }
 
 model sg_auf_charge_bewegung_history {
@@ -1622,6 +1639,7 @@ model sg_auf_charge_history {
   Geaendert                DateTime? @db.DateTime
   gesperrt                 Int?
   BelegSeitenAnzahl        Int?
+  ChargenGUID              String?   @db.VarChar(50)
 }
 
 model sg_auf_drudef {
@@ -1915,6 +1933,8 @@ model sg_auf_fpos {
   AnonymisiertAm         DateTime? @db.DateTime
   BelegSeitenAnzahl      Int?
 
+  @@index([SG_AUF_FPOS_1_FK], map: "sg_auf_fpos10")
+  @@index([SG_AUF_FSCHRIFT_2_FK], map: "sg_auf_fpos11")
   @@index([SG_ADRESSEN_FK], map: "sg_auf_fpos2")
   @@index([SG_AUF_ARTIKEL_FK], map: "sg_auf_fpos3")
   @@index([HNUMMER], map: "sg_auf_fpos4")
@@ -2311,6 +2331,8 @@ model sg_auf_fschrift {
   os_orderstatusid            String?   @db.VarChar(255)
   os_transactionid            String?   @db.VarChar(255)
   USTIDNrHerkunft             Int?
+  Herkunft                    String?   @db.VarChar(10)
+  VorgangsKettenNR            Int?
 
   @@index([KENNUNG2], map: "sg_auf_fschrift10")
   @@index([AUSSHOP], map: "sg_auf_fschrift11")
@@ -2329,7 +2351,8 @@ model sg_auf_fschrift {
   @@index([epgguid], map: "sg_auf_fschrift23")
   @@index([SG_AUF_FSCHRIFT_FK], map: "sg_auf_fschrift24")
   @@index([AufNrKassenExport], map: "sg_auf_fschrift25")
-  @@index([ERFART, DATUM], map: "sg_auf_fschrift3")
+  @@index([Herkunft], map: "sg_auf_fschrift26")
+  @@index([VorgangsKettenNR], map: "sg_auf_fschrift27")
   @@index([SCHRIFTNR], map: "sg_auf_fschrift4")
   @@index([TERMINVERGEBEN, WVorlageUrsprung, SG_ADRESSEN_FK], map: "sg_auf_fschrift5")
   @@index([ERINNERUNG, SG_ADRESSEN_FK], map: "sg_auf_fschrift6")
@@ -2522,6 +2545,8 @@ model sg_auf_fschrift_history {
   os_orderstatusid            String?   @db.VarChar(255)
   os_transactionid            String?   @db.VarChar(255)
   USTIDNrHerkunft             Int?
+  Herkunft                    String?   @db.VarChar(10)
+  VorgangsKettenNR            Int?
 }
 
 model sg_auf_inventur {
@@ -2901,7 +2926,6 @@ model sg_auf_kunpreis {
   GEAENDERT          DateTime? @db.DateTime
 
   @@index([SG_AUF_ARTIKEL_FK, SG_ADRESSEN_FK], map: "sg_auf_kunpreis2")
-  @@index([SG_ADRESSEN_FK, SG_AUF_ARTIKEL_FK], map: "sg_auf_kunpreis3")
 }
 
 model sg_auf_kunpreis_history {
@@ -2967,7 +2991,6 @@ model sg_auf_lager {
   last_modification_time    DateTime? @default(now(), map: "DF__sg_auf_la__last___5B3AFD81") @db.DateTime
 
   @@index([SG_AUF_ARTIKEL_FK, LAGER], map: "sg_auf_lager2")
-  @@index([LAGER, SG_AUF_ARTIKEL_FK], map: "sg_auf_lager3")
   @@index([DATUM, SG_AUF_LAGER_PK], map: "sg_auf_lager4")
   @@index([SG_AUF_ARTIKEL_FK, SG_AUF_LAGGRUP_FK, DATUM], map: "sg_auf_lager5")
 }
@@ -3097,7 +3120,6 @@ model sg_auf_liepreis {
   GEAENDERT          DateTime? @db.DateTime
 
   @@index([SG_AUF_ARTIKEL_FK, SG_ADRESSEN_FK], map: "sg_auf_liepreis2")
-  @@index([SG_ADRESSEN_FK, SG_AUF_ARTIKEL_FK], map: "sg_auf_liepreis3")
 }
 
 model sg_auf_liepreis_history {
@@ -3257,7 +3279,7 @@ model sg_auf_o_best {
   ORT                     String?   @db.VarChar(61)
   TELEFON                 String?   @db.VarChar(61)
   TELEFAX                 String?   @db.VarChar(61)
-  EMAIL                   String?   @db.VarChar(61)
+  EMAIL                   String?   @db.VarChar(100)
   USERNAME                String?   @db.VarChar(61)
   PASSWORT                String?   @db.VarChar(61)
   KUNDEAUSLAND            Int?
@@ -3344,7 +3366,7 @@ model sg_auf_o_pos {
   @@index([STEUERCODEID], map: "sg_auf_o_pos1")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model sg_auf_o_rueck {
   ONLINEKUNDEID Int?
   IKUNDNR       Int?
@@ -4850,6 +4872,7 @@ model sg_fib_anlagen {
   IFBProzentsatz                    Float?    @db.Money
   IFBBehaltefrist                   Int?
   IFBBetrag                         Float?    @db.Money
+  WertMinderung                     Float?    @db.Money
 
   @@index([SG_FIB_WIJAHRE_FK], map: "sg_fib_anlagen2")
   @@index([AfAKontoRef], map: "sg_fib_anlagen3")
@@ -4994,6 +5017,7 @@ model sg_fib_anlagen_history {
   IFBProzentsatz                    Float?    @db.Money
   IFBBehaltefrist                   Int?
   IFBBetrag                         Float?    @db.Money
+  WertMinderung                     Float?    @db.Money
 }
 
 model sg_fib_anlagen_vorg {
@@ -5079,14 +5103,14 @@ model sg_fib_bankmappe {
   Ansprechspartner                String?   @db.VarChar(80)
   Telefon                         String?   @db.VarChar(40)
   Telefax                         String?   @db.VarChar(40)
-  EMail                           String?   @db.VarChar(40)
+  EMail                           String?   @db.VarChar(100)
   Inhaber                         String?   @db.VarChar(80)
   Branche                         String?   @db.VarChar(80)
   MitarbeiterAnzahl               Int?
   AnsprechspartnerBank            String?   @db.VarChar(80)
   TelefonBank                     String?   @db.VarChar(40)
   TelefaxBank                     String?   @db.VarChar(40)
-  EMailBank                       String?   @db.VarChar(40)
+  EMailBank                       String?   @db.VarChar(100)
   Bemerkung                       String?   @db.Text
   bBWA                            Int?
   bGuV                            Int?
@@ -5157,6 +5181,7 @@ model sg_fib_belegarchiv {
   B_InERechnungAnhaengen    Int?
   ERechnungDateiName        String?   @db.VarChar(255)
   ERechnungKurzbeschreibung String?   @db.VarChar(255)
+  Dateiname                 String?   @db.VarChar(50)
 
   @@index([BelegNr], map: "sg_fib_belegarchiv2")
   @@index([Kennung], map: "sg_fib_belegarchiv3")
@@ -5978,6 +6003,7 @@ model sg_fib_eaumsaetze {
   VZweck                       String?   @db.Text
   Kundenreferenz               String?   @db.VarChar(35)
   ZKATranCode                  String?   @db.VarChar(3)
+  StatementType                Int?
 
   @@index([Kontonummer], map: "sg_fib_eaumsaetze2")
   @@index([SG_FIB_EAUmsaetze_Sammler_FK], map: "sg_fib_eaumsaetze3")
@@ -6466,7 +6492,7 @@ model sg_fib_inkassoauftraege {
   Ort                        String?   @db.VarChar(64)
   Land                       String?   @db.VarChar(64)
   Telefon                    String?   @db.VarChar(40)
-  EMail                      String?   @db.VarChar(60)
+  EMail                      String?   @db.VarChar(100)
   Mahnstufe                  Int?
   Mahndatum                  DateTime? @db.DateTime
   RueckgabeCode              Int?
@@ -7567,6 +7593,7 @@ model sg_fib_steuersaetze {
   LastUpdated               DateTime? @db.DateTime
   Laendercode               String?   @db.VarChar(2)
   B_InWawiVorschlagen       Int?
+  DatevBuchungsschluessel   String?   @db.VarChar(10)
 
   @@index([SteuersatzCode], map: "sg_fib_steuersaetze2")
   @@index([VStKontoRef], map: "sg_fib_steuersaetze3")
@@ -7615,6 +7642,7 @@ model sg_fib_steuersaetze_history {
   LastUpdated                    DateTime? @db.DateTime
   Laendercode                    String?   @db.VarChar(2)
   B_InWawiVorschlagen            Int?
+  DatevBuchungsschluessel        String?   @db.VarChar(10)
 }
 
 model sg_fib_wijahre {
@@ -7977,6 +8005,18 @@ model sg_kunden_history {
   LeitwegID                   String?   @db.VarChar(46)
 }
 
+model sg_lie_erechnung_matrix {
+  sg_lie_erechnung_matrix_pk Int  @id(map: "PK__sg_lie_e__7ADB42470DD2023E")
+  FeldTyp                    Int?
+  SG_Lieferanten_FK          Int?
+  ERechnung_FeldCode         Int?
+  SG_FeldCode                Int?
+
+  @@index([FeldTyp], map: "sg_lie_erechnung_matrix1")
+  @@index([SG_Lieferanten_FK], map: "sg_lie_erechnung_matrix2")
+  @@index([ERechnung_FeldCode], map: "sg_lie_erechnung_matrix3")
+}
+
 model sg_lieferanten {
   SG_Lieferanten_PK      Int       @id(map: "PK__sg_liefe__5CED3075D9EC6B22") @unique(map: "sg_lieferanten1")
   SG_Adressen_FK         Int?
@@ -8193,7 +8233,7 @@ model sg_mahn_mahnungen {
   PPLZ                 String?   @db.VarChar(8)
   Postfach             String?   @db.VarChar(8)
   Telefon              String?   @db.VarChar(20)
-  EMail                String?   @db.VarChar(60)
+  EMail                String?   @db.VarChar(100)
   bMahnstufeErhoeht    Int?
   bStorno_Mahnstufe    Int?
   bStorno_Mahngebuehr  Int?
@@ -8246,7 +8286,7 @@ model sg_mahn_mahnungen_history {
   PPLZ                         String?   @db.VarChar(8)
   Postfach                     String?   @db.VarChar(8)
   Telefon                      String?   @db.VarChar(20)
-  EMail                        String?   @db.VarChar(60)
+  EMail                        String?   @db.VarChar(100)
   bMahnstufeErhoeht            Int?
   bStorno_Mahnstufe            Int?
   bStorno_Mahngebuehr          Int?
@@ -8318,7 +8358,7 @@ model sg_sys_dbschemaversion {
   MinAktVersion             Int?
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model sg_sys_debugprotokoll {
   UserID       Int?
   DatumUhrzeit DateTime? @db.DateTime
@@ -8409,7 +8449,7 @@ model sg_sys_views {
   ViewSQL         String? @db.Text
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model sg_sys_vlock {
   UserID   Int?
   RecordID Int?

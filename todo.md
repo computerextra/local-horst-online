@@ -1,0 +1,55 @@
+- [x] Signaturen Seite
+- [x] Signaturen Wiki Seite
+- [x] Zeit Seite
+- [x] Benutzer Profil Seite
+- [x] Profil bearbeiten
+- [x] Profile löschen (Als Admin)
+- [ ] RSS Seite?
+- [x] Werkstatt Seite
+- [x] Mitarbeiter Telefonliste
+- [x] Mitarbeiter anlegen
+- [x] Mitarbeiter bearbeiten
+- [x] Mitarbeiter löschen
+- [x] Lieferanten Telefonliste
+- [x] Lieferanten anlegen
+- [x] Lieferanten bearbeiten
+- [x] Lieferanten löschen
+- [x] Ansprechpartner anlegen
+- [x] Ansprechpartner bearbeiten
+- [x] Ansprechpartner löschen
+- [x] Sage Suche Seite
+- [x] SN Artikel Suche Seite
+- [x] Info an Kunde Seite
+- [x] Warenlieferung Seite
+- [x] Warenlieferung Mail passt der Preis nicht.
+- [x] Warenlieferung Laden geht nicht weg!
+- [x] Inventur Seite?
+- [x] Abteilung Seite für Website
+- [x] Abteilung anlegen
+- [x] Abteilung bearbeiten
+- [x] Abteilung löschen
+- [x] Mitarbeiter Seite für Website
+- [x] Mitarbeiter anlegen
+- [x] Mitarbeiter bearbeiten
+- [x] Mitarbeiter löschen
+- [x] Partner Seite für Website
+- [x] Partner anlegen
+- [x] Partner bearbeiten
+- [x] Partner löschen
+- [x] Jobs Seite für Website
+- [ ] Jobs anlegen (Wird erstmal nicht gebraucht)
+- [ ] Jobs bearbeiten (Wird erstmal nicht gebraucht)
+- [ ] Jobs löschen (Wird erstmal nicht gebraucht.)
+- [x] Angebote Seite für Website
+- [x] Angebote anlegen
+- [x] Angebote bearbeiten
+- [x] Angebote löschen
+- [x] User Edit macht Probleme, da "isAdmin" nicht mitgegeben wird.
+- [x] Bilder Upload im Einkauf geht nicht!
+- [x] Uploadthing veraltet?
+- [x] Zeitanzeige in Zeit muss auch dezimal für die Uhrzeiten anzeige
+- [x] Einkaufsliste ist zu kurz, das Format in DB muss angepasst werden!
+- [x] Es gibt keine Zeilenumbrüche in der Bestellliste, wenn Text zu lang, wird er nicht gedruckt.
+- [ ] CMS: Upload und Anpassung von den aktuellen PDFs für den AVV,
+- [ ] CMS: Änderung des Datums für den "aktuellen Stand"
+- [x] Preisänderungen sind immer die selben..

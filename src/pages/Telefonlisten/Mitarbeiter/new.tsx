@@ -3,156 +3,229 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import {
   Button,
-  Col,
   Container,
+  FloatingLabel,
   Form,
   FormCheck,
   FormControl,
   FormGroup,
-  FormLabel,
-  Row,
 } from "react-bootstrap";
+import ReactDatePicker from "react-datepicker";
+import useAdmin from "~/Hooks/useAdmin";
 import { api } from "~/utils/api";
 
 export default function NeuerMitarbeiter() {
-  const { push } = useRouter();
-  const Update = api.Mitarbeiter.neuerMitarbeiter.useMutation();
-  // States of Mitarbeiter
-  const [Name, setName] = useState("");
-  const [Short, setShort] = useState("");
-  const [Durchwahl, setDurchwahl] = useState("");
-  const [Telefon1, setTelefon1] = useState("");
-  const [Telefon2, setTelefon2] = useState("");
-  const [HomeOffice, setHomeoffice] = useState("");
-  const [Mobil, setMobil] = useState("");
-  const [Mail, setMail] = useState("");
-  const [Azubi, setAzubi] = useState<boolean>();
-  const [Geburtstag, setGeburtstag] = useState("");
+  const Create = api.Mitarbeiter.create.useMutation();
+  const { isAdmin } = useAdmin();
+  const router = useRouter();
+
+  const [Name, setName] = useState<undefined | string>(undefined);
+  const [Short, setShort] = useState<undefined | string>(undefined);
+  const [Gruppenwahl, setGruppenwahl] = useState<undefined | string>(undefined);
+  const [InternTelefon1, setInternTelefon1] = useState<undefined | string>(
+    undefined
+  );
+  const [InternTelefon2, setInternTelefon2] = useState<undefined | string>(
+    undefined
+  );
+  const [FestnetzPrivat, setFestnetzPrivat] = useState<undefined | string>(
+    undefined
+  );
+  const [FestnetzAlternativ, setFestnetzAlternativ] = useState<
+    undefined | string
+  >(undefined);
+  const [HomeOffice, setHomeOffice] = useState<undefined | string>(undefined);
+  const [MobilBusiness, setMobilBusiness] = useState<undefined | string>(
+    undefined
+  );
+  const [MobilPrivat, setMobilPrivat] = useState<undefined | string>(undefined);
+  const [Email, setEmail] = useState<undefined | string>(undefined);
+  const [Azubi, setAzubi] = useState(false);
+  const [Geburtstag, setGeburtstag] = useState<Date>(new Date());
 
   const handleSubmit = async () => {
-    await Update.mutateAsync({
+    if (Name == null) return;
+
+    const res = await Create.mutateAsync({
       Name,
       Short,
-      Durchwahl,
-      Telefon1,
-      Telefon2,
+      Gruppenwahl,
+      InternTelefon1,
+      InternTelefon2,
+      FestnetzAlternativ,
+      FestnetzPrivat,
       HomeOffice,
-      Mobil,
-      Mail,
-      Azubi: Azubi == undefined ? false : Azubi,
+      MobilBusiness,
+      MobilPrivat,
+      Email,
+      Azubi,
       Geburtstag,
     });
-    await push("/Telefonlisten/Mitarbeiter");
+
+    if (res) {
+      await router.push("/Telefonlisten/Mitarbeiter");
+    }
   };
+
+  if (!isAdmin)
+    return (
+      <Container>
+        <h1 className="text-center text-danger">
+          Diese Seite kann nur von Administatoren genutzt werden
+        </h1>
+      </Container>
+    );
 
   return (
     <>
       <Head>
-        <title>Neuer Mitarbeiter | LocalHorst v7</title>
+        <title>Neuer Mitarbeiter | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container className="mt-5">
-        <h1 className="text-center">Neuen Mitarbeiter anlegen</h1>
-        <Form
-          className="mb-5"
-          onSubmit={(e) => e.preventDefault()}>
-          <FormGroup className="mb-3">
-            <FormLabel>Name</FormLabel>
-            <FormControl
-              type="text"
-              defaultValue={Name}
-              required
-              onChange={(e) => setName(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormLabel>Geburtstag</FormLabel>
-            <FormControl
-              type="date"
-              defaultValue={Geburtstag}
-              onChange={(e) => setGeburtstag(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormLabel>Abkürzung</FormLabel>
-            <FormControl
-              type="text"
-              defaultValue={Short}
-              onChange={(e) => setShort(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormLabel>Mail</FormLabel>
-            <FormControl
-              type="text"
-              defaultValue={Mail}
-              onChange={(e) => setMail(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormLabel>Durchwahl</FormLabel>
-            <FormControl
-              type="text"
-              defaultValue={Durchwahl}
-              onChange={(e) => setDurchwahl(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormLabel>Telefon 1</FormLabel>
-            <FormControl
-              type="text"
-              defaultValue={Telefon1}
-              onChange={(e) => setTelefon1(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormLabel>Telefon2</FormLabel>
-            <FormControl
-              type="text"
-              defaultValue={Telefon2}
-              onChange={(e) => setTelefon2(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormLabel>Mobil</FormLabel>
-            <FormControl
-              type="text"
-              defaultValue={Mobil}
-              onChange={(e) => setMobil(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <FormLabel>HomeOffice</FormLabel>
-            <FormControl
-              type="text"
-              defaultValue={HomeOffice}
-              onChange={(e) => setHomeoffice(e.target.value)}
-            />
-          </FormGroup>
 
+      <Container>
+        <h1>Neuer Mitarbeiter</h1>
+        <Form onSubmit={(e) => e.preventDefault()}>
+          <FloatingLabel controlId="Name" label="Name" className="mb-3">
+            <FormControl
+              value={Name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Name"
+              required
+            />
+          </FloatingLabel>
+          <FloatingLabel controlId="Short" label="Short" className="mb-3">
+            <FormControl
+              value={Short}
+              onChange={(e) => setShort(e.target.value)}
+              type="text"
+              placeholder="Short"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="Gruppenwahl"
+            label="Gruppenwahl"
+            className="mb-3"
+          >
+            <FormControl
+              value={Gruppenwahl}
+              onChange={(e) => setGruppenwahl(e.target.value)}
+              type="text"
+              placeholder="Gruppenwahl"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="InternTelefon1"
+            label="InternTelefon1"
+            className="mb-3"
+          >
+            <FormControl
+              value={InternTelefon1}
+              onChange={(e) => setInternTelefon1(e.target.value)}
+              type="text"
+              placeholder="InternTelefon1"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="InternTelefon2"
+            label="InternTelefon2"
+            className="mb-3"
+          >
+            <FormControl
+              value={InternTelefon2}
+              onChange={(e) => setInternTelefon2(e.target.value)}
+              type="text"
+              placeholder="InternTelefon2"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="FestnetzAlternativ"
+            label="FestnetzAlternativ"
+            className="mb-3"
+          >
+            <FormControl
+              value={FestnetzAlternativ}
+              onChange={(e) => setFestnetzAlternativ(e.target.value)}
+              type="text"
+              placeholder="FestnetzAlternativ"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="FestnetzPrivat"
+            label="FestnetzPrivat"
+            className="mb-3"
+          >
+            <FormControl
+              value={FestnetzPrivat}
+              onChange={(e) => setFestnetzPrivat(e.target.value)}
+              type="text"
+              placeholder="FestnetzPrivat"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="HomeOffice"
+            label="HomeOffice"
+            className="mb-3"
+          >
+            <FormControl
+              value={HomeOffice}
+              onChange={(e) => setHomeOffice(e.target.value)}
+              type="text"
+              placeholder="HomeOffice"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="MobilBusiness"
+            label="MobilBusiness"
+            className="mb-3"
+          >
+            <FormControl
+              value={MobilBusiness}
+              onChange={(e) => setMobilBusiness(e.target.value)}
+              type="text"
+              placeholder="MobilBusiness"
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="MobilPrivat"
+            label="MobilPrivat"
+            className="mb-3"
+          >
+            <FormControl
+              value={MobilPrivat}
+              onChange={(e) => setMobilPrivat(e.target.value)}
+              type="text"
+              placeholder="MobilPrivat"
+            />
+          </FloatingLabel>
+          <FloatingLabel controlId="Email" label="Email" className="mb-3">
+            <FormControl
+              value={Email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Email"
+            />
+          </FloatingLabel>
           <FormGroup className="mb-3">
             <FormCheck
-              type="checkbox"
+              type="switch"
+              id="Azubi"
               label="Azubi"
-              defaultChecked={Azubi}
-              onChange={(e) => setAzubi(e.target.checked)}
+              checked={Azubi}
+              onChange={() => setAzubi((prev) => !prev)}
             />
-            <FormLabel>Aktuell: {Azubi ? <>✔</> : <>❌</>}</FormLabel>
           </FormGroup>
-          <Row>
-            <Col className="d-flex justify-content-center">
-              <Button
-                type="submit"
-                variant="success"
-                onClick={() => void handleSubmit()}>
-                Senden
-              </Button>
-            </Col>
-            <Col className="d-flex justify-content-center">
-              <Button onClick={() => void push("/Telefonlisten/Mitarbeiter")}>
-                Zurück
-              </Button>
-            </Col>
-          </Row>
+          <FormGroup className="mb-3">
+            <ReactDatePicker
+              dateFormat={"dd.MM.yyyy"}
+              selected={Geburtstag}
+              onChange={(date: Date) => setGeburtstag(date)}
+            />
+          </FormGroup>
+          <Button type="submit" onClick={handleSubmit}>
+            Speichern
+          </Button>
         </Form>
       </Container>
     </>

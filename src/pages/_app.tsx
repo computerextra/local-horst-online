@@ -1,30 +1,27 @@
+import "@uploadthing/react/styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { type Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import Head from "next/head";
-import { useEffect } from "react";
 import { Container } from "react-bootstrap";
-import Navigation from "~/Components/Navigation";
-import "~/styles/global.css";
+import "react-datepicker/dist/react-datepicker.css";
+import Menu from "~/Layout/Menu";
+import "~/style.css";
 import { api } from "~/utils/api";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
-  useEffect(() => {
-    document.documentElement.setAttribute("data-bs-theme", "dark");
-  }, []);
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   return (
-    <>
-      <Head>
-        <title>LocalHorst v7</title>
-        <link
-          rel="icon"
-          href="/favicon.ico"
-        />
-      </Head>
-      <Container fluid>
-        <Navigation />
-        <Component {...pageProps} />
-      </Container>
-    </>
+    <SessionProvider session={session}>
+      <main>
+        <Menu />
+        <Container fluid className="mt-5">
+          <Component {...pageProps} />
+        </Container>
+      </main>
+    </SessionProvider>
   );
 };
 

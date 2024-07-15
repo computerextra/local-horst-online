@@ -1,115 +1,224 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { Button, Container, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import {
+  Container,
+  Dropdown,
+  DropdownDivider,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  FloatingLabel,
+  FormControl,
+  Table,
+} from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
+import useAdmin from "~/Hooks/useAdmin";
 import { api } from "~/utils/api";
 
-export default function Lieferanten() {
-  const postQuery = api.Lieferanten.getLieferantenUndAnsprechpartner.useQuery();
-  const { push } = useRouter();
-  if (postQuery.status !== "success") return <LoadingSpinner />;
+export default function LieferantenPage() {
+  const Lieferanten = api.Lieferanten.getAll.useQuery();
+  const Delete = api.Lieferanten.delete.useMutation();
+  const DeleteAp = api.Ansprechpartner.delete.useMutation();
+  const { isAdmin } = useAdmin();
 
-  const Lieferanten = postQuery.data;
+  const [search, setSearch] = useState("");
+  const [shown, setShown] = useState<
+    typeof Lieferanten.data | undefined | null
+  >(undefined);
+
+  useEffect(() => {
+    if (Lieferanten.data == null) return;
+    if (search == "" || search.trim().length <= 0) {
+      setShown(Lieferanten.data);
+    } else {
+      const tmp: typeof Lieferanten.data = [];
+      Lieferanten.data.forEach((l) => {
+        if (l.Firma.toLowerCase().includes(search.toLowerCase())) {
+          tmp.push(l);
+        }
+        if (l.Kundennummer?.includes(search.toLowerCase())) {
+          tmp.push(l);
+        }
+        if (l.Anschprechpartner.length > 0) {
+          l.Anschprechpartner.forEach((a) => {
+            if (a.Name.toLowerCase().includes(search.toLowerCase())) {
+              tmp.push(l);
+            }
+            if (a.Mail?.toLowerCase().includes(search.toLowerCase())) {
+              tmp.push(l);
+            }
+            if (a.Telefon?.toLowerCase().includes(search.toLowerCase())) {
+              tmp.push(l);
+            }
+          });
+        }
+      });
+      // Only Unique Values
+      const unique: typeof Lieferanten.data = [];
+      for (const i of tmp) {
+        if (unique.indexOf(i) === -1) {
+          unique.push(i);
+        }
+      }
+      setShown(unique);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, Lieferanten.data]);
+
+  const handleDelete = async (id: string) => {
+    const Aps: string[] = [];
+    const l = Lieferanten.data?.find((x) => x.id === id);
+    if (l == null) return;
+    l.Anschprechpartner.forEach((x) => {
+      Aps.push(x.id);
+    });
+
+    for (const x of Aps) {
+      await DeleteAp.mutateAsync({ id: x });
+    }
+
+    const res = await Delete.mutateAsync({ id: l.id });
+    if (res) {
+      location.reload();
+    }
+  };
 
   return (
     <>
       <Head>
-        <title>Lieferanten Liste | LocalHorst v7</title>
+        <title>Lieferanten | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container className="mt-5">
-        <h1 className="text-center">Telefonliste Lieferanten</h1>
-        <Button
-          className="mb-5"
-          variant="success"
-          onClick={() => void push("/Telefonlisten/Lieferanten/new")}>
-          Neuer Lieferant
-        </Button>
 
-        <Table
-          striped
-          className="mt-2">
-          <thead>
-            <tr>
-              <th scope="col">Firma</th>
-              <th scope="col">Kundennummer</th>
-              <th scope="col">Ansprechpartner</th>
-              <th scope="col">Telefon</th>
-              <th scope="col">Mobil</th>
-              <th scope="col">Mail</th>
-              <th scope="col">Website</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {Lieferanten.map((Lieferant) => (
-              <tr key={Lieferant.id}>
-                <th scope="row">{Lieferant.Firma}</th>
-                <th scope="row">{Lieferant.Kundennummer}</th>
-                <th scope="row">
-                  {Lieferant.Ansprechpartner &&
-                    Lieferant.Ansprechpartner.map((ap) => (
-                      <p key={ap.id}>{ap.Name}</p>
-                    ))}
-                </th>
-                <th scope="row">
-                  {Lieferant.Ansprechpartner &&
-                    Lieferant.Ansprechpartner.map((ap) => (
-                      <p key={ap.id}>
-                        {ap.Telefon && ap.Telefon.length > 1 ? (
-                          <a href={`tel:${ap.Telefon}`}>{ap.Telefon}</a>
-                        ) : (
-                          " - "
-                        )}
-                      </p>
-                    ))}
-                </th>
-                <th scope="row">
-                  {Lieferant.Ansprechpartner &&
-                    Lieferant.Ansprechpartner.map((ap) => (
-                      <p key={ap.id}>
-                        {ap.Mobil && ap.Mobil.length > 1 ? (
-                          <a href={`tel:${ap.Mobil}`}>{ap.Mobil}</a>
-                        ) : (
-                          " - "
-                        )}
-                      </p>
-                    ))}
-                </th>
-                <th scope="row">
-                  {Lieferant.Ansprechpartner &&
-                    Lieferant.Ansprechpartner.map((ap) => (
-                      <p key={ap.id}>
-                        {ap.Mail && ap.Mail.length > 1 ? (
-                          <a href={`mailto:${ap.Mail}`}>{ap.Mail}</a>
-                        ) : (
-                          " - "
-                        )}
-                      </p>
-                    ))}
-                </th>
-                <th scope="row">
-                  {Lieferant.WebsiteName != undefined &&
-                    Lieferant.WebsiteName.length > 0 &&
-                    Lieferant.WebsiteUrl != undefined ? (
-                    <a
-                      href={Lieferant.WebsiteUrl}
-                      target="_blank" rel="noopener noreferrer">
-                      {Lieferant.WebsiteName}
-                    </a>
-                  ) : (<>-</>)}
-                </th>
-                <th scope="row">
-                  <Link
-                    href={"/Telefonlisten/Lieferanten/" + Lieferant.id}
-                    className="btn btn-outline-success">
-                    Bearbeiten
-                  </Link>
-                </th>
+      <Container fluid>
+        <Container>
+          <h1>Lieferanten</h1>
+        </Container>
+        {isAdmin && (
+          <Link
+            className={`btn btn-lg btn-outline-primary ${
+              !isAdmin && "disabled"
+            } mb-2`}
+            href="/Telefonlisten/Lieferanten/new"
+          >
+            Neu
+          </Link>
+        )}
+        {!Lieferanten.isLoading && Lieferanten.data && (
+          <FloatingLabel
+            className="mb-3"
+            label="Suche nach Lieferanten, Kundennummer oder Ansprechpartner"
+          >
+            <FormControl
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Suche nach Lieferanten, Kundennummer oder Ansprechpartner"
+            />
+          </FloatingLabel>
+        )}
+        {Lieferanten.isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Firma</th>
+                <th>KuNu</th>
+                <th>APs</th>
+                <th>Website</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {shown?.map((e) => (
+                <tr key={e.id}>
+                  <td>{e.Firma}</td>
+                  <td>{e.Kundennummer}</td>
+                  <td>
+                    <Table hover striped>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Tel.</th>
+                          <th>Mob.</th>
+                          <th>Mail</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {e.Anschprechpartner?.map((a) => (
+                          <tr key={a.id}>
+                            <td>{a.Name}</td>
+                            <td>
+                              {a.Telefon ? (
+                                <a href={"tel:" + a.Telefon}>{a.Telefon}</a>
+                              ) : (
+                                "-"
+                              )}
+                            </td>
+                            <td>
+                              {a.Mobil ? (
+                                <a href={"tel:" + a.Mobil}>{a.Mobil}</a>
+                              ) : (
+                                "-"
+                              )}
+                            </td>
+                            <td>
+                              {a.Mail ? (
+                                <a href={"mailto:" + a.Mail}>{a.Mail}</a>
+                              ) : (
+                                "-"
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </td>
+                  <td>
+                    {e.Webseite ? (
+                      <a target="_blank" href={e.Webseite}>
+                        {e.Webseite}
+                      </a>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+
+                  <td>
+                    <Dropdown>
+                      <DropdownToggle variant="success" id="dropdown-actions">
+                        Actions
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        {isAdmin ? (
+                          <>
+                            <DropdownItem
+                              as={Link}
+                              href={"/Telefonlisten/Lieferanten/edit/" + e.id}
+                            >
+                              Bearbeiten
+                            </DropdownItem>
+                            <DropdownDivider />
+                            <DropdownItem
+                              href="#"
+                              onClick={() => void handleDelete(e.id)}
+                            >
+                              Lieferant & Aps Löschen
+                            </DropdownItem>
+                          </>
+                        ) : (
+                          <DropdownItem href="#">Nur für Admin</DropdownItem>
+                        )}
+                      </DropdownMenu>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Container>
     </>
   );

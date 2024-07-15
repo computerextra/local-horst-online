@@ -6,180 +6,180 @@ import {
   Container,
   FloatingLabel,
   Form,
+  FormCheck,
   FormControl,
-  FormSelect,
+  FormGroup,
+  ListGroup,
+  ListGroupItem,
   Table,
 } from "react-bootstrap";
 import LoadingSpinner from "~/Components/LoadingSpinner";
 import { api } from "~/utils/api";
 
-export default function Sage() {
-  const [Suche, setSuche] = useState<string>("N");
-  const [isLoading, setIsLoading] = useState(false);
-  const [Results, setResults] = useState<sg_adressen[]>([]);
+export default function SageSuche() {
+  const [search, setSearch] = useState<string | undefined>(undefined);
+  const [reversed, setReversed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [Results, setResults] = useState<undefined | null | sg_adressen[]>(
+    undefined
+  );
 
-  const SageSearcher = api.Sage.search.useMutation();
-  const SageReverseSearcher = api.Sage.reverseSearch.useMutation();
+  const Search = api.KundenSuche.search.useMutation();
+  const ReverseSearch = api.KundenSuche.searchReverse.useMutation();
 
-  const handleSearch = async (input: string) => {
-    if (input.length < 3) return;
-
-    setIsLoading(true);
-    const response = await SageSearcher.mutateAsync({ searchTerm: input });
-    if (response != null) {
-      setResults(response);
+  const handleSearch = async () => {
+    if (search == null) return;
+    setLoading(true);
+    if (reversed) {
+      const res = await ReverseSearch.mutateAsync({ search: search });
+      if (res) {
+        setResults(res);
+        setLoading(false);
+      }
+    } else {
+      const res = await Search.mutateAsync({ search: search });
+      if (res) {
+        setResults(res);
+        setLoading(false);
+      }
     }
-    setIsLoading(false);
-  };
-  const handleReverseSearch = async (input: string) => {
-    if (input.length < 3) return;
-
-    setIsLoading(true);
-    const response = await SageReverseSearcher.mutateAsync({
-      searchTerm: input,
-    });
-    if (response != null) {
-      setResults(response);
-    }
-    setIsLoading(false);
   };
 
   return (
     <>
       <Head>
-        <title>Sage Suche | LocalHorst v7</title>
+        <title>Sage Suche | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container className="mt-5">
-        <h1 className="text-center">Kunden- und Lieferanten Suche im SAGE</h1>
-        <FormSelect
-          className="mb-5"
-          onChange={(e) => setSuche(e.target.value)}
-          defaultValue={Suche}>
-          <option value="N">Normale Suche</option>
-          <option value="I">Rückwärts Suche</option>
-        </FormSelect>
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <FloatingLabel
-            label={
-              Suche === "N"
-                ? "Kundennummer oder Name"
-                : "Telefon- oder Mobilfunk Nummer mit oder ohne Vorwahl (Formatierung ist egal, z.B. +49 (561) 60144 - 0)"
-            }
-            className="mb-3">
-            <FormControl
-              type="text"
-              required
-              id="input-search"
-              placeholder={
-                Suche === "N"
-                  ? "Kundennummer oder Name"
-                  : "Telefon- oder Mobilfunk Nummer mit oder ohne Vorwahl (Formatierung ist egal, z.B. +49 (561) 60144 - 0)"
-              }
+
+      <Container>
+        <h1>Sage Suche</h1>
+        <Form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await handleSearch();
+          }}
+        >
+          <FormGroup className="mb-3 ">
+            <FormCheck
+              type="switch"
+              checked={reversed}
+              onChange={() => setReversed((prev) => !prev)}
+              id="custom-switch"
+              label="Rückwärts Suche?"
             />
-          </FloatingLabel>
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={() => {
-              const input: HTMLInputElement | null =
-                document.querySelector("#input-search");
-              if (!input) return;
-              Suche === "N"
-                ? void handleSearch(input.value)
-                : void handleReverseSearch(input.value);
-            }}>
+          </FormGroup>
+          <FormGroup className="mb-3 ">
+            <FloatingLabel
+              controlId="floatingInput"
+              label={reversed ? "Telefonnummer" : "Kundennummer oder Name"}
+              className="mb-3"
+            >
+              <FormControl
+                type="text"
+                placeholder="Suchbegriff"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </FloatingLabel>
+          </FormGroup>
+          <Button className="mb-3 me-3" type="submit">
             Suchen
           </Button>
+          <Button
+            variant="secondary"
+            className="mb-3"
+            type="reset"
+            onClick={() => {
+              setSearch(undefined);
+              setResults(undefined);
+            }}
+          >
+            Reset
+          </Button>
         </Form>
-        <hr />
-        {isLoading && <LoadingSpinner />}
-        {!isLoading && Results.length < 1 && (
-          <h2 className="text-center">Keine Ergebnisse</h2>
-        )}
-        {!isLoading && Results.length >= 1 && (
-          <Table striped>
+        {loading && <LoadingSpinner />}
+        {!loading && Results === null && <p>Keine Ergebnisse</p>}
+        {!loading && Results && Results.length < 1 && <p>Keine Ergebnisse</p>}
+        {Results && (
+          <Table striped bordered hover>
             <thead>
               <tr>
-                <th>Kunde?</th>
-                <th>Kunden- / Lieferanten Nummer</th>
+                <th>Kunde/Lieferant</th>
+                <th>Debi- / Kreditorennummer</th>
                 <th>Name</th>
                 <th>Nummer</th>
                 <th>Mobil</th>
                 <th>Mail</th>
-                <th>Umsatz in €</th>
+                <th>Umsatz</th>
               </tr>
             </thead>
             <tbody>
-              {Results.map((res) => (
-                <tr key={res.SG_Adressen_PK}>
-                  <th>{res.KundNr && res.KundNr.length > 1 ? "✔" : "❌"}</th>
-                  <th>
-                    {res.KundNr && res.KundNr.length > 1
-                      ? res.KundNr
-                      : res.KredNr && res.KredNr.length > 1
-                      ? res.KredNr
+              {Results.map((r) => (
+                <tr key={r.SG_Adressen_PK}>
+                  <td>
+                    {r.KundNr && r.KundNr.length > 1 ? "Kunde" : "Lieferant"}
+                  </td>
+                  <td>
+                    {r.KundNr && r.KundNr.length > 1
+                      ? r.KundNr
+                      : r.KredNr && r.KredNr.length > 1
+                      ? r.KredNr
                       : "FEHLER!"}
-                  </th>
-                  <th>{res.Suchbegriff ? res.Suchbegriff : "FEHLER"}</th>
-                  <th>
-                    {res.Telefon1 ? (
-                      <a href={`tel:${res.Telefon1}`}>{res.Telefon1}</a>
-                    ) : (
-                      ""
-                    )}
-                    {res.Telefon2 ? (
-                      <>
-                        <br />
-                        <a href={`tel:${res.Telefon2}`}>{res.Telefon2}</a>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </th>
-                  <th>
-                    {res.Mobiltelefon1 ? (
-                      <a href={`tel:${res.Mobiltelefon1}`}>
-                        {res.Mobiltelefon1}
-                      </a>
-                    ) : (
-                      ""
-                    )}
-                    {res.Mobiltelefon2 ? (
-                      <>
-                        <br />
-                        <a href={`tel:${res.Mobiltelefon2}`}>
-                          {res.Mobiltelefon2}
-                        </a>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </th>
-                  <th>
-                    {res.EMail1 ? (
-                      <a href={`mailto:${res.EMail1}`}>{res.EMail1}</a>
-                    ) : (
-                      ""
-                    )}
-                    {res.EMail2 ? (
-                      <>
-                        <br />
-                        <a href={`mailto:${res.EMail2}`}>{res.EMail2}</a>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </th>
-                  <th>
-                    {res.KundUmsatz
-                      ? res.KundUmsatz.toString()
-                      : res.LiefUmsatz
-                      ? res.LiefUmsatz.toString()
-                      : ""}
-                  </th>
+                  </td>
+                  <td>{r.Suchbegriff}</td>
+                  <td>
+                    <ListGroup>
+                      {r.Telefon1 && r.Telefon1.length > 1 && (
+                        <ListGroupItem action href={`tel:${r.Telefon1}`}>
+                          {r.Telefon1}
+                        </ListGroupItem>
+                      )}
+                      {r.Telefon2 && r.Telefon2.length > 1 && (
+                        <ListGroupItem action href={`tel:${r.Telefon2}`}>
+                          {r.Telefon2}
+                        </ListGroupItem>
+                      )}
+                    </ListGroup>
+                  </td>
+                  <td>
+                    <ListGroup>
+                      {r.Mobiltelefon1 && r.Mobiltelefon1.length > 1 && (
+                        <ListGroupItem action href={`tel:${r.Mobiltelefon1}`}>
+                          {r.Mobiltelefon1}
+                        </ListGroupItem>
+                      )}
+                      {r.Mobiltelefon2 && r.Mobiltelefon2.length > 1 && (
+                        <ListGroupItem action href={`tel:${r.Mobiltelefon2}`}>
+                          {r.Mobiltelefon2}
+                        </ListGroupItem>
+                      )}
+                    </ListGroup>
+                  </td>
+                  <td>
+                    <ListGroup>
+                      {r.EMail1 && r.EMail1.length > 1 && (
+                        <ListGroupItem action href={`mailto:${r.EMail1}`}>
+                          {r.EMail1}
+                        </ListGroupItem>
+                      )}
+                      {r.EMail2 && r.EMail2.length > 1 && (
+                        <ListGroupItem action href={`mailto:${r.EMail2}`}>
+                          {r.EMail2}
+                        </ListGroupItem>
+                      )}
+                    </ListGroup>
+                  </td>
+                  <td>
+                    {r.KundUmsatz
+                      ? r.KundUmsatz.toFixed(2) + "€"
+                      : r.LiefUmsatz
+                      ? r.LiefUmsatz.toFixed(2) + "€"
+                      : "-"}
+                  </td>
                 </tr>
               ))}
-            </tbody>{" "}
+            </tbody>
           </Table>
         )}
       </Container>

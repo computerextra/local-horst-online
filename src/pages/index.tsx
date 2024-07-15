@@ -1,122 +1,110 @@
+import Head from "next/head";
 import { useState } from "react";
-import {
-  Button,
-  Container,
-  FloatingLabel,
-  Form,
-  FormControl,
-  FormGroup,
-  FormSelect,
-} from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import EinkaufsListe from "~/Components/EinkaufsListe";
 import LoadingSpinner from "~/Components/LoadingSpinner";
+import Einkaufen from "~/Components/Modals/Einkaufen";
+import PayPal from "~/Components/Modals/PayPal";
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const Mailer = api.Mail.sendFeedback.useMutation();
-  const MitarbeiterRes = api.Mitarbeiter.getAll.useQuery();
-  const Mitarbeiter = MitarbeiterRes.data;
+  const Liste = api.Einkauf.getAll.useQuery();
+  const Mitarbeiter = api.Mitarbeiter.getAll.useQuery();
+  const [showForm, setShowForm] = useState(false);
+  const [showPayPal, setShowPayPal] = useState(false);
 
-  const [Nachricht, setNachricht] = useState<string>("");
-  const [Absender, setAbsender] = useState<string>("");
-  const [MailResponse, setMailResponse] = useState<string | null>(null);
+  const Print = () => {
+    const Liste = document.querySelector("#einkaufsliste");
+    if (Liste == null) return;
 
-  const [loading, setLoading] = useState(false);
+    const Window = window.open("", "PRINT", "height=1000,width=1200");
+    if (Window == null) return;
+    Window.document.write("<html><body>");
+    Window.document.write("<h1>Einkaufsliste</h1>");
+    Window.document.write("<h2>POST MITNEHMEN!</h2>");
+    // Window.document.write("<p style='line-break: anywhere'>");
+    Window.document.write(Liste.innerHTML);
+    // Window.document.write("</p>");
+    Window.document.write("</body></html>");
+    Window.document.close();
+    setTimeout(function () {
+      Window.print();
+    }, 500);
+    Window.onfocus = function () {
+      setTimeout(function () {
+        Window.close();
+      }, 500);
+    };
 
-  const SendMail = async () => {
-    if (Nachricht.length < 1) {
-      setMailResponse("Bitte eine Nachricht eingeben");
-      return;
-    }
-    if (Absender.length < 1) {
-      setMailResponse("Bitte deinen Namen auswählen");
-      return;
-    }
-    setLoading(true);
-    const res = await Mailer.mutateAsync({ Sender: Absender, Nachricht });
-    if (res === "Sent") {
-      setMailResponse("Versendet");
-      setTimeout(() => {
-        setNachricht("");
-        setAbsender("");
-        setMailResponse(null);
-        setLoading(false);
-      }, 5000);
-    } else {
-      setMailResponse(res);
-      setLoading(false);
-    }
+    // Window.focus();
+    // Window.print();
+    // Window.close();
+    // Window.onfocus = () => {
+    //   setTimeout(() => {
+    //     Window.close();
+    //   }, 2000);
+    // };
+    // setTimeout(() => , 2000);
   };
 
-  if (MitarbeiterRes.isLoading) return <LoadingSpinner />;
-
   return (
-    <Container className="mt-5">
-      <h1 className="text-center">Willkommen auf dem ganz neuen Local Horst</h1>
-      <p className="text-center fs-5">
-        Fehler gefunden oder einfach nur neue Wünsche?
-      </p>
-      <p className="text-center fs-5">
-        Dann einfach das Formular ausfüllen und absenden 🤩
-      </p>
-      {MailResponse != null && (
-        <p className="text-center fs-1">{MailResponse}</p>
-      )}
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <Form
-          onSubmit={(e) => e.preventDefault()}
-          className="mt-5">
-          <FloatingLabel
-            label="Mitarbeiter"
-            className="mb-3">
-            <FormSelect
-              name="id"
-              id="id"
-              required
-              onChange={(e) => {
-                setAbsender(e.target.value);
-              }}
-              defaultValue="">
-              <option
-                value=""
-                hidden>
-                Wählen...
-              </option>
-              {Mitarbeiter?.map((ma) => (
-                <option
-                  value={ma.Name}
-                  key={ma.id}
-                  label={ma.Name}
+    <>
+      <Head>
+        <title>LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <Container>
+          <h1>Einkaufsliste</h1>
+          <Row>
+            <Col className="d-grid">
+              <Button onClick={() => setShowForm((prev) => !prev)}>
+                Kaufen
+              </Button>
+            </Col>
+            <Col className="d-grid">
+              <Button onClick={Print}>Drucken</Button>
+            </Col>
+            <Col className="d-grid">
+              <Button
+                variant="success"
+                onClick={() => setShowPayPal((prev) => !prev)}
+              >
+                PayPal Abrechnung
+              </Button>
+            </Col>
+          </Row>
+          <section id="einkaufsliste">
+            {Liste.isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              Liste.data?.map((m) => (
+                <EinkaufsListe
+                  key={m.id}
+                  Einkauf={m}
+                  Name={
+                    Mitarbeiter.data?.find((x) => x.id == m.mitarbeiterId)?.Name
+                  }
                 />
-              ))}
-            </FormSelect>
-          </FloatingLabel>
-          <FloatingLabel
-            className="mb-3"
-            label="Feedback">
-            <FormControl
-              as="textarea"
-              placeholder="Nachricht"
-              rows={6}
-              style={{ height: "100%" }}
-              required
-              value={Nachricht}
-              onChange={(e) => setNachricht(e.target.value)}
-            />
-          </FloatingLabel>
-          <FormGroup className="mb-3">
-            <Button
-              type="submit"
-              variant="primary"
-              onClick={() => {
-                void SendMail();
-              }}>
-              Senden
-            </Button>
-          </FormGroup>
-        </Form>
-      )}
-    </Container>
+              ))
+            )}
+          </section>
+        </Container>
+        {showForm && (
+          <Einkaufen
+            show={showForm}
+            setShow={setShowForm}
+            Mitarbeiter={Mitarbeiter.data}
+          />
+        )}
+        {showPayPal && (
+          <PayPal
+            show={showPayPal}
+            setShow={setShowPayPal}
+            Mitarbeiter={Mitarbeiter.data}
+          />
+        )}
+      </main>
+    </>
   );
 }

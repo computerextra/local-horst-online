@@ -1,15 +1,23 @@
-import { createTRPCRouter } from "~/server/api/trpc";
-import { AnsprechpartnerRouter } from "./routers/Ansprechpartner";
-import { ArchiveRouter } from "./routers/Archiv";
-import { FileRouter } from "./routers/Files";
-import { LieferantenRouter } from "./routers/Lieferanten";
-import { RSSRouter } from "./routers/RSS";
-import { SageRouter } from "./routers/Sage";
-import { WarenlieferungRouter } from "./routers/Warenlieferung";
+import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { abteilungsRouter } from "./routers/CMS/abteilung";
+import { angeboteRouter } from "./routers/CMS/angebot";
+import { dokumentenRouter } from "./routers/CMS/dokumente";
+import { jobRouter } from "./routers/CMS/jobs";
+import { mitarbeiterCmsRouter } from "./routers/CMS/mitarbeiter";
+import { partnerRouter } from "./routers/CMS/partner";
+import { ansprechpartnerRouter } from "./routers/Horst/ansprechpartner";
+import { einkaufRouter } from "./routers/Horst/einkauf";
+import { lieferantenRouter } from "./routers/Horst/lieferanten";
+import { mitarbeiterRouter } from "./routers/Horst/mitarbeiter";
+import { pdfRouter } from "./routers/Horst/pdf";
+import { shortsRouter } from "./routers/Horst/shorts";
+import { userRouter } from "./routers/Horst/user";
+import { warenlieferungRouter } from "./routers/Horst/warenlieferung";
+import { artikelSucheRouter } from "./routers/Sage/artikelsuche";
+import { kundenSucheRouter } from "./routers/Sage/kundensuche";
+import { InventurRouter } from "./routers/inventur";
 import { MailRouter } from "./routers/mail";
-import { MitarbeiterRouter } from "./routers/mitarbeiter";
-import { KabelwandRouter } from "./routers/Kabelwand";
-import { AppleRouter } from "./routers/Apple";
+import { SignatureRouter } from "./routers/signatures";
 
 /**
  * This is the primary router for your server.
@@ -17,18 +25,39 @@ import { AppleRouter } from "./routers/Apple";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  Mitarbeiter: MitarbeiterRouter,
+  // Horst Routes
+  Ansprechpartner: ansprechpartnerRouter,
+  Einkauf: einkaufRouter,
+  Lieferanten: lieferantenRouter,
+  Mitarbeiter: mitarbeiterRouter,
+  Archiv: pdfRouter,
+  Short: shortsRouter,
+  Warenlieferung: warenlieferungRouter,
+  User: userRouter,
+  // SAGE Routes
+  KundenSuche: kundenSucheRouter,
+  ArtikelSuche: artikelSucheRouter,
+  // CMS Routes
+  Abteilung: abteilungsRouter,
+  Angebot: angeboteRouter,
+  Jobs: jobRouter,
+  OnlineMitarbeiter: mitarbeiterCmsRouter,
+  Partner: partnerRouter,
+  Dokumente: dokumentenRouter,
+  // General Routes
   Mail: MailRouter,
-  Archive: ArchiveRouter,
-  Sage: SageRouter,
-  Lieferanten: LieferantenRouter,
-  Ansprechpartner: AnsprechpartnerRouter,
-  File: FileRouter,
-  RSS: RSSRouter,
-  Warenlieferung: WarenlieferungRouter,
-  Kabelwand: KabelwandRouter,
-  Apple: AppleRouter,
+  Signaturen: SignatureRouter,
+  Inventur: InventurRouter,
 });
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
+
+/**
+ * Create a server-side caller for the tRPC API.
+ * @example
+ * const trpc = createCaller(createContext);
+ * const res = await trpc.post.all();
+ *       ^? Post[]
+ */
+export const createCaller = createCallerFactory(appRouter);

@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useState } from "react";
 import {
   Button,
   Col,
@@ -7,9 +8,8 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
-import { useState } from "react";
 
-const Werkstatt = () => {
+export default function Werkstatt() {
   const [auswahl, setAuswahl] = useState<"MS" | "G" | "A" | "T" | "">("");
   const [Vorname, setVorname] = useState("");
   const [Nachname, setNachname] = useState("");
@@ -58,10 +58,11 @@ const Werkstatt = () => {
   return (
     <>
       <Head>
-        <title>Werkstatt | LocalHorst v7</title>
+        <title>Formular Gen für Faule! | LocalHorst v9</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container fluid="sm" className="mt-5 pt-2 text-center">
-        <h1 className="mb-2">Formular Gen für Faule!</h1>
+      <Container>
+        <h1>Formular Gen für Faule!</h1>
         <Form.Check
           type="radio"
           name="Auswahl"
@@ -261,42 +262,42 @@ const Werkstatt = () => {
           </Button>
         </Form>
       </Container>
-      <div data-intrexx="true" className="d-none">
-        <p>
-          {auswahl == "A"
-            ? "Apple ID"
-            : auswahl == "G"
+      <Container>
+        <div data-intrexx="true" className="d-none">
+          <p>
+            {auswahl == "A"
+              ? "Apple ID"
+              : auswahl == "G"
               ? "Google Konto"
               : auswahl == "MS"
-                ? "Microsoft Konto"
-                : auswahl == "T"
-                  ? "Telekom Freemail"
-                  : "FEHLENDE EINGABE!"}{" "}
-          <br />
-          Name: {Vorname} {Nachname} <br />
-          Mail: {Mail} <br />
-          PW: {PassMail} <br />
-          Geburtstag: {new Date(Geburtstag).toLocaleDateString()} <br />
-          Geschlecht: {Geschlecht} <br />
-          Handy: {Handynummer} <br />
-          Login: {Login} <br />
-          PW: {Password}
-        </p>
-      </div>
-      <div data-druck="true" className="d-none">
-        <p>Vorname: {Vorname}</p>
-        <p>Nachname: {Nachname}</p>
-        <p>E-Mail-Adresse: {Mail}</p>
-        <p>E-Mail-Passwort: {PassMail}</p>
-        <p>Geburtstag: {new Date(Geburtstag).toLocaleDateString()}</p>
-        <p>Geschlecht: {Geschlecht}</p>
-        <p>Mobilfunk Nummer: {Handynummer}</p>
-        <hr />
-        <p>Benutzername: {Login}</p>
-        <p>Passwort: {Password}</p>
-      </div>
+              ? "Microsoft Konto"
+              : auswahl == "T"
+              ? "Telekom Freemail"
+              : "FEHLENDE EINGABE!"}{" "}
+            <br />
+            Name: {Vorname} {Nachname} <br />
+            Mail: {Mail} <br />
+            PW: {PassMail} <br />
+            Geburtstag: {new Date(Geburtstag).toLocaleDateString()} <br />
+            Geschlecht: {Geschlecht} <br />
+            Handy: {Handynummer} <br />
+            Login: {Login} <br />
+            PW: {Password}
+          </p>
+        </div>
+        <div data-druck="true" className="d-none">
+          <p>Vorname: {Vorname}</p>
+          <p>Nachname: {Nachname}</p>
+          <p>E-Mail-Adresse: {Mail}</p>
+          <p>E-Mail-Passwort: {PassMail}</p>
+          <p>Geburtstag: {new Date(Geburtstag).toLocaleDateString()}</p>
+          <p>Geschlecht: {Geschlecht}</p>
+          <p>Mobilfunk Nummer: {Handynummer}</p>
+          <hr />
+          <p>Benutzername: {Login}</p>
+          <p>Passwort: {Password}</p>
+        </div>
+      </Container>
     </>
   );
-};
-
-export default Werkstatt;
+}
