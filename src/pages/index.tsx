@@ -22,6 +22,7 @@ export default function Home() {
     Window.document.write("<html><body>");
     Window.document.write("<h1>Einkaufsliste</h1>");
     Window.document.write("<h2>POST MITNEHMEN!</h2>");
+    Window.document.write("<h2>Kaffee, Milch, Müllbeutel checken schreiben</h2>");
     // Window.document.write("<p style='line-break: anywhere'>");
     Window.document.write(Liste.innerHTML);
     // Window.document.write("</p>");
